@@ -4,7 +4,7 @@ class Feed < ApplicationRecord
   validates :title, :url, presence: true
   validates :title, :url, uniqueness: true
 
-  before_create :set_title
+  before_validation :set_title
 
   def fetch
     Feedjira::Feed.fetch_and_parse(url).entries.all? do |entry|
