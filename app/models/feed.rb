@@ -1,4 +1,6 @@
 class Feed < ApplicationRecord
+  has_many :links, dependent: :destroy
+
   validates :title, :url, presence: true
   validates :title, :url, uniqueness: true
 
