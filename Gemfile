@@ -38,6 +38,8 @@ group :development, :test do
   gem 'byebug', platform: :mri
   # Use rspec instead of test unit for testing
   gem 'rspec-rails', '~> 3.5'
+  # Use factory girl in place of fixtures for testing
+  gem 'factory_girl_rails'
 end
 
 group :development do
