@@ -40,6 +40,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   # Use factory girl in place of fixtures for testing
   gem 'factory_girl_rails'
+  # Use faker for generating fake test data
+  gem 'faker'
 end
 
 group :development do
