@@ -36,6 +36,8 @@ gem 'slim'
 gem 'bootstrap-sass', '~> 3.3.6'
 # Use simple_form for generating forms
 gem 'simple_form'
+# Use figaro for application secrets
+gem 'figaro'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
