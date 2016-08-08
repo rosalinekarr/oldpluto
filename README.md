@@ -1,24 +1,9 @@
-# README
+# Old Pluto
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Old Pluto is a news reader application I'm building for fun.
 
-Things you may want to cover:
+## License
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Copyright © 2016 Dylan Karr. This is free software, and may be redistributed
+under the terms specified in the
+[LICENSE](https://github.com/dylankarr/oldpluto/blob/master/LICENSE) file.
