@@ -40,6 +40,8 @@ gem 'simple_form'
 gem 'figaro'
 # Use feedjira for fetching and parsing RSS feeds
 gem 'feedjira'
+# Use kaminari for easy pagination
+gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

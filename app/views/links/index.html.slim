@@ -1,3 +1,5 @@
-ol
+ol start=((params[:page] || '1').to_i * 25 - 24)
   - @links.each do |link|
     li = link_to link.title, link.url
+
+= paginate @links
