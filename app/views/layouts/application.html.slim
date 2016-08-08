@@ -11,7 +11,26 @@ html
       nav.navbar.navbar-default
         .container
           .navbar-header
+            button.navbar-toggle.collapsed data-toggle='collapse' data-target='#navigation' aria-expanded='false'
+              span.sr-only Toggle navigation
+              span.glyphicon.glyphicon-menu-hamburger aria-hidden='true'
             = link_to 'Old Pluto', root_path, class: 'navbar-brand'
+          #navigation.collapse.navbar-collapse
+            ul.nav.navbar-nav.navbar-right
+              - if user_signed_in?
+                li = link_to 'Sign out', destroy_user_session_path, method: :delete
+              - else
+                li = link_to 'Sign in', new_user_session_path
+                li = link_to 'Sign up', new_user_registration_path
+
+      .container
+        - flash.each do |name, msg|
+          - next if msg.blank?
+          - name = name.gsub(/^alert$/, 'danger').gsub(/^notice$/, 'info')
+          .alert.alert-dismissible class=("alert-#{name}") role='alert'
+            button.close type='button' data-dismiss='alert' aria-label='Close'
+              span.glyphicon.glyphicon-remove
+            = msg
 
     main.container
       = yield
