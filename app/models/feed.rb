@@ -1,10 +1,14 @@
 class Feed < ApplicationRecord
+  extend FriendlyId
+
   has_many :links, dependent: :destroy
 
-  validates :title, :url, presence: true
-  validates :title, :url, uniqueness: true
+  validates :slug, :title, :url, presence: true
+  validates :slug, :title, :url, uniqueness: true
 
   before_validation :set_title
+
+  friendly_id :title, use: :slugged
 
   def self.fetch_all
     Feed.find_each { |feed| feed.fetch }
