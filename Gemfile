@@ -42,6 +42,8 @@ gem 'feedjira'
 gem 'kaminari'
 # Use friendly id for easy slug generation
 gem 'friendly_id'
+# Use devise for authentication and user management
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

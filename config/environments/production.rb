@@ -83,4 +83,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Set default url host for devise emails
+  config.action_mailer.default_url_options = { host: 'oldpluto.herokuapp.com' }
 end
