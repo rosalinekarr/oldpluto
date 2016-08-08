@@ -6,8 +6,12 @@ class Feed < ApplicationRecord
 
   before_validation :set_title
 
+  def self.fetch_all
+    Feed.find_each { |feed| feed.fetch }
+  end
+
   def fetch
-    Feedjira::Feed.fetch_and_parse(url).entries.all? do |entry|
+    Feedjira::Feed.fetch_and_parse(url).entries.each do |entry|
       link = self.links.find_or_initialize_by(url: entry.url)
       link.title = entry.title
       link.save
