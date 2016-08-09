@@ -48,6 +48,8 @@ gem 'devise'
 gem 'delayed_job_active_record'
 # Use Ruby Brill Tagger for part-of-speech tagging
 gem 'rbtagger'
+# Use acts_as_taggable_on for adding easy tagging
+gem 'acts-as-taggable-on', '~> 4.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
