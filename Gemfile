@@ -44,6 +44,8 @@ gem 'kaminari'
 gem 'friendly_id'
 # Use devise for authentication and user management
 gem 'devise'
+# Use delayed_job for active job queuing and working
+gem 'delayed_job_active_record'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
