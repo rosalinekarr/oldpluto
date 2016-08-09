@@ -46,6 +46,8 @@ gem 'friendly_id'
 gem 'devise'
 # Use delayed_job for active job queuing and working
 gem 'delayed_job_active_record'
+# Use Ruby Brill Tagger for part-of-speech tagging
+gem 'rbtagger'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
