@@ -15,7 +15,7 @@ class Feed < ApplicationRecord
   end
 
   def fetch
-    Feedjira::Feed.fetch_and_parse(url).entries.each do |entry|
+    feed.entries.each do |entry|
       link = self.links.find_or_initialize_by(url: entry.url)
       link.title = entry.title
       link.save
@@ -25,6 +25,10 @@ class Feed < ApplicationRecord
   private
 
   def set_title
-    self.title = Feedjira::Feed.fetch_and_parse(url).title if title.nil?
+    self.title ||= feed.title
+  end
+
+  def feed
+    @feed ||= Feedjira::Feed.fetch_and_parse(url)
   end
 end
