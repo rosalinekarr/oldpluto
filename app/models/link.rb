@@ -15,9 +15,8 @@ class Link < ApplicationRecord
   private
 
   def extract_tags
-    tagger = Brill::Tagger.new
-    tags = tagger.tag(body).each do |term|
-      tag_list.add(term[0]) if term[1] == 'NNP'
-    end
+    sanitized_body = body.gsub(/[^\s\w]+/, '')
+    tags = Brill::Tagger.new.tag(sanitized_body)
+    tag_list = tags.select{ |t| t[1] == 'NNP' }.map{ |t| t[0] }
   end
 end
