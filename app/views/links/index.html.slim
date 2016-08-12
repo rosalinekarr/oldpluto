@@ -9,6 +9,6 @@ ol start=((params[:page] || '1').to_i * 25 - 24)
         span.tags
           - link.tag_list.each do |tag|
             = ' '
-            = link_to "##{tag}", @params.merge(tag: tag)
+            = link_to "##{tag}", @params.merge(tags: @tags + [tag])
 
 = paginate @links

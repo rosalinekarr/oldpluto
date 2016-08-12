@@ -7,11 +7,12 @@ class LinksController < ApplicationController
       @links = @links.where(feed: @feed)
     end
 
-    if params[:tag].present?
-      @links = @links.tagged_with(params[:tag])
+    if params[:tags].present? && params[:tags].any?
+      @links = @links.tagged_with(params[:tags], all: true)
     end
 
-    @params = params.permit(:feed, :tag)
+    @params = params.permit(:feed, tags: [])
+    @tags = @params[:tags] || []
     @links = @links.order(created_at: :desc).page params[:page]
   end
 end
