@@ -11,6 +11,7 @@ class LinksController < ApplicationController
       @links = @links.tagged_with(params[:tag])
     end
 
+    @params = params.permit(:feed, :tag)
     @links = @links.order(created_at: :desc).page params[:page]
   end
 end

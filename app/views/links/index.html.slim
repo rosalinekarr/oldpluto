@@ -5,10 +5,10 @@ ol start=((params[:page] || '1').to_i * 25 - 24)
       .details
         span.source
           = 'from '
-          = link_to link.feed_title, root_path(feed: link.feed.slug)
+          = link_to link.feed_title, @params.merge(feed: link.feed.slug)
         span.tags
           - link.tag_list.each do |tag|
             = ' '
-            = link_to "##{tag}", root_path(tag: tag), class: 'tag'
+            = link_to "##{tag}", @params.merge(tag: tag)
 
 = paginate @links
