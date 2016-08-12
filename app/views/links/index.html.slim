@@ -2,8 +2,13 @@ ol start=((params[:page] || '1').to_i * 25 - 24)
   - @links.each do |link|
     li
       = link_to link.title, link.url
-      .source
-        = 'from '
-        = link_to link.feed_title, root_path(feed: link.feed.slug)
+      .details
+        span.source
+          = 'from '
+          = link_to link.feed_title, root_path(feed: link.feed.slug)
+        span.tags
+          - link.tag_list.each do |tag|
+            = ' '
+            = link_to "##{tag}", root_path(tag: tag), class: 'tag'
 
 = paginate @links
