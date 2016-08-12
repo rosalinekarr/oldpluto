@@ -1,10 +1,12 @@
 class LinksController < ApplicationController
   def index
-    if params[:feed_id].present?
-      @feed = Feed.friendly.find(params[:feed_id])
-      @links = @feed.links.order(created_at: :desc).page params[:page]
-    else
-      @links = Link.order(created_at: :desc).page params[:page]
+    @links = Link.all
+
+    if params[:feed].present?
+      @feed = Feed.friendly.find(params[:feed])
+      @links = @links.where(feed: @feed)
     end
+
+    @links = @links.order(created_at: :desc).page params[:page]
   end
 end

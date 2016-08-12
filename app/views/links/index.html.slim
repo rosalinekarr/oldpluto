@@ -3,7 +3,7 @@ ol start=((params[:page] || '1').to_i * 25 - 24)
     li
       = link_to link.title, link.url
       .source
-        | from 
-        = link_to link.feed_title, feed_path(link.feed)
+        = 'from '
+        = link_to link.feed_title, root_path(feed: link.feed.slug)
 
 = paginate @links
