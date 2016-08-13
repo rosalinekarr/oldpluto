@@ -13,6 +13,6 @@ class LinksController < ApplicationController
 
     @params = params.permit(:feed, tags: [])
     @tags = @params[:tags] || []
-    @links = @links.order(created_at: :desc).page params[:page]
+    @links = @links.order(published_at: :desc).page params[:page]
   end
 end

@@ -19,6 +19,7 @@ class Feed < ApplicationRecord
       link = self.links.find_or_initialize_by(url: entry.url)
       link.title = entry.title
       link.body = entry.content || entry.summary || entry.title
+      link.published_at = entry.published || DateTime.now
       link.save
     end
   end
