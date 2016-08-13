@@ -18,7 +18,7 @@ class Feed < ApplicationRecord
     feed.entries.each do |entry|
       link = self.links.find_or_initialize_by(url: entry.url)
       link.title = entry.title
-      link.body = entry.content
+      link.body = entry.content || entry.summary || entry.title
       link.save
     end
   end
