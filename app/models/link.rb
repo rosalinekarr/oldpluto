@@ -30,8 +30,16 @@ class Link < ApplicationRecord
   end
 
   def extract_tags
-    # Tag all proper nouns in the body
-    tags = Brill::Tagger.new.tag(body)
-    self.tag_list = tags.select{ |t| t[1] == 'NNP' }.map{ |t| t[0] }
+    # Split body into sentences
+    sentences = body.split(/((?<=[a-z0-9)][.?!])|(?<=[a-z0-9][.?!]"))\s+(?="?[A-Z])/)
+
+    # Tag all proper nouns in each sentences
+    tags = sentences.map do |sentence|
+      tags = Brill::Tagger.new.tag(sentence)
+      tags.select{ |t| t[1] == 'NNP' }.map{ |t| t[0] }
+    end
+
+    # Set tags, overriding old ones
+    self.tag_list = tags.flatten
   end
 end
