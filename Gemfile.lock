@@ -164,7 +164,6 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
-    rbtagger (0.4.7)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     rspec-core (3.5.1)
@@ -251,7 +250,6 @@ DEPENDENCIES
   pg (~> 0.18)
   puma (~> 3.0)
   rails (~> 5.0.0)
-  rbtagger
   rspec-rails (~> 3.5)
   sass-rails (~> 5.0)
   simple_form
