@@ -7,16 +7,20 @@ RSpec.describe Feed, type: :model do
   let(:feed_title) { Faker::Lorem.word }
   let(:feed_url)   { Faker::Internet.url }
 
-  let(:entry_title) { Faker::Lorem.word }
-  let(:entry_url)   { Faker::Internet.url }
+  let(:entry_title)     { Faker::Lorem.word }
+  let(:entry_url)       { Faker::Internet.url }
+  let(:entry_content)   { Faker::Lorem.paragraph }
+  let(:entry_published) { Faker::Date.backward(1000) }
 
   before do
     allow(feedjira_feed).to receive(:title)   { feed_title }
     allow(feedjira_feed).to receive(:url)     { feed_url }
     allow(feedjira_feed).to receive(:entries) { [feed_entry] }
 
-    allow(feed_entry).to receive(:title) { entry_title }
-    allow(feed_entry).to receive(:url)   { entry_url }
+    allow(feed_entry).to receive(:title)     { entry_title }
+    allow(feed_entry).to receive(:url)       { entry_url }
+    allow(feed_entry).to receive(:content)   { entry_content }
+    allow(feed_entry).to receive(:published) { entry_published }
 
     allow(Feedjira::Feed).to receive(:fetch_and_parse) { |url| feedjira_feed }
   end
