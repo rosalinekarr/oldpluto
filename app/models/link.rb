@@ -1,6 +1,8 @@
 require 'htmlentities'
 
 class Link < ApplicationRecord
+  BLACKLISTED_TAGS = YAML.load_file(Rails.root.join('config', 'tags', 'blacklist.yml'))
+
   acts_as_taggable
 
   delegate :title, to: :feed, prefix: true
@@ -25,7 +27,9 @@ class Link < ApplicationRecord
   end
 
   def extract_tags
-    # Set tags with all capitalized words from body
-    self.tag_list = body.scan(/\b([A-Z][\w\-]+([\s\-][A-Z]\w+)*)\b/).map(&:first)
+    # Fetch all capitalized words from the body
+    tags = body.scan(/\b([A-Z][\w\-]+([\s\-][A-Z]\w+)*)\b/).map(&:first)
+    # Set tags filtering with the tag blacklist
+    self.tag_list = tags.select{ |tag| !BLACKLISTED_TAGS.include? tag.downcase }
   end
 end
