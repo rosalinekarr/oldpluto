@@ -31,6 +31,6 @@ class Link < ApplicationRecord
 
   def extract_tags
     # Set tags with all capitalized words from body
-    self.tag_list = body.scan(/\b[A-Z][a-z]+\b/)
+    self.tag_list = body.scan(/\b([A-Z][\w\-]+([\s\-][A-Z]\w+)*)\b/).map(&:first)
   end
 end
