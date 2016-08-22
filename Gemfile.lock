@@ -41,6 +41,9 @@ GEM
     acts-as-taggable-on (4.0.0)
       activerecord (>= 4.0)
     addressable (2.4.0)
+    airbrake (5.4.4)
+      airbrake-ruby (~> 1.4)
+    airbrake-ruby (1.4.6)
     arel (7.1.1)
     autoprefixer-rails (6.3.7)
       execjs
@@ -233,6 +236,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 4.0)
+  airbrake
   bootstrap-sass (~> 3.3.6)
   byebug
   coffee-rails (~> 4.2)

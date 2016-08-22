@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'acts-as-taggable-on', '~> 4.0'
+gem 'airbrake'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'coffee-rails', '~> 4.2'
 gem 'delayed_job_active_record'
