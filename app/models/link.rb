@@ -1,3 +1,5 @@
+require 'htmlentities'
+
 class Link < ApplicationRecord
   acts_as_taggable
 
@@ -16,17 +18,10 @@ class Link < ApplicationRecord
   private
 
   def sanitized_body
-    # Strip html entities
-    self.body = body.gsub(/&[0-9#]+;/, '')
-
-    # Strip html tags
-    self.body = body.gsub(/\<[^\>]+\>/, '')
-
-    # Strip non-ascii characters
-    self.body = body.gsub(/[^[:ascii:]]/, '')
-
-    # Collapse whitespace
-    self.body = body.gsub(/\s+/, ' ')
+    # Remove html tags
+    self.body = ActionController::Base.helpers.strip_tags(body)
+    # Convert html entities to unicode
+    self.body = HTMLEntities.new.decode(body)
   end
 
   def extract_tags
