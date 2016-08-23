@@ -16,11 +16,12 @@ class Feed < ApplicationRecord
 
   def fetch
     feed.entries.each do |entry|
-      link = self.links.find_or_initialize_by(url: entry.url)
-      link.title = entry.title
-      link.body = entry.content || entry.summary || entry.title
-      link.published_at = entry.published || DateTime.now
-      link.save
+      next if Link.where(url: entry.url).any?
+      Link.create(title:        entry.title,
+                  url:          entry.url,
+                  body:         entry.content || entry.summary || entry.title,
+                  published_at: entry.published || DateTime.now,
+                  feed:         self)
     end
   end
 
