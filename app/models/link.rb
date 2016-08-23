@@ -17,6 +17,11 @@ class Link < ApplicationRecord
 
   default_scope { includes(:feed) }
 
+  def display_tags
+    # Get all tags that exist on other links as well
+    @display_tags ||= tags.where('taggings_count > 1').pluck(:name)
+  end
+
   private
 
   def sanitized_body

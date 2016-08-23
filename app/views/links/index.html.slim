@@ -5,7 +5,10 @@ ol start=((params[:page] || '1').to_i * 25 - 24)
       .details
         = 'from '
         = link_to link.feed_title, @params.merge(feed: link.feed.slug)
-        = ' | '
-        = link_to 'Related', @params.merge(related_to: link.id)
+        - if link.display_tags.any?
+          = ', tagged'
+          - link.display_tags.each do |tag|
+            = ' '
+            = link_to "##{tag.titleize}", @params.merge(tag: tag)
 
 = paginate @links
