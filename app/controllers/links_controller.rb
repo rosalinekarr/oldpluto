@@ -1,9 +1,9 @@
 class LinksController < ApplicationController
   def index
+    @links = Link.includes(:feed)
+
     if params[:tag].present?
-      @links = Link.tagged_with(params[:tag])
-    else
-      @links = Link.all
+      @links = @links.tagged_with(params[:tag])
     end
 
     if params[:feed].present?
