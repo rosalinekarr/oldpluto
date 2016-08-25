@@ -1,14 +1,4 @@
 ol start=((params[:page] || '1').to_i * 25 - 24)
-  - @links.each do |link|
-    li
-      = link_to link.title, link_path(link)
-      .details
-        = 'from '
-        = link_to link.feed_title, @params.merge(feed: link.feed.slug)
-        - if link.display_tags.any?
-          = ', tagged'
-          - link.display_tags.each do |tag|
-            = ' '
-            = link_to "##{tag.titleize}", @params.merge(tag: tag)
+  = render partial: 'link', collection: @links, cached: true
 
 = paginate @links
