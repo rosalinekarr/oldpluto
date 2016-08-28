@@ -7,8 +7,8 @@ class LinksController < ApplicationController
 
     authenticate_user! if page != 1
 
-    @params = params.permit(:feed, :tag)
-    @links = @links.order(published_at: :desc).page page
+    @params = params.permit(:direction, :feed, :sort, :tag)
+    @links = @links.order({ sort => sort_direction }).page page
   end
 
   def show
@@ -20,6 +20,14 @@ class LinksController < ApplicationController
   private
 
   def page
-    params[:page] || 1
+    @page ||= params[:page] || 1
+  end
+
+  def sort
+    @sort ||= params[:sort].try(:to_sym) || :published_at
+  end
+
+  def sort_direction
+    @direction ||= params[:direction].try(:to_sym) || :desc
   end
 end
