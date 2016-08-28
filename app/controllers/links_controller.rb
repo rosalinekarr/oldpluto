@@ -1,13 +1,12 @@
 class LinksController < ApplicationController
   def index
+    authenticate_user! if page != 1
     @links = Link.includes(:feed)
 
-    @links = @links.tagged_with(params[:tag]) if params[:tag].present?
-    @links = @links.where(feed: source)       if source.present?
+    @links = @links.tagged_with(tag)    if tag.present?
+    @links = @links.where(feed: source) if source.present?
 
-    authenticate_user! if page != 1
-
-    @params = params.permit(:direction, :feed, :sort, :tag)
+    @params = params.permit(:direction, :source, :sort, :tag)
     @links = @links.order({ sort => sort_direction }).page page
   end
 
@@ -18,6 +17,10 @@ class LinksController < ApplicationController
   end
 
   private
+
+  def tag
+    @tag ||= params[:tag]
+  end
 
   def source
     @source ||= Feed.friendly.find(params[:source]) if params[:source].present?
