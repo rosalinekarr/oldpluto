@@ -18,6 +18,15 @@ class Link < ApplicationRecord
 
   default_scope { includes(:feed) }
 
+  def self.from_entry(entry, feed)
+    return if Link.where(url: entry.url).any?
+    Link.create(title:        entry.title,
+                url:          entry.url,
+                body:         entry.content || entry.summary || entry.title,
+                published_at: entry.published || DateTime.now,
+                feed:         feed)
+  end
+
   def display_tags
     # Get all tags that exist on other links as well
     @display_tags ||= tags.where('taggings_count > 1').pluck(:name)

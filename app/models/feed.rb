@@ -11,18 +11,14 @@ class Feed < ApplicationRecord
   friendly_id :title, use: :slugged
 
   def self.fetch_all
-    Feed.find_each { |feed| feed.fetch }
+    Feed.find_each do |feed|
+      FetchLinksJob.set(wait: feed.frequency.minutes).perform_later(feed.id)
+    end
   end
 
   def fetch
-    feed.entries.each do |entry|
-      next if Link.where(url: entry.url).any?
-      Link.create(title:        entry.title,
-                  url:          entry.url,
-                  body:         entry.content || entry.summary || entry.title,
-                  published_at: entry.published || DateTime.now,
-                  feed:         self)
-    end
+    count = feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
+    update(frequency: (count > 1) ? (frequency.to_f / count).ceil : (frequency * 2))
   end
 
   private
