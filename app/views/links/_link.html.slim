@@ -1,13 +1,12 @@
 li
-  = link_to link.title, link_path(link)
+  = link_to link.title, link_path(link), class: 'link'
   .details
-    = 'from '
     = link_to link.feed_title, @params.merge(source: link.feed_id)
-    = ', published on '
+    = ' | '
     time datetime=(l link.published_at) = l(link.published_at)
-    = ", #{pluralize(link.visits, 'visit')}"
+    = " | #{pluralize(link.visits, 'visit')}"
     - if link.display_tags.any?
-      = ', tagged'
+      = ' |'
       - link.display_tags.each do |tag|
         = ' '
         = link_to "##{tag.titleize}", @params.merge(tag: tag)

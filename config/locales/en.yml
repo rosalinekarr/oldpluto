@@ -1,4 +1,4 @@
 en:
   time:
     formats:
-      default: "%F at %R"
+      default: "%F"
