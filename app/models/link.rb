@@ -12,6 +12,7 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
+  before_validation :sanitized_title
   before_validation :sanitized_body
   after_create :extract_tags
 
@@ -23,6 +24,11 @@ class Link < ApplicationRecord
   end
 
   private
+
+  def sanitized_title
+    # Convert html entities to unicode
+    self.title = HTMLEntities.new.decode(title)
+  end
 
   def sanitized_body
     # Remove html tags
