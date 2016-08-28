@@ -2,8 +2,8 @@ class LinksController < ApplicationController
   def index
     @links = Link.includes(:feed)
 
-    @links = @links.tagged_with(params[:tag])       if params[:tag].present?
-    @links = @links.where(feed_id: params[:source]) if params[:source].present?
+    @links = @links.tagged_with(params[:tag]) if params[:tag].present?
+    @links = @links.where(feed: source)       if source.present?
 
     authenticate_user! if page != 1
 
@@ -18,6 +18,10 @@ class LinksController < ApplicationController
   end
 
   private
+
+  def source
+    @source ||= Feed.friendly.find(params[:source]) if params[:source].present?
+  end
 
   def page
     @page ||= params[:page] || 1

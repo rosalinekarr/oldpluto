@@ -21,14 +21,10 @@ header
       - unless @sort == :visits && @direction == :asc
         li = link_to 'Least Popular', url_for(@params.merge(sort: 'visits', direction: 'asc'))
 
-  - if @sort == :visits && @direction == :asc
-    h1 Least Popular Links
-  - elsif @sort == :visits && @direction == :desc
-    h1 Most Popular Links
-  - elsif @sort == :published_at && @direction == :asc
-    h1 Oldest Links
+  - if params[:source].blank?
+    h1 All Links
   - else
-    h1 Newest Links
+    h1 Links from #{@source.title}
 
 ol start=((params[:page] || '1').to_i * 25 - 24)
   = render partial: 'link', collection: @links, cached: true

@@ -1,7 +1,7 @@
 li
   = link_to link.title, link_path(link), class: 'link'
   .details
-    = link_to link.feed_title, @params.merge(source: link.feed_id)
+    = link_to link.feed_title, @params.merge(source: link.feed.slug)
     = ' | '
     time datetime=(l link.published_at) = l(link.published_at)
     = " | #{pluralize(link.visits, 'visit')}"
