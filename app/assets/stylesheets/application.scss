@@ -14,5 +14,14 @@
  *= require_self
  */
 
- @import "bootstrap-sprockets";
- @import "bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+main header {
+  margin: 0 0 1em 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 32px;
+}

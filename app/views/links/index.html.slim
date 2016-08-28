@@ -1,24 +1,34 @@
-.btn-group.pull-right
-  button.btn.btn-default.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
-    - if @sort == :visits && @direction == :asc
-      | Least Popular
-    - elsif @sort == :visits && @direction == :desc
-      | Most Popular
-    - elsif @sort == :published_at && @direction == :asc
-      | Oldest
-    - else
-      | Newest
-    = ' '
-    span.caret
-  ul.dropdown-menu
-    - unless @sort == :published_at && @direction == :desc
-      li = link_to 'Newest', url_for(@params.merge(sort: 'published_at', direction: 'desc'))
-    - unless @sort == :published_at && @direction == :asc
-      li = link_to 'Oldest', url_for(@params.merge(sort: 'published_at', direction: 'asc'))
-    - unless @sort == :visits && @direction == :desc
-      li = link_to 'Most Popular', url_for(@params.merge(sort: 'visits', direction: 'desc'))
-    - unless @sort == :visits && @direction == :asc
-      li = link_to 'Least Popular', url_for(@params.merge(sort: 'visits', direction: 'asc'))
+header
+  .btn-group.pull-right
+    button.btn.btn-default.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+      - if @sort == :visits && @direction == :asc
+        | Least Popular
+      - elsif @sort == :visits && @direction == :desc
+        | Most Popular
+      - elsif @sort == :published_at && @direction == :asc
+        | Oldest
+      - else
+        | Newest
+      = ' '
+      span.caret
+    ul.dropdown-menu
+      - unless @sort == :published_at && @direction == :desc
+        li = link_to 'Newest', url_for(@params.merge(sort: 'published_at', direction: 'desc'))
+      - unless @sort == :published_at && @direction == :asc
+        li = link_to 'Oldest', url_for(@params.merge(sort: 'published_at', direction: 'asc'))
+      - unless @sort == :visits && @direction == :desc
+        li = link_to 'Most Popular', url_for(@params.merge(sort: 'visits', direction: 'desc'))
+      - unless @sort == :visits && @direction == :asc
+        li = link_to 'Least Popular', url_for(@params.merge(sort: 'visits', direction: 'asc'))
+
+  - if @sort == :visits && @direction == :asc
+    h1 Least Popular Links
+  - elsif @sort == :visits && @direction == :desc
+    h1 Most Popular Links
+  - elsif @sort == :published_at && @direction == :asc
+    h1 Oldest Links
+  - else
+    h1 Newest Links
 
 ol start=((params[:page] || '1').to_i * 25 - 24)
   = render partial: 'link', collection: @links, cached: true
