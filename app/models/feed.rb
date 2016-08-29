@@ -17,8 +17,14 @@ class Feed < ApplicationRecord
   end
 
   def fetch
-    count = feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
-    update(frequency: (count > 1) ? (frequency.to_f / count).ceil : (frequency * 2))
+    begin
+      count = feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
+      update(frequency: (count > 1) ? (frequency.to_f / count).ceil : (frequency * 2))
+    rescue Faraday::ConnectionFailed
+      update(frequency: frequency * 2)
+    rescue FaradayMiddleware::RedirectLimitReached
+      update(frequency: frequency * 2)
+    end
   end
 
   private
