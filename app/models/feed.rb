@@ -6,28 +6,26 @@ class Feed < ApplicationRecord
   validates :slug, :title, :url, presence: true
   validates :slug, :title, :url, uniqueness: true
 
+  after_create :start_fetching
   before_validation :set_title
 
   friendly_id :title, use: :slugged
 
-  def self.fetch_all
-    Feed.find_each do |feed|
-      FetchLinksJob.set(wait: feed.frequency.minutes).perform_later(feed.id)
-    end
-  end
-
   def fetch
     begin
-      count = feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
-      update(frequency: (count > 1) ? (frequency.to_f / count).ceil : (frequency * 2))
+      feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
     rescue Faraday::ConnectionFailed
-      update(frequency: frequency * 2)
+      0
     rescue FaradayMiddleware::RedirectLimitReached
-      update(frequency: frequency * 2)
+      0
     end
   end
 
   private
+
+  def start_fetching
+    FetchLinksJob.set(wait: 1.minute).perform_later(id, 1)
+  end
 
   def set_title
     self.title ||= feed.title
