@@ -18,6 +18,8 @@ class Feed < ApplicationRecord
       0
     rescue FaradayMiddleware::RedirectLimitReached
       0
+    rescue Feedjira::FetchFailure
+      0
     end
   end
 
