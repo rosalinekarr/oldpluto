@@ -91,4 +91,7 @@ Rails.application.configure do
 
   # Set default url host for devise emails
   config.action_mailer.default_url_options = { host: 'oldpluto.herokuapp.com' }
+
+  # Use lograge to reduce log verbosity
+  config.lograge.enabled = true
 end
