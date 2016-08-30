@@ -51,7 +51,8 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :readthis_store, {
-    expires_in: 2.weeks.to_i,
+    compress: true,
+    expires_in: 1.day.to_i,
     namespace: 'cache',
     redis: { url: ENV['REDIS_URL'] }
   }
