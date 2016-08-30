@@ -14,11 +14,32 @@
  *= require_self
  */
 
-@import "bootstrap-sprockets";
-@import "bootstrap";
+@import 'https://fonts.googleapis.com/css?family=Arvo';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+$font-family-serif:      'Arvo', serif;
+$font-family-sans-serif: 'Open Sans', sans-serif;
+$font-family-base:       $font-family-sans-serif;
+$headings-font-family:   $font-family-serif;
+$headings-font-weight:   normal;
+
+$brand-primary: #07020D;
+$text-color: #1E1E24;
+
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+body {
+  background-color: #FDFDFD;
+}
 
 main header {
   margin: 0 0 1em 0;
+  padding: 0 40px;
+}
+
+main ol {
+  padding: 0 40px;
 }
 
 main li {
