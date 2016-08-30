@@ -14,11 +14,7 @@ class Feed < ApplicationRecord
   def fetch
     begin
       feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
-    rescue Faraday::ConnectionFailed
-      0
-    rescue FaradayMiddleware::RedirectLimitReached
-      0
-    rescue Feedjira::FetchFailure
+    rescue
       0
     end
   end
