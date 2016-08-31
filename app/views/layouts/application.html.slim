@@ -2,7 +2,7 @@ doctype html
 html
   head
     meta name='viewport' content='width=device-width, initial-scale=1'
-    title Old Pluto
+    title Old Pluto#{content_for?(:title) ? " | #{yield(:title)}" : ''}
     meta name='msapplication-TileColor' content='#ffffff'
     meta name='msapplication-TileImage' content=asset_path('/ms-icon-144x144.png')
     meta name='theme-color' content='#ffffff'
@@ -54,6 +54,7 @@ html
             button.close type='button' data-dismiss='alert' aria-label='Close'
               span.glyphicon.glyphicon-remove
             = msg
+        h2 = yield :title
 
     main.container
       = yield
