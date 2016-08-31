@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  get '/:id', to: 'links#show', as: 'link'
+  resources :links, only: :show
 
   root to: 'links#index'
 end
