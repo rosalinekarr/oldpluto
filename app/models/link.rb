@@ -28,8 +28,10 @@ class Link < ApplicationRecord
   end
 
   def display_tags
-    # Get all tags that exist on other links as well
-    @display_tags ||= tags.where('taggings_count > 1').pluck(:name)
+    cache_key = "links/#{id}/display_tags"
+    @display_tags ||= Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      tags.where('taggings_count > 1').pluck(:name)
+    end
   end
 
   private

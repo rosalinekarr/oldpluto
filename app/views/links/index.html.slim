@@ -31,6 +31,6 @@ header
     h1 Links from #{@source.title} tagged ##{@tag.titleize}
 
 ol start=((params[:page] || '1').to_i * 25 - 24)
-  = render partial: 'link', collection: @links, cached: true
+  = render partial: 'link', collection: @links
 
 = paginate @links
