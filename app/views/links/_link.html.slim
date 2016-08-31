@@ -3,6 +3,8 @@ li
   .details
     = link_to link.feed_title, @params.merge(source: link.feed.slug)
     = ' | '
+    = link_to 'Comments', "https://www.reddit.com/submit?url=#{link.url}"
+    = ' | '
     time datetime=(l link.published_at) = l(link.published_at)
     = " | #{pluralize(link.visits, 'visit')}"
     - if link.display_tags.any?
