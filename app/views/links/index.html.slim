@@ -22,13 +22,13 @@ header
         li = link_to 'Least Popular', url_for(@params.merge(sort: 'visits', direction: 'asc'))
 
   - if @source.blank? && @tag.blank?
-    h1 All Links
+    h2 All Links
   - elsif @source.blank?
-    h1 Links tagged ##{@tag.titleize}
+    h2 Links tagged ##{@tag.titleize}
   - elsif @tag.blank?
-    h1 Links from #{@source.title}
+    h2 Links from #{@source.title}
   - else
-    h1 Links from #{@source.title} tagged ##{@tag.titleize}
+    h2 Links from #{@source.title} tagged ##{@tag.titleize}
 
 ol start=((params[:page] || '1').to_i * 25 - 24)
   = render partial: 'link', collection: @links
