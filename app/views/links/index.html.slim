@@ -1,14 +1,23 @@
-- if @source.blank? && @tag.blank?
-  - content_for(:title, 'All Links')
-- elsif @source.blank?
-  - content_for(:title, "Links tagged ##{@tag.titleize}")
-- elsif @tag.blank?
-  - content_for(:title, "Links from #{@source.title}")
-- else
+- if @source.present? && @tag.present?
   - content_for(:title, "Links from #{@source.title} tagged ##{@tag.titleize}")
+- elsif @source.present?
+  - content_for(:title, "Links from #{@source.title}")
+- elsif @tag.present?
+  - content_for(:title, "Links tagged ##{@tag.titleize}")
+- else
+  - content_for(:title, 'All Links')
 
-.options
-  .text-right
+.options.clearfix
+  - if @source.present?
+    = link_to @params.merge(source: nil), class: 'btn btn-primary remove-filter' do
+      = "#{@source.title} "
+      span.glyphicon.glyphicon-remove
+  - if @tag.present?
+    = link_to @params.merge(tag: nil), class: 'btn btn-primary remove-filter' do
+      = "##{@tag.titleize} "
+      span.glyphicon.glyphicon-remove
+
+  .pull-right
     span Sort by 
     .btn-group
       button.btn.btn-default.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
