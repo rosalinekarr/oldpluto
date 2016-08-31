@@ -3,7 +3,22 @@ li
   .details
     = link_to link.feed_title, @params.merge(source: link.feed.slug)
     = ' | '
-    = link_to 'Comments', "https://www.reddit.com/submit?url=#{link.url}"
+    .btn-group
+      button.btn.btn-default.btn-xs.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+        span.glyphicon.glyphicon-share
+        span.sr-only Share
+      ul.dropdown-menu
+        li = link_to 'Facebook', "https://www.facebook.com/sharer.php?u=#{u link.url}"
+        li = link_to 'Twitter', "https://twitter.com/intent/tweet?url=#{u link.url}"
+        li = link_to 'Google+', "https://plus.google.com/share?url=#{u link.url}"
+        li = link_to 'Reddit', "https://www.reddit.com/submit?url=#{u link.url}"
+        li = link_to 'Tumblr', "https://www.tumblr.com/widgets/share/tool?canonicalUrl=#{u link.url}"
+        li = link_to 'Pinterest', "https://pinterest.com/pin/create/bookmarklet/?url=#{u link.url}"
+        li = link_to 'LinkedIn', "https://www.linkedin.com/shareArticle?url=#{u link.url}"
+        li = link_to 'Buffer', "https://buffer.com/add?url=#{u link.url}"
+        li = link_to 'Digg', "http://digg.com/submit?url=#{u link.url}"
+        li = link_to 'StumbleUpon', "http://www.stumbleupon.com/submit?url=#{u link.url}"
+        li = link_to 'Delicious', "https://delicious.com/save?v=5&url=#{u link.url}"
     = ' | '
     time datetime=(l link.published_at) = l(link.published_at)
     = " | #{pluralize(link.visits, 'visit')}"
