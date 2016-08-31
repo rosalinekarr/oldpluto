@@ -37,6 +37,8 @@ class Link < ApplicationRecord
   private
 
   def sanitized_title
+    # Remove html tags
+    self.title = ActionController::Base.helpers.strip_tags(title)
     # Convert html entities to unicode
     self.title = HTMLEntities.new.decode(title)
   end
