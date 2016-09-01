@@ -2,9 +2,9 @@ li
   = link_to link.title, link_path(link), class: 'link'
   .details
     = link_to link.feed_title, @params.merge(source: link.feed.slug)
-    = ' | '
+    = ' |'
     .btn-group
-      button.btn.btn-default.btn-xs.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+      button.btn.btn-link.btn-xs.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
         span.glyphicon.glyphicon-share
         span.sr-only Share
       ul.dropdown-menu
@@ -19,7 +19,7 @@ li
         li = link_to 'Digg', link_share_path(link, 'digg')
         li = link_to 'StumbleUpon', link_share_path(link, 'stumbleupon')
         li = link_to 'Delicious', link_share_path(link, 'delicious')
-    = ' | '
+    = '| '
     time datetime=(l link.published_at) = l(link.published_at)
     = " | #{pluralize(link.visits, 'visit')}"
     - if link.display_tags.any?
