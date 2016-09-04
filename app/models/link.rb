@@ -23,7 +23,7 @@ class Link < ApplicationRecord
     Link.create(title:        entry.title,
                 url:          entry.url,
                 body:         entry.content || entry.summary || entry.title,
-                published_at: entry.published || DateTime.now,
+                published_at: [entry.published, DateTime.now].compact.min,
                 feed:         feed)
   end
 
