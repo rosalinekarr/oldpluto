@@ -7,7 +7,12 @@ class LinksController < ApplicationController
     @links = @links.where(feed: source) if source.present?
 
     @params = params.permit(:direction, :source, :sort, :tag)
-    @links = @links.order({ sort => sort_direction }).page page
+    if sort.present?
+      @links = @links.order({ sort => sort_direction })
+    else
+      @links = @links.order('visits / extract (\'epoch\' from (current_timestamp - published_at)) DESC, published_at DESC')
+    end
+    @links = @links.page page
   end
 
   def show
@@ -61,10 +66,10 @@ class LinksController < ApplicationController
   end
 
   def sort
-    @sort ||= params[:sort].try(:to_sym) || :published_at
+    @sort ||= params[:sort]
   end
 
   def sort_direction
-    @direction ||= params[:direction].try(:to_sym) || :desc
+    @direction ||= params[:direction] || 'desc'
   end
 end
