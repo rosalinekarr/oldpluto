@@ -25,6 +25,11 @@ gem 'simple_form'
 gem 'slim'
 gem 'uglifier', '>= 1.3.0'
 
+group :test do
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
+end
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'factory_girl_rails'
