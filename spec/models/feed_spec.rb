@@ -30,6 +30,10 @@ RSpec.describe Feed, type: :model do
     expect(feed.title).to eq feed_title
   end
 
+  it 'creates a FetchLinksJob after create' do
+    expect{ create :feed }.to change{ Delayed::Job.count }.by(1)
+  end
+
   describe '#fetch' do
     let(:feed) { create :feed }
 
