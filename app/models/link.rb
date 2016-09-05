@@ -30,7 +30,11 @@ class Link < ApplicationRecord
   def display_tags
     cache_key = "links/#{id}/display_tags"
     @display_tags ||= Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      tags.where('taggings_count > 1').order(:taggings_count).limit(5).pluck(:name)
+      tags.select { |t|
+        t.taggings_count > 1
+      }.sort{ |t|
+        t.taggings_count
+      }.first(5).collect(&:name)
     end
   end
 

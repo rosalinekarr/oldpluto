@@ -1,7 +1,7 @@
 class LinksController < ApplicationController
   def index
     authenticate_user! if page != 1
-    @links = Link.includes(:feed)
+    @links = Link.includes(:feed, :tags)
 
     @links = @links.tagged_with(tag)    if tag.present?
     @links = @links.where(feed: source) if source.present?
