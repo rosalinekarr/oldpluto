@@ -12,7 +12,16 @@ class Feed < ApplicationRecord
   friendly_id :title, use: :slugged
 
   def fetch
-    feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
+    old_count = links.count
+    feed.entries.each do |entry|
+      link = Link.find_or_initialize_by(url: entry.url)
+      link.feed = self
+      link.title = entry.title
+      link.body = entry.content || entry.summary || entry.title
+      link.published_at ||= [entry.published, DateTime.now].compact.min
+      link.save
+    end
+    links.reload.count - old_count
   end
 
   private

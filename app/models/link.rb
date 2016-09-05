@@ -16,17 +16,6 @@ class Link < ApplicationRecord
   before_validation :sanitized_body
   after_create :extract_tags
 
-  default_scope { includes(:feed) }
-
-  def self.from_entry(entry, feed)
-    return if Link.where(url: entry.url).any?
-    Link.create(title:        entry.title,
-                url:          entry.url,
-                body:         entry.content || entry.summary || entry.title,
-                published_at: [entry.published, DateTime.now].compact.min,
-                feed:         feed)
-  end
-
   def display_tags
     cache_key = "links/#{id}/display_tags"
     @display_tags ||= Rails.cache.fetch(cache_key, expires_in: 1.hour) do
