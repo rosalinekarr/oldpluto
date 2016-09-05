@@ -12,11 +12,7 @@ class Feed < ApplicationRecord
   friendly_id :title, use: :slugged
 
   def fetch
-    begin
-      feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
-    rescue
-      0
-    end
+    feed.entries.map{ |entry| Link.from_entry(entry, self) }.compact.count
   end
 
   private
