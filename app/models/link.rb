@@ -17,14 +17,11 @@ class Link < ApplicationRecord
   after_create :extract_tags
 
   def display_tags
-    cache_key = "links/#{id}/display_tags"
-    @display_tags ||= Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      tags.select { |t|
-        t.taggings_count > 1
-      }.sort{ |t|
-        t.taggings_count
-      }.first(5).collect(&:name)
-    end
+    tags.select { |t|
+      t.taggings_count > 1
+    }.sort{ |t|
+      t.taggings_count
+    }.first(5).collect(&:name)
   end
 
   private
