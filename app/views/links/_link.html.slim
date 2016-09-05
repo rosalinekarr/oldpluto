@@ -1,7 +1,7 @@
 li
   = link_to link.title, link_path(link), class: 'link'
   .details
-    = link_to link.feed_title, @params.merge(source: link.feed.slug)
+    = link_to link.feed_title, params.merge(source: link.feed.slug).permit!
     = ' |'
     .btn-group
       button.btn.btn-link.btn-xs.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
@@ -26,4 +26,4 @@ li
       = ' |'
       - link.display_tags.each do |tag|
         = ' '
-        = link_to "##{tag.titleize}", @params.merge(tag: tag)
+        = link_to "##{tag.titleize}", params.merge(tag: tag).permit!

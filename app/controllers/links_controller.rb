@@ -5,7 +5,6 @@ class LinksController < ApplicationController
     @links = @links.tagged_with(tag)    if tag.present?
     @links = @links.where(feed: source) if source.present?
 
-    @params = params.permit(:direction, :source, :sort, :tag)
     if sort.present?
       @links = @links.order({ sort => sort_direction })
     else

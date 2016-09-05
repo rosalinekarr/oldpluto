@@ -9,11 +9,11 @@
 
 .options.clearfix
   - if @source.present?
-    = link_to @params.merge(source: nil), class: 'btn btn-primary remove-filter' do
+    = link_to params.merge(source: nil).permit!, class: 'btn btn-primary remove-filter' do
       = "#{@source.title} "
       span.glyphicon.glyphicon-remove
   - if @tag.present?
-    = link_to @params.merge(tag: nil), class: 'btn btn-primary remove-filter' do
+    = link_to params.merge(tag: nil).permit!, class: 'btn btn-primary remove-filter' do
       = "##{@tag.titleize} "
       span.glyphicon.glyphicon-remove
 
@@ -35,15 +35,15 @@
         span.caret
       ul.dropdown-menu
         - unless @sort.nil?
-          li = link_to 'Rising', url_for(@params.merge(sort: nil, direction: nil))
+          li = link_to 'Rising', url_for(params.merge(sort: nil, direction: nil).permit!)
         - unless @sort == 'published_at' && @direction == 'desc'
-          li = link_to 'Newest', url_for(@params.merge(sort: 'published_at', direction: 'desc'))
+          li = link_to 'Newest', url_for(params.merge(sort: 'published_at', direction: 'desc').permit!)
         - unless @sort == 'published_at' && @direction == 'asc'
-          li = link_to 'Oldest', url_for(@params.merge(sort: 'published_at', direction: 'asc'))
+          li = link_to 'Oldest', url_for(params.merge(sort: 'published_at', direction: 'asc').permit!)
         - unless @sort == 'visits' && @direction == 'desc'
-          li = link_to 'Most Popular', url_for(@params.merge(sort: 'visits', direction: 'desc'))
+          li = link_to 'Most Popular', url_for(params.merge(sort: 'visits', direction: 'desc').permit!)
         - unless @sort == 'visits' && @direction == 'asc'
-          li = link_to 'Least Popular', url_for(@params.merge(sort: 'visits', direction: 'asc'))
+          li = link_to 'Least Popular', url_for(params.merge(sort: 'visits', direction: 'asc').permit!)
 
 ol start=((params[:page] || '1').to_i * 25 - 24)
   = render partial: 'link', collection: @links
