@@ -8,9 +8,9 @@
     = link_to params.merge(source: nil).permit!, class: 'btn btn-default remove-filter' do
       span.glyphicon.glyphicon-arrow-left
       = ' Home'
-  - if @tag.present?
-    = link_to params.merge(tag: nil).permit!, class: 'btn btn-default remove-filter' do
-      = "##{@tag.titleize} "
+  - @tags.each do |tag|
+    = link_to params.merge(tags: (@tags - [tag])).permit!, class: 'btn btn-default remove-filter' do
+      = "##{tag.titleize} "
       span.glyphicon.glyphicon-remove
 
   .pull-right

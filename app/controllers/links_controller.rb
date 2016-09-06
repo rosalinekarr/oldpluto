@@ -2,7 +2,7 @@ class LinksController < ApplicationController
   def index
     @links = Link.includes(:feed, :tags)
 
-    @links = @links.tagged_with(tag)    if tag.present?
+    @links = @links.tagged_with(tags)   if tags.any?
     @links = @links.where(feed: source) if source.present?
 
     @links = @links.order(sort)
@@ -47,8 +47,8 @@ class LinksController < ApplicationController
 
   private
 
-  def tag
-    @tag ||= params[:tag]
+  def tags
+    @tags ||= params[:tags] || []
   end
 
   def source

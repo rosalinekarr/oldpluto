@@ -26,4 +26,4 @@ li
       = ' |'
       - link.display_tags.each do |tag|
         = ' '
-        = link_to "##{tag.titleize}", params.merge(tag: tag).permit!
+        = link_to "##{tag.titleize}", params.merge(tags: (@tags + [tag])).permit!
