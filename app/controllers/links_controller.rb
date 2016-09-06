@@ -5,11 +5,7 @@ class LinksController < ApplicationController
     @links = @links.tagged_with(tag)    if tag.present?
     @links = @links.where(feed: source) if source.present?
 
-    if sort.present?
-      @links = @links.order({ sort => sort_direction })
-    else
-      @links = @links.order('visits / extract (\'epoch\' from (current_timestamp - published_at)) DESC, published_at DESC')
-    end
+    @links = @links.order(sort)
     @links = @links.page page
   end
 
@@ -64,10 +60,12 @@ class LinksController < ApplicationController
   end
 
   def sort
-    @sort ||= params[:sort]
-  end
-
-  def sort_direction
-    @direction ||= params[:direction] || 'desc'
+    @sort ||= begin
+      if Link::VALID_SORTS.include?(params[:sort])
+        params[:sort]
+      else
+        Link::DEFAULT_SORT
+      end
+    end
   end
 end

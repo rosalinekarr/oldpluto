@@ -1,6 +1,8 @@
 require 'htmlentities'
 
 class Link < ApplicationRecord
+  VALID_SORTS = %w( published_at\ desc published_at\ asc visits\ desc visits\ asc )
+  DEFAULT_SORT = 'visits / extract (\'epoch\' from (current_timestamp - published_at)) desc, published_at desc'
   BLACKLISTED_TAGS = YAML.load_file(Rails.root.join('config', 'tags', 'blacklist.yml'))
 
   acts_as_taggable
