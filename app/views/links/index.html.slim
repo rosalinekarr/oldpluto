@@ -1,19 +1,15 @@
-- if @source.present? && @tag.present?
-  - content_for(:title, "Links from #{@source.title} tagged ##{@tag.titleize}")
-- elsif @source.present?
-  - content_for(:title, "Links from #{@source.title}")
-- elsif @tag.present?
-  - content_for(:title, "Links tagged ##{@tag.titleize}")
+- if @source.present?
+  - content_for(:title, "#{@source.title}")
 - else
-  - content_for(:title, 'All Links')
+  - content_for(:title, 'Home')
 
 .options.clearfix
   - if @source.present?
-    = link_to params.merge(source: nil).permit!, class: 'btn btn-primary remove-filter' do
-      = "#{@source.title} "
-      span.glyphicon.glyphicon-remove
+    = link_to params.merge(source: nil).permit!, class: 'btn btn-default remove-filter' do
+      span.glyphicon.glyphicon-arrow-left
+      = ' Home'
   - if @tag.present?
-    = link_to params.merge(tag: nil).permit!, class: 'btn btn-primary remove-filter' do
+    = link_to params.merge(tag: nil).permit!, class: 'btn btn-default remove-filter' do
       = "##{@tag.titleize} "
       span.glyphicon.glyphicon-remove
 
