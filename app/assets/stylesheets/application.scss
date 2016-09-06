@@ -24,7 +24,7 @@ $headings-font-family:   $font-family-serif;
 $headings-font-weight:   normal;
 
 $brand-primary: #07020D;
-$text-color: #1E1E24;
+$text-color: #ACADBC;
 
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
@@ -40,6 +40,11 @@ body {
 .details {
   margin: 0 0 1em 0;
   font-size: 0.8em;
+  color: $text-color;
+
+  a {
+    color: $text-color;
+  }
 }
 
 .options {
