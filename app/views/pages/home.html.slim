@@ -1,0 +1,124 @@
+.jumbotron
+  h2#what What is Old Pluto?
+  p
+    | Old Pluto is a news search engine. It is a tool for finding online news that
+      you want to read. It is not a social network, forum or media company.
+    = ' It will not '
+    = link_to 'https://motherboard.vice.com/read/facebooks-filter-bubble', target: '_blank', rel: 'noopener' do
+      | insulate you from reality within a bubble of your own opinions
+    = '. It will not '
+    = link_to 'https://www.cjr.org/analysis/censorship_in_the_social_media_age.php', target: '_blank', rel: 'noopener' do
+      | censor opinions just because they are unpopular
+    = '. It will not '
+    = link_to 'https://www.thenation.com/article/selling-out-sponsored-content/', target: '_blank', rel: 'noopener' do
+      | serve you paid opinions disguised as the truth
+    = '. '
+    | Old Pluto, like all good tools, does only what you ask it to do, so it is
+      what you make of it.
+  = link_to 'Start Searching', links_path, class: 'btn btn-primary'
+
+h2#philosophy Philosophy
+
+blockquote
+  p “There is only one good, knowledge, and one evil, ignorance.”
+  cite - Socrates
+
+p
+  = 'All news aggregation services have a fundamental problem: '
+  = link_to 'there\'s too much news', 'https://en.wikipedia.org/wiki/Information_overload', target: '_blank', rel: 'noopener'
+  | . In the age of the internet, nearly all of the world's news is
+    available to nearly all of the world nearly all of the time. Like a needle
+    in a haystack,
+  = ' '
+  = link_to 'knowledge becomes subsumed in a sea of information', 'https://adactio.com/articles/10887#aisforarchive', target: '_blank', rel: 'noopener'
+  | . To solve this problem, information needs to be filtered, and each news
+    source has its own method for 'filtering' the news.
+
+p
+  | Facebook relies on secret, proprietary algorithms that more often than not
+    boil down to
+  = ' '
+  = link_to 'paid promotion', 'https://www.youtube.com/watch?v=l9ZqXlHl65g', target: '_blank', rel: 'noopener'
+  = ' and '
+  = link_to 'human judgement', 'http://www.nytimes.com/2016/05/12/technology/facebooks-bias-is-built-in-and-bears-watching.html', target: '_blank', rel: 'noopener'
+  = '. Twitter uses followings and hashtags, but these methods often '
+  = link_to 'reinforces personal bias', 'https://www.theguardian.com/technology/2012/aug/22/twitter-online-echo-chanber-leftwing', target: '_blank', rel: 'noopener'
+  = ' and, like Facebook, are also vulnerable to '
+  = link_to 'corruption through advertising', 'https://medium.com/factor-daily/infibeam-ipo-why-twitter-s-dirty-secret-paid-tweets-is-not-funny-anymore-5d7d5af92d71', target: '_blank', rel: 'noopener'
+  | . Reddit and many forums use democracy in the form of up and down votes to
+    hold back the forces of money from influencing their conversations, but they
+    still suffer from the
+  = ' '
+  = link_to 'bias of groupthink', 'http://www.wolfsheadonline.com/deconstructing-the-groupthink-of-the-reddit-echo-chamber/', target: '_blank', rel: 'noopener'
+  = ' '
+  | and despite their efforts to stave it off, corruption still finds a way in
+    through
+  = ' '
+  = link_to 'hierarchies of admins and moderators', 'https://www.reddit.com/r/subredditcancer/', target: '_blank', rel: 'noopener'
+  | .
+
+p
+  | Old Pluto differs from all these other sites in that doesn't filter anything
+    at all. Rather, Old Pluto gives you the tools to filter the news for
+    yourself. Presently, you can filter by tags, sources and publication time,
+    but I plan add to add text searching, filtering by author, and eventually,
+    filtering by political leaning and article tone. All information filtering
+    is in
+  = ' '
+  em your
+  = ' '
+  | hands, not advertisers, not moderators, not algorithms, not AI and not the
+    mob.
+  = ' '
+  strong You decide what information is important.
+
+h2#warnings Warnings
+
+p
+  | In the interest of being open and transparent with all users, I want to
+    share a few warnings regarding the state of and future plans for Old Pluto:
+
+h3#beta Old Pluto is in Beta
+p
+  | I’m a programmer and a news junkie, so I started Old Pluto initially as a
+    fun side-project that I could use to keep updated on breaking stories. As I
+    used it, I added features when I found a need for them and built those
+    features how I believe made the most sense. While I like to think that these
+    decisions were perfect, I am unfortunately human, and it's likely that many
+    of my choices were wrong. Now, I plan to share this project with the world,
+    and as I receive feedback on it, I will likely be making many changes for a
+    long time to come.
+  = ' '
+  strong Do not expect any features or aspects of this website to remain
+         unchanged. Nothing is written in stone.
+
+h3#payment Old Pluto May Require Payment
+p
+  | Eventually, I would also like to monetize Old Pluto to help with the cost of
+    running its servers. For now, while the project is still changing rapidly, I
+    plan to keep it free for all to use, but soon, I may begin asking for
+    donations to keep the site running. While I will do my best to keep this
+    project running on donations alone, someday,
+  = ' '
+  strong I may require a paid subscription to use this service. Do not expect
+         this site to remain free forever.
+  = ' '
+  | If and when I do implement a paid subscription, I will provide as
+    much notice as possible to users and I will always keep some limited content
+    available for free.
+
+h3#trust Not All Sources are Trustworthy
+p
+  | As part of the philosophy of this project, no news sources will be filtered,
+    even the untrustworthy ones. I believe a plurality of voices benefits
+    discussion and understanding by 1) forcing us to question and reevaluate our
+    beliefs until we understand
+  = ' '
+  em why they are right
+  = ' not just '
+  em that they are right
+  = ' '
+  | and 2) showing us how propaganda works and where it lives so we can
+    recognize and evaluate it for what it is.
+  strong It is up to you as a user to reason critically and evaluate articles
+         for yourself. This is not a safe space.

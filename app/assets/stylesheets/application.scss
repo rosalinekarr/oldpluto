@@ -23,8 +23,8 @@ $font-family-base:       $font-family-sans-serif;
 $headings-font-family:   $font-family-serif;
 $headings-font-weight:   normal;
 
-$brand-primary: #07020D;
-$text-color: #ACADBC;
+$brand-primary: #ADABAB;
+$text-color: #07020D;
 
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
@@ -33,18 +33,18 @@ body {
   background-color: #FDFDFD;
 }
 
+.links {
+  color: $brand-primary;
+}
+
 .link {
   font-size: 1.2em;
+  color: $text-color;
 }
 
 .details {
   margin: 0 0 1em 0;
   font-size: 0.8em;
-  color: $text-color;
-
-  a {
-    color: $text-color;
-  }
 }
 
 .options {

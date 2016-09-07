@@ -1,7 +1,7 @@
 - if @source.present?
   - content_for(:title, "#{@source.title}")
 - else
-  - content_for(:title, 'Home')
+  - content_for(:title, 'All Sources')
 
 .options.clearfix
   - if @source.present?
@@ -16,7 +16,7 @@
   .pull-right
     = render 'sort'
 
-ol start=((params[:page] || '1').to_i * 25 - 24)
+ol.links start=((params[:page] || '1').to_i * 25 - 24)
   = render partial: 'link', collection: @links
 
 .text-center
