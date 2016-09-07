@@ -13,7 +13,7 @@ span = 'Sort by '
       | Rising
     = ' '
     span.caret
-  ul.dropdown-menu
+  ul.dropdown-menu.dropdown-menu-right
     - unless params[:sort].nil?
       li = link_to 'Rising', url_for(params.merge(sort: nil).permit!)
     - unless @sort == 'published_at desc'
