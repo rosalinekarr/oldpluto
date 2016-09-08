@@ -36,7 +36,7 @@ html
           .navbar-header
             button.navbar-toggle.collapsed data-toggle='collapse' data-target='#navigation' aria-expanded='false'
               span.sr-only Toggle navigation
-              span.glyphicon.glyphicon-menu-hamburger aria-hidden='true'
+              span ☰
             = link_to 'Old Pluto', root_path, class: 'navbar-brand'
           #navigation.collapse.navbar-collapse
             ul.nav.navbar-nav.navbar-right
@@ -51,8 +51,7 @@ html
           - next if msg.blank?
           - name = name.gsub(/^alert$/, 'danger').gsub(/^notice$/, 'info')
           .alert.alert-dismissible class=("alert-#{name}") role='alert'
-            button.close type='button' data-dismiss='alert' aria-label='Close'
-              span.glyphicon.glyphicon-remove
+            button.close type='button' data-dismiss='alert' aria-label='Close' ×
             = msg
         h2 = yield :title
 

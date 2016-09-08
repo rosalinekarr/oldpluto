@@ -33,6 +33,10 @@ body {
   background-color: #FDFDFD;
 }
 
+.btn:hover {
+  text-decoration: none;
+}
+
 .links {
   color: $brand-primary;
 }

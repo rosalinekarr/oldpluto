@@ -6,12 +6,10 @@
 .options.clearfix
   - if @source.present?
     = link_to params.merge(source: nil).permit!, class: 'btn btn-default remove-filter' do
-      span.glyphicon.glyphicon-arrow-left
-      = ' Home'
+      | ← Home
   - @tags.each do |tag|
     = link_to params.merge(tags: (@tags - [tag])).permit!, class: 'btn btn-default remove-filter' do
-      = "##{tag.titleize} "
-      span.glyphicon.glyphicon-remove
+      = "##{tag.titleize} ×"
 
   .pull-right
     = render 'sort'

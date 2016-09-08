@@ -5,8 +5,7 @@ li
     = ' |'
     .btn-group
       button.btn.btn-link.btn-xs.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
-        span.glyphicon.glyphicon-share
-        span.sr-only Share
+        | ⎋
       ul.dropdown-menu
         li = link_to 'Facebook', link_share_path(link, 'facebook')
         li = link_to 'Twitter', link_share_path(link, 'twitter')
