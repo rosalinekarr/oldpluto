@@ -3,21 +3,7 @@ li
   .details
     = link_to link.feed_title, params.merge(source: link.feed.slug).permit!
     = ' |'
-    .btn-group
-      button.btn.btn-link.btn-xs.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
-        | ⎋
-      ul.dropdown-menu
-        li = link_to 'Facebook', link_share_path(link, 'facebook')
-        li = link_to 'Twitter', link_share_path(link, 'twitter')
-        li = link_to 'Google+', link_share_path(link, 'google')
-        li = link_to 'Reddit', link_share_path(link, 'reddit')
-        li = link_to 'Tumblr', link_share_path(link, 'tumblr')
-        li = link_to 'Pinterest', link_share_path(link, 'pinterest')
-        li = link_to 'LinkedIn', link_share_path(link, 'linkedin')
-        li = link_to 'Buffer', link_share_path(link, 'buffer')
-        li = link_to 'Digg', link_share_path(link, 'digg')
-        li = link_to 'StumbleUpon', link_share_path(link, 'stumbleupon')
-        li = link_to 'Delicious', link_share_path(link, 'delicious')
+    = render partial: 'share', locals: { link: link }
     = '| '
     = time_tag link.published_at, "#{time_ago_in_words(link.published_at)} ago"
     = " | #{pluralize(link.visits, 'visit')}"
