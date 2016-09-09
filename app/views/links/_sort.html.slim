@@ -10,12 +10,12 @@ span = 'Sort by '
     - elsif @sort == 'visits asc'
       | Least Popular
     - else
-      | Rising
+      | Votes per Hour
     = ' '
     span.caret
   ul.dropdown-menu.dropdown-menu-right
     - unless params[:sort].nil?
-      li = link_to 'Rising', url_for(params.merge(sort: nil).permit!)
+      li = link_to 'Votes per Hour', url_for(params.merge(sort: nil).permit!)
     - unless @sort == 'published_at desc'
       li = link_to 'Newest', url_for(params.merge(sort: 'published_at desc').permit!)
     - unless @sort == 'published_at asc'
