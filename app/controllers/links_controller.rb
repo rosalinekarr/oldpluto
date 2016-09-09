@@ -11,13 +11,13 @@ class LinksController < ApplicationController
 
   def show
     @link = Link.find(params[:id])
-    @link.update(visits: @link.visits + 1)
+    @link.increment!(:visits)
     redirect_to @link.url
   end
 
   def share
     @link = Link.find(params[:link_id])
-    @link.update(shares: @link.shares + 1)
+    @link.increment!(:shares)
     if params[:network] == 'facebook'
       redirect_to "https://www.facebook.com/sharer.php?u=#{ERB::Util.url_encode @link.url}"
     elsif params[:network] == 'twitter'
