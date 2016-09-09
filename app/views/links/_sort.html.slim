@@ -9,6 +9,10 @@ span = 'Sort by '
       | Most Visited
     - elsif @sort == 'visits asc'
       | Least Visited
+    - elsif @sort == 'shares desc'
+      | Most Shared
+    - elsif @sort == 'shares asc'
+      | Least Shared
     - else
       | Visits per Hour
     = ' '
@@ -24,3 +28,7 @@ span = 'Sort by '
       li = link_to 'Most Visited', url_for(params.merge(sort: 'visits desc').permit!)
     - unless @sort == 'visits asc'
       li = link_to 'Least Visited', url_for(params.merge(sort: 'visits asc').permit!)
+    - unless @sort == 'shares desc'
+      li = link_to 'Most Shared', url_for(params.merge(sort: 'shares desc').permit!)
+    - unless @sort == 'shares asc'
+      li = link_to 'Least Shared', url_for(params.merge(sort: 'shares asc').permit!)
