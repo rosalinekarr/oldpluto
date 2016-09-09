@@ -2,9 +2,9 @@ li
   = link_to link.title, link_path(link), class: 'link'
   .details
     = link_to link.feed_title, params.merge(source: link.feed.slug).permit!
-    = ' |'
+    = ' | '
     = render partial: 'share', locals: { link: link }
-    = '| '
+    = ' | '
     = time_tag link.published_at, "#{time_ago_in_words(link.published_at)} ago"
     = " | #{pluralize(link.visits, 'visit')}"
     - if link.display_tags.any?
