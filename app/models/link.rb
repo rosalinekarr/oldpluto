@@ -20,11 +20,7 @@ class Link < ApplicationRecord
 
   def display_tags
     @_display_tags ||= Rails.cache.fetch("links/#{id}/display_tags", expires_in: 30.minutes) do
-      tags.select { |t|
-        t.taggings_count > 1
-      }.sort{ |t|
-        t.taggings_count
-      }.first(5).collect(&:name)
+      tags.sort{ |tag| -tag.taggings_count }.first(5).collect(&:name)
     end
   end
 

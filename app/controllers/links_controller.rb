@@ -1,6 +1,8 @@
 class LinksController < ApplicationController
   def index
     @links = Link.includes(:feed, :tags)
+                 .where('tags.taggings_count > 1')
+                 .references(:tags)
 
     @links = @links.tagged_with(tags)   if tags.any?
     @links = @links.where(feed: source) if source.present?
