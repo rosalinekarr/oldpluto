@@ -1,14 +1,14 @@
 class LinksController < ApplicationController
   def index
-    @links = Link.includes(:feed, :tags)
-                 .where('tags.taggings_count > 1')
-                 .references(:tags)
+    query = Link.includes(:feed, :tags)
+                .where('tags.taggings_count > 1')
+                .references(:tags)
 
-    @links = @links.tagged_with(tags)   if tags.any?
-    @links = @links.where(feed: source) if source.present?
+    query = query.tagged_with(tags)   if tags.any?
+    query = query.where(feed: source) if source.present?
 
-    @links = @links.order(sort)
-    @links = @links.page page
+    query = query.order(sort)
+    @links = query.page page
   end
 
   def show
