@@ -5,6 +5,10 @@ span = 'Sort by '
       | Newest
     - elsif @sort == 'published_at asc'
       | Oldest
+    - elsif @sort == 'visits + shares desc'
+      | Most Popular
+    - elsif @sort == 'visits + shares asc'
+      | Least Popular
     - elsif @sort == 'visits desc'
       | Most Visited
     - elsif @sort == 'visits asc'
@@ -24,6 +28,10 @@ span = 'Sort by '
       li = link_to 'Newest', url_for(params.merge(sort: 'published_at desc').permit!)
     - unless @sort == 'published_at asc'
       li = link_to 'Oldest', url_for(params.merge(sort: 'published_at asc').permit!)
+    - unless @sort == 'visits + shares desc'
+      li = link_to 'Most Popular', url_for(params.merge(sort: 'visits + shares desc').permit!)
+    - unless @sort == 'visits + shares asc'
+      li = link_to 'Least Popular', url_for(params.merge(sort: 'visits + shares asc').permit!)
     - unless @sort == 'visits desc'
       li = link_to 'Most Visited', url_for(params.merge(sort: 'visits desc').permit!)
     - unless @sort == 'visits asc'
