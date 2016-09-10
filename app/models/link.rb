@@ -19,9 +19,7 @@ class Link < ApplicationRecord
   after_create :extract_tags
 
   def display_tags
-    @_display_tags ||= Rails.cache.fetch("links/#{id}/display_tags", expires_in: 30.minutes) do
-      tags.sort{ |tag| -tag.taggings_count }.first(5).collect(&:name)
-    end
+    tags.sort{ |tag| -tag.taggings_count }.first(5).collect(&:name)
   end
 
   private
