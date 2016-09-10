@@ -63,10 +63,12 @@ class LinksController < ApplicationController
 
   def sort
     @sort ||= begin
-      if Link::VALID_SORTS.include?(params[:sort])
-        params[:sort]
+      if params[:sort] == 'popular'
+        'shares + visits desc'
+      elsif params[:sort] == 'newest'
+        'published_at desc'
       else
-        Link::DEFAULT_SORT
+        'shares + visits / extract (\'epoch\' from (current_timestamp - published_at)) desc, published_at desc'
       end
     end
   end
