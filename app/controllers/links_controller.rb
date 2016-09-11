@@ -4,6 +4,7 @@ class LinksController < ApplicationController
                 .where('tags.taggings_count > 1')
                 .references(:tags)
 
+    query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
     query = query.tagged_with(tags)   if tags.any?
     query = query.where(feed: source) if source.present?
 
@@ -48,6 +49,10 @@ class LinksController < ApplicationController
   end
 
   private
+
+  def q
+    @q ||= params[:q].present? ? "%#{params[:q]}%" : nil
+  end
 
   def tags
     @tags ||= params[:tags] || []
