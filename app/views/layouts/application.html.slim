@@ -38,11 +38,11 @@ html
               span.sr-only Toggle navigation
               span ☰
             = link_to 'Old Pluto', root_path, class: 'navbar-brand'
-          = form_tag links_path, method: :get, class: 'navbar-form navbar-left' do
-            .form-group
-              = text_field_tag 'q', params[:q], placeholder: 'Search...', class: 'form-control'
-            = submit_tag 'Search', class: 'btn btn-default'
           #navigation.collapse.navbar-collapse
+            = form_tag links_path, method: :get, class: 'navbar-form navbar-left' do
+              .form-group
+                = text_field_tag 'q', params[:q], placeholder: 'Search...', class: 'form-control'
+              = submit_tag 'Search', class: 'btn btn-default'
             ul.nav.navbar-nav.navbar-right
               - if user_signed_in?
                 li = link_to 'Sign out', destroy_user_session_path, method: :delete
