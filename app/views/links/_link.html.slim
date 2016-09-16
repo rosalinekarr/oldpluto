@@ -1,6 +1,6 @@
 - cache [link, @q, @sort, @page, @source, @tags] do
   li
-    = link_to link.title, link_path(link), class: 'link'
+    = link_to link.title, link_path(link), class: 'link', rel: 'nofollow'
     .details
       = link_to link.feed_title, params.merge(source: link.feed.slug).permit!
       = ' | '
