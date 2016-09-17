@@ -10,6 +10,7 @@ class LinksController < ApplicationController
 
     query = query.order(sort)
     @links = query.page page
+    Link.where(id: @links.pluck(:id)).update_all('views = views + 1')
   end
 
   def show
