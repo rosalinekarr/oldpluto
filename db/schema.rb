@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160917135459) do
+ActiveRecord::Schema.define(version: 20160918052153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,8 +53,12 @@ ActiveRecord::Schema.define(version: 20160917135459) do
     t.integer  "shares",       default: 0, null: false
     t.integer  "views",        default: 0, null: false
     t.index ["feed_id"], name: "index_links_on_feed_id", using: :btree
+    t.index ["published_at"], name: "index_links_on_published_at", using: :btree
+    t.index ["shares"], name: "index_links_on_shares", using: :btree
     t.index ["title"], name: "index_links_on_title", unique: true, using: :btree
     t.index ["url"], name: "index_links_on_url", unique: true, using: :btree
+    t.index ["views"], name: "index_links_on_views", using: :btree
+    t.index ["visits"], name: "index_links_on_visits", using: :btree
   end
 
   create_table "taggings", force: :cascade do |t|

@@ -76,7 +76,7 @@ class LinksController < ApplicationController
       elsif params[:sort] == 'newest'
         'published_at desc'
       else
-        '(shares + visits) / ((views + 1) * extract (\'epoch\' from (current_timestamp - published_at))) desc'
+        '(shares + visits) / (views + 1) desc, published_at desc'
       end
     end
   end
