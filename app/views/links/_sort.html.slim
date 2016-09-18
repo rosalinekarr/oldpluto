@@ -8,7 +8,7 @@ span = 'Sort by '
     - elsif params[:sort] == 'rising'
       | Rising
     - else
-      | Hot
+      | Recommended
     = ' '
     span.caret
   ul.dropdown-menu.dropdown-menu-right
@@ -19,4 +19,4 @@ span = 'Sort by '
     - unless params[:sort] == 'rising'
       li = link_to 'Rising', url_for(params.merge(sort: 'rising').permit!)
     - unless params[:sort].nil?
-      li = link_to 'Hot', url_for(params.merge(sort: nil).permit!)
+      li = link_to 'Recommended', url_for(params.merge(sort: nil).permit!)
