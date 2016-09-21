@@ -5,6 +5,5 @@ Rails.application.routes.draw do
     get '/share/:network', to: 'links#share', as: 'share'
   end
 
-  #root to: 'pages#home'
-  root to: 'links#index'
+  root to: 'pages#home'
 end
