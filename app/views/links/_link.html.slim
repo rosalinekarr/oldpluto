@@ -1,5 +1,5 @@
 li
-  = link_to link.title, link_path(link), class: 'link', rel: 'noopener', target: '_blank'
+  = link_to link.title, link_path(link), class: 'link', rel: 'noopener nofollow', target: '_blank'
   .details
     = link_to link.feed_title, params.merge(source: link.feed.slug).permit!
     = ' | '
