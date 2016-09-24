@@ -17,7 +17,7 @@ class LinksController < ApplicationController
 
   def show
     @link = Link.find(params[:id])
-    @link.increment!(:visits)
+    Click.create user: current_user, link: @link
     redirect_to @link.url
   end
 
@@ -72,13 +72,13 @@ class LinksController < ApplicationController
   def sort
     @sort ||= begin
       if params[:sort] == 'popular'
-        'shares + visits desc'
+        'shares + clicks_count desc'
       elsif params[:sort] == 'rising'
-        'shares + visits / extract (\'epoch\' from (current_timestamp - published_at)) desc, published_at desc'
+        'shares + clicks_count / extract (\'epoch\' from (current_timestamp - published_at)) desc, published_at desc'
       elsif params[:sort] == 'newest'
         'published_at desc'
       else
-        '(shares + visits + 1) / (impressions_count + 1) desc, published_at desc'
+        '(shares + clicks_count + 1) / (impressions_count + 1) desc, published_at desc'
       end
     end
   end

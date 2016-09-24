@@ -7,6 +7,7 @@ class Link < ApplicationRecord
 
   delegate :title, to: :feed, prefix: true
 
+  has_many :clicks,      dependent: :destroy, counter_cache: true
   has_many :impressions, dependent: :destroy, counter_cache: true
   belongs_to :feed
 

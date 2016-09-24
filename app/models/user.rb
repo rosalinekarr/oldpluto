@@ -4,5 +4,6 @@ class User < ApplicationRecord
   devise :confirmable, :database_authenticatable, :lockable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :clicks
   has_many :impressions
 end
