@@ -10,7 +10,9 @@ class LinksController < ApplicationController
 
     query = query.order(sort)
     @links = query.page page
-    Link.where(id: @links.pluck(:id)).update_all('views = views + 1')
+    @links.each do |link|
+      Impression.create user: current_user, link: link
+    end
   end
 
   def show
@@ -76,7 +78,7 @@ class LinksController < ApplicationController
       elsif params[:sort] == 'newest'
         'published_at desc'
       else
-        '(shares + visits + 1) / (views + 1) desc, published_at desc'
+        '(shares + visits + 1) / (impressions_count + 1) desc, published_at desc'
       end
     end
   end

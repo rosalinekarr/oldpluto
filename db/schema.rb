@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160918052153) do
+ActiveRecord::Schema.define(version: 20160924014614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,23 +41,32 @@ ActiveRecord::Schema.define(version: 20160918052153) do
     t.index ["url"], name: "index_feeds_on_url", unique: true, using: :btree
   end
 
+  create_table "impressions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "link_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["link_id"], name: "index_impressions_on_link_id", using: :btree
+    t.index ["user_id"], name: "index_impressions_on_user_id", using: :btree
+  end
+
   create_table "links", force: :cascade do |t|
-    t.string   "title",                    null: false
-    t.string   "url",                      null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string   "title",                         null: false
+    t.string   "url",                           null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "feed_id"
     t.text     "body"
     t.datetime "published_at"
-    t.integer  "visits",       default: 0, null: false
-    t.integer  "shares",       default: 0, null: false
-    t.integer  "views",        default: 0, null: false
+    t.integer  "visits",            default: 0, null: false
+    t.integer  "shares",            default: 0, null: false
+    t.integer  "impressions_count", default: 0, null: false
     t.index ["feed_id"], name: "index_links_on_feed_id", using: :btree
+    t.index ["impressions_count"], name: "index_links_on_impressions_count", using: :btree
     t.index ["published_at"], name: "index_links_on_published_at", using: :btree
     t.index ["shares"], name: "index_links_on_shares", using: :btree
     t.index ["title"], name: "index_links_on_title", unique: true, using: :btree
     t.index ["url"], name: "index_links_on_url", unique: true, using: :btree
-    t.index ["views"], name: "index_links_on_views", using: :btree
     t.index ["visits"], name: "index_links_on_visits", using: :btree
   end
 
@@ -112,5 +121,7 @@ ActiveRecord::Schema.define(version: 20160918052153) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   end
 
+  add_foreign_key "impressions", "links"
+  add_foreign_key "impressions", "users"
   add_foreign_key "links", "feeds"
 end
