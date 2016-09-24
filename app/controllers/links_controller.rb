@@ -23,7 +23,7 @@ class LinksController < ApplicationController
 
   def share
     @link = Link.find(params[:link_id])
-    @link.increment!(:shares)
+    Share.create user: current_user, link: @link, network: params[:network]
     if params[:network] == 'facebook'
       redirect_to "https://www.facebook.com/sharer.php?u=#{ERB::Util.url_encode @link.url}"
     elsif params[:network] == 'twitter'
@@ -72,13 +72,13 @@ class LinksController < ApplicationController
   def sort
     @sort ||= begin
       if params[:sort] == 'popular'
-        'shares + clicks_count desc'
+        'shares_count + clicks_count desc'
       elsif params[:sort] == 'rising'
-        'shares + clicks_count / extract (\'epoch\' from (current_timestamp - published_at)) desc, published_at desc'
+        'shares_count + clicks_count / extract (\'epoch\' from (current_timestamp - published_at)) desc, published_at desc'
       elsif params[:sort] == 'newest'
         'published_at desc'
       else
-        '(shares + clicks_count + 1) / (impressions_count + 1) desc, published_at desc'
+        '(shares_count + clicks_count + 1) / (impressions_count + 1) desc, published_at desc'
       end
     end
   end
