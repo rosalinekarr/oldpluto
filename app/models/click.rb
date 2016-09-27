@@ -1,4 +1,4 @@
 class Click < ApplicationRecord
   belongs_to :user
-  belongs_to :link, dependent: :destroy, counter_cache: true
+  belongs_to :link, counter_cache: true
 end
