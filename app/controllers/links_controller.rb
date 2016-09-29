@@ -78,7 +78,7 @@ class LinksController < ApplicationController
       elsif params[:sort] == 'newest'
         'published_at desc'
       else
-        '(shares_count + clicks_count + 1) / (impressions_count + 1) desc, published_at desc'
+        '(shares_count + clicks_count) / (impressions_count + 1) desc, published_at desc'
       end
     end
   end
