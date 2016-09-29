@@ -6,7 +6,6 @@ li
     = render partial: 'share', locals: { link: link }
     = ' | '
     = time_tag link.published_at, "#{time_ago_in_words(link.published_at)} ago"
-    = " | #{pluralize(link.clicks_count, 'visit')}"
     - if link.display_tags.any?
       = ' |'
       - link.display_tags.each do |tag|
