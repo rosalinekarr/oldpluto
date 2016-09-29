@@ -18,6 +18,7 @@ class Link < ApplicationRecord
   before_validation :sanitized_title
   before_validation :sanitized_body
   after_create :extract_tags
+  after_create :set_expiration
 
   def display_tags
     tags.sort{ |tag| -tag.taggings_count }.first(5).collect(&:name)
@@ -44,5 +45,9 @@ class Link < ApplicationRecord
     tags = body.scan(/\b([A-Z][\w\-]+([\s\-][A-Z]\w+)*)\b/).map(&:first)
     # Set tags filtering with the tag blacklist
     self.tag_list = tags.select{ |tag| !BLACKLISTED_TAGS.include? tag.downcase }
+  end
+
+  def set_expiration
+    DestroyLinkJob.set(wait: 7.days).perform_later(self.id)
   end
 end
