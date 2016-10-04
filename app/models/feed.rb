@@ -31,7 +31,7 @@ class Feed < ApplicationRecord
   private
 
   def start_fetching
-    FetchLinksJob.set(wait: 1.minute).perform_later(id, 1)
+    FetchLinksJob.perform_later(id, 1)
   end
 
   def set_title
