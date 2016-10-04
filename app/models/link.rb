@@ -10,7 +10,7 @@ class Link < ApplicationRecord
   has_many :clicks,      dependent: :destroy
   has_many :impressions, dependent: :destroy
   has_many :shares,      dependent: :destroy
-  belongs_to :feed
+  belongs_to :feed,      counter_cache: true
 
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
