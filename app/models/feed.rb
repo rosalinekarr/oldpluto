@@ -12,26 +12,24 @@ class Feed < ApplicationRecord
   friendly_id :title, use: :slugged
 
   def fetch
-    begin
-      old_count = links.count
-      feed.entries.each do |entry|
-        link = Link.find_or_initialize_by(url: entry.url)
-        link.feed = self
-        link.title = entry.title
-        link.body = entry.content || entry.summary || entry.title
-        link.published_at ||= [entry.published, DateTime.now].compact.min
-        link.save
-      end
-      links.reload.count - old_count
-    rescue
-      0
+    feed.entries.each do |entry|
+      link = Link.find_or_initialize_by(url: entry.url)
+      link.feed = self
+      link.title = entry.title
+      link.body = entry.content || entry.summary || entry.title
+      link.published_at ||= [entry.published, DateTime.now].compact.min
+      link.save
     end
+  end
+
+  def publish_rate
+    7.days / links_count
   end
 
   private
 
   def start_fetching
-    FetchLinksJob.perform_later(id, 1)
+    FetchLinksJob.perform_later id
   end
 
   def set_title

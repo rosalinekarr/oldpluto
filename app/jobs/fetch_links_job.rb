@@ -1,13 +1,13 @@
 class FetchLinksJob < ApplicationJob
-  MAX_DELAY = 4320 # Minutes in 3 days
-  MIN_DELAY = 5
+  MAX_DELAY = 259200 # Minutes in 3 days
+  MIN_DELAY = 300
 
   queue_as :default
 
-  def perform(feed_id, delay)
-    count = Feed.find(feed_id).fetch
-    new_delay = (count > 0) ? (delay.to_f / count).ceil : (delay * 2)
-    new_delay = [[new_delay, MAX_DELAY].min, MIN_DELAY].max
-    FetchLinksJob.set(wait: new_delay.minutes).perform_later(feed_id, new_delay)
+  def perform feed_id
+    feed = Feed.find(feed_id)
+    feed.fetch
+    delay = [[feed.publish_rate, MIN_DELAY.seconds].max, MAX_DELAY.seconds].min
+    FetchLinksJob.set(wait: delay).perform_later feed_id
   end
 end
