@@ -15,36 +15,30 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
-  before_validation :sanitized_title
-  before_validation :sanitized_body
+  before_validation :sanitized_attributes
   after_create :extract_tags
   after_create :set_expiration
 
   def display_tags
-    tags.sort{ |tag| -tag.taggings_count }.first(5).collect(&:name)
+    tags.sort_by{ |tag| -tag.taggings_count }.first(5).collect(&:name)
   end
 
   private
 
-  def sanitized_title
+  def sanitized_attributes
     # Remove html tags
     self.title = ActionController::Base.helpers.strip_tags(title)
-    # Convert html entities to unicode
-    self.title = HTMLEntities.new.decode(title)
-  end
-
-  def sanitized_body
-    # Remove html tags
     self.body = ActionController::Base.helpers.strip_tags(body)
     # Convert html entities to unicode
+    self.title = HTMLEntities.new.decode(title)
     self.body = HTMLEntities.new.decode(body)
   end
 
   def extract_tags
-    # Fetch all capitalized words from the body
-    tags = body.scan(/\b([A-Z][\w\-]+([\s\-][A-Z]\w+)*)\b/).map(&:first)
+    # Fetch all capitalized words from the title
+    tags = [title, body].join(' ').scan(/\w+/).map(&:downcase).uniq
     # Set tags filtering with the tag blacklist
-    self.tag_list = tags.select{ |tag| !BLACKLISTED_TAGS.include? tag.downcase }
+    self.tag_list = tags.reject{ |tag| BLACKLISTED_TAGS.include? tag }
   end
 
   def set_expiration
