@@ -36,7 +36,7 @@ class Link < ApplicationRecord
 
   def extract_tags
     # Fetch all capitalized words from the title
-    tags = [title, body].join(' ').scan(/\w+/).map(&:downcase).uniq
+    tags = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase).uniq
     # Set tags filtering with the tag blacklist
     self.tag_list = tags.reject{ |tag| BLACKLISTED_TAGS.include? tag }
   end
