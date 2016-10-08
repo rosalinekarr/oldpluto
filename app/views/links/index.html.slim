@@ -12,6 +12,8 @@
       = "##{tag.titleize} ×"
 
   .pull-right
+    = render 'hours_ago'
+    = ' '
     = render 'sort'
 
 ol.links start=((params[:page] || '1').to_i * 25 - 24)

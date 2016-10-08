@@ -1,0 +1,20 @@
+span = 'Published within '
+.btn-group
+  button.btn.btn-default.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+    - if params[:hours_ago] == '1'
+      | Past Hour
+    - elsif params[:hours_ago] == '24'
+      | Past Day
+    - elsif params[:hours_ago].nil?
+      | Past Week
+    - else
+      | Past #{pluralize(params[:hours_ago], 'Hour')}
+    = ' '
+    span.caret
+  ul.dropdown-menu.dropdown-menu-right
+    - unless params[:hours_ago] == '1'
+      li = link_to 'Past Hour', url_for(params.merge(hours_ago: '1').permit!)
+    - unless params[:hours_ago] == '24'
+      li = link_to 'Past Day', url_for(params.merge(hours_ago: '24').permit!)
+    - unless params[:hours_ago].nil?
+      li = link_to 'Past Week', url_for(params.merge(hours_ago: nil).permit!)

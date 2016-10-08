@@ -5,6 +5,7 @@ class LinksController < ApplicationController
                 .references(:tags)
 
     query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
+    query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
     query = query.tagged_with(tags)   if tags.any?
     query = query.where(feed: source) if source.present?
 
@@ -36,6 +37,10 @@ class LinksController < ApplicationController
 
   def q
     @q ||= params[:q].present? ? "%#{params[:q]}%" : nil
+  end
+
+  def hours_ago
+    @hours_ago ||= params[:hours_ago].to_i if params[:hours_ago].present?
   end
 
   def tags
