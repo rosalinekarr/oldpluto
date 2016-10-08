@@ -54,3 +54,14 @@ end
 # line below. It might simplify debugging of background Airbrake workers, which
 # can silently die.
 # Thread.abort_on_exception = ['test', 'development'].include?(Rails.env)
+
+['Faraday::TimeoutError',
+ 'FaradayMiddleware::RedirectLimitReached',
+ 'Feedjira::FetchFailure',
+ 'Feedjira::NoParserAvailable'].each do |error_type|
+  Airbrake.add_filter do |notice|
+    if notice[:errors].any? { |error| error[:type] == error_type }
+      notice.ignore!
+    end
+  end
+end
