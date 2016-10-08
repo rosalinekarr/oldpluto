@@ -16,8 +16,11 @@
     = ' '
     = render 'sort'
 
-ol.links start=((params[:page] || '1').to_i * 25 - 24)
-  = render partial: 'link', collection: @links
+- if @links.any?
+  ol.links start=((params[:page] || '1').to_i * 25 - 24)
+    = render partial: 'link', collection: @links
+- else
+  .no-results No Results.
 
 .text-center
   = paginate @links
