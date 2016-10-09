@@ -17,9 +17,12 @@ class Feed < ApplicationRecord
       link.feed = self
       link.title = entry.title
       link.body = entry.content || entry.summary || entry.title
-      link.published_at ||= [entry.published, DateTime.now].compact.min
+      link.published_at ||= begin
+        [[entry.published, DateTime.now].compact.min, last_fetched_at].compact.max
+      end
       link.save
     end
+    update(last_fetched_at: DateTime.now)
   end
 
   def publish_rate
