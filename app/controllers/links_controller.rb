@@ -23,9 +23,8 @@ class LinksController < ApplicationController
   end
 
   def share
-    @share = Share.new user: current_user,
-                       link_id: params[:link_id],
-                       network: params[:network]
+    link = Link.find(params[:link_id])
+    @share = Share.new user: current_user, link: link, network: params[:network]
     if @share.save
       redirect_to @share.url
     else
