@@ -55,7 +55,9 @@ end
 # can silently die.
 # Thread.abort_on_exception = ['test', 'development'].include?(Rails.env)
 
-['Faraday::TimeoutError',
+['ActiveRecord::RecordNotFound',
+ 'Faraday::ConnectionFailed',
+ 'Faraday::TimeoutError',
  'FaradayMiddleware::RedirectLimitReached',
  'Feedjira::FetchFailure',
  'Feedjira::NoParserAvailable'].each do |error_type|
