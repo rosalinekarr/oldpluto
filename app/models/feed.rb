@@ -26,7 +26,7 @@ class Feed < ApplicationRecord
   end
 
   def publish_rate
-    7.days / links_count
+    7.days / (links_count + 1)
   end
 
   private
