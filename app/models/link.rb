@@ -18,10 +18,16 @@ class Link < ApplicationRecord
   after_create :set_expiration
 
   def display_tags
-    tags.sort_by{ |tag| -tag.taggings_count }.first(5).collect(&:name)
+    tags.pluck(:name, :taggings_count).sort_by{ |tag, count|
+      count > 1 ? count.to_f / corpus.count(tag) : 0
+    }.collect(&:first).first(10)
   end
 
   private
+
+  def corpus
+    [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+  end
 
   def sanitized_attributes
     self.title = ActionController::Base.helpers.strip_tags(title)
@@ -32,7 +38,7 @@ class Link < ApplicationRecord
   end
 
   def extract_tags
-    self.tag_list = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase).uniq
+    self.tag_list = corpus.uniq
   end
 
   def set_expiration
