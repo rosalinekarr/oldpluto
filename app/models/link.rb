@@ -34,7 +34,6 @@ class Link < ApplicationRecord
   def extract_tags
     self.tag_list = corpus.uniq.sort_by{ |tag|
       local_count = corpus.count tag
-      puts "REDIS Increment #{tag} by #{local_count}"
       global_count = $redis.incrby(tag, local_count)
       local_count.to_f / global_count
     }.first(10)
