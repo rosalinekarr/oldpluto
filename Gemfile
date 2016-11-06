@@ -28,6 +28,7 @@ gem 'uglifier', '>= 1.3.0'
 group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
+  gem 'mock_redis'
   gem 'shoulda-matchers', '~> 3.1'
 end
 
