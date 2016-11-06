@@ -17,12 +17,6 @@ class Link < ApplicationRecord
   after_create :extract_tags
   after_create :set_expiration
 
-  def display_tags
-    tags.pluck(:name, :taggings_count).sort_by{ |tag, count|
-      count > 1 ? count.to_f / corpus.count(tag) : 0
-    }.collect(&:first).first(10)
-  end
-
   private
 
   def corpus
@@ -38,7 +32,12 @@ class Link < ApplicationRecord
   end
 
   def extract_tags
-    self.tag_list = corpus.uniq
+    self.tag_list = corpus.uniq.sort_by{ |tag|
+      local_count = corpus.count tag
+      puts "REDIS Increment #{tag} by #{local_count}"
+      global_count = $redis.incrby(tag, local_count)
+      local_count.to_f / global_count
+    }.first(10)
   end
 
   def set_expiration

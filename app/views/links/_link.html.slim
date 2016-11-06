@@ -6,8 +6,8 @@ li
     = render partial: 'share', locals: { link: link }
     = ' | '
     = time_tag link.published_at, "#{time_ago_in_words(link.published_at)} ago"
-    - if link.display_tags.any?
+    - if link.tags.any?
       = ' |'
-      - link.display_tags.each do |tag|
+      - link.tags.pluck(:name).each do |tag|
         = ' '
         = link_to "##{tag.titleize}", params.merge(tags: (@tags + [tag])).permit!
