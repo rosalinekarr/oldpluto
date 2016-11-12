@@ -16,13 +16,13 @@ class Link < ApplicationRecord
   before_validation :sanitized_attributes
   after_create :increment_word_counts
   after_create :set_expiration
-  after_save :extract_tags
-
-  private
+  after_save :update_tags
 
   def corpus
     [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
   end
+
+  private
 
   def sanitized_attributes
     self.title = ActionController::Base.helpers.strip_tags(title)
@@ -36,10 +36,8 @@ class Link < ApplicationRecord
     corpus.each{ |tag| $redis.incr(tag) }
   end
 
-  def extract_tags
-    self.tag_list = corpus.uniq.sort_by{ |tag|
-      $redis.get(tag).to_f / corpus.count(tag)
-    }.first(10)
+  def update_tags
+    UpdateLinkTagsJob.perform_later(self.id)
   end
 
   def set_expiration
