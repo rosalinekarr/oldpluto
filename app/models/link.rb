@@ -35,7 +35,7 @@ class Link < ApplicationRecord
     self.tag_list = corpus.uniq.sort_by{ |tag|
       local_count = corpus.count tag
       global_count = $redis.incrby(tag, local_count)
-      local_count.to_f / global_count
+      global_count.to_f / local_count
     }.first(10)
   end
 
