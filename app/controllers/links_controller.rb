@@ -60,10 +60,8 @@ class LinksController < ApplicationController
         'shares_count + clicks_count desc'
       elsif params[:sort] == 'rising'
         '1.0 + shares_count + clicks_count / extract (\'epoch\' from (current_timestamp - published_at)) desc'
-      elsif params[:sort] == 'newest'
-        'published_at desc'
       else
-        '(1.0 + shares_count + clicks_count) / (impressions_count + feeds.links_count) desc'
+        'published_at desc'
       end
     end
   end

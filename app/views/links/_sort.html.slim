@@ -1,22 +1,18 @@
 span = 'Sort by '
 .btn-group
   button.btn.btn-default.dropdown-toggle data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
-    - if params[:sort] == 'newest'
-      | Newest
-    - elsif params[:sort] == 'popular'
+    - if params[:sort] == 'popular'
       | Popular
     - elsif params[:sort] == 'rising'
       | Rising
     - else
-      | Recommended
+      | Newest
     = ' '
     span.caret
   ul.dropdown-menu.dropdown-menu-right
-    - unless params[:sort] == 'newest'
+    - unless params[:sort].nil?
       li = link_to 'Newest', url_for(params.merge(sort: 'newest').permit!)
     - unless params[:sort] == 'popular'
       li = link_to 'Popular', url_for(params.merge(sort: 'popular').permit!)
     - unless params[:sort] == 'rising'
       li = link_to 'Rising', url_for(params.merge(sort: 'rising').permit!)
-    - unless params[:sort].nil?
-      li = link_to 'Recommended', url_for(params.merge(sort: nil).permit!)
