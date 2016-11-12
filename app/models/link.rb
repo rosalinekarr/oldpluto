@@ -14,8 +14,9 @@ class Link < ApplicationRecord
   validates :title, :url, uniqueness: true
 
   before_validation :sanitized_attributes
-  after_create :extract_tags
+  after_create :increment_word_counts
   after_create :set_expiration
+  after_save :extract_tags
 
   private
 
@@ -31,11 +32,13 @@ class Link < ApplicationRecord
     self.body  = HTMLEntities.new.decode(body)
   end
 
+  def increment_word_counts
+    corpus.each{ |tag| $redis.incr(tag) }
+  end
+
   def extract_tags
     self.tag_list = corpus.uniq.sort_by{ |tag|
-      local_count = corpus.count tag
-      global_count = $redis.incrby(tag, local_count)
-      global_count.to_f / local_count
+      $redis.get(tag).to_f / corpus.count(tag)
     }.first(10)
   end
 
