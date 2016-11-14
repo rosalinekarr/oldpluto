@@ -1,8 +1,3 @@
-- if @source.present?
-  - content_for(:title, "#{@source.title}")
-- else
-  - content_for(:title, 'All Sources')
-
 .options.clearfix
   - if @source.present?
     = link_to params.merge(source: nil).permit!, class: 'btn btn-default remove-filter' do
