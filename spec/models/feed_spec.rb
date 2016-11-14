@@ -31,7 +31,9 @@ RSpec.describe Feed, type: :model do
   end
 
   it 'creates a FetchLinksJob after create' do
-    expect{ create :feed }.to change{ Delayed::Job.count }.by(1)
+    expect{ create :feed }.to change{
+      Delayed::Job.where('handler LIKE ?', '%FetchLinksJob%').count
+    }.by(1)
   end
 
   describe '#fetch' do
