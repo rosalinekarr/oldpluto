@@ -1,7 +1,7 @@
 .options.clearfix
   - if @source.present?
     = link_to params.merge(source: nil).permit!, class: 'btn btn-default remove-filter' do
-      | ← Home
+      = "#{@source.title} ×"
   - @tags.each do |tag|
     = link_to params.merge(tags: (@tags - [tag])).permit!, class: 'btn btn-default remove-filter' do
       = "##{tag.titleize} ×"
