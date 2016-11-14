@@ -37,7 +37,7 @@ class Link < ApplicationRecord
   end
 
   def update_tags
-    UpdateLinkTagsJob.perform_later(self.id)
+    UpdateLinkTagsJob.perform_later(self.id) if title_changed? || body_changed?
   end
 
   def set_expiration
