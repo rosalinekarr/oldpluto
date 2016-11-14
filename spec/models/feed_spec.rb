@@ -51,4 +51,17 @@ RSpec.describe Feed, type: :model do
       expect(Link.first.url).to eq entry_url
     end
   end
+
+  describe '#publish_rate' do
+    let(:feed){ create :feed }
+
+    it 'returns 7.0 when there are no links' do
+      expect(feed.publish_rate).to eq(604800)
+    end
+
+    it 'return 3.5 when there is a link' do
+      create :link, feed: feed
+      expect(feed.publish_rate).to eq(302400)
+    end
+  end
 end
