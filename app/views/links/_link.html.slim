@@ -1,7 +1,8 @@
 li
   = link_to link.title, link_path(link), class: 'link', rel: 'noopener nofollow', target: '_blank'
   .details
-    = link_to link.feed_title, params.merge(source: link.feed.slug).permit!
+    = link_to link.feed_title,
+              params.merge(sources: (@source_ids + [link.feed.slug])).permit!
     = ' | '
     = render partial: 'share', locals: { link: link }
     = ' | '

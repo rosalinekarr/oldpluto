@@ -2,11 +2,12 @@
   = render 'hours_ago'
   = render 'sort'
 
-  - if @source.present?
+  - if @sources.any?
     .btn-group
-      = link_to params.merge(source: nil).permit!,
-                class: 'btn btn-default' do
-        = "#{@source.title} ×"
+      - @sources.each do |source|
+        = link_to params.merge(sources: (@source_ids - [source.slug])).permit!,
+                  class: 'btn btn-default' do
+          = "#{source.title} ×"
 
   - if @tags.any?
     .btn-group
