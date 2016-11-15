@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
   def index
-    query = Link.includes(:feed, :tags)
+    query = Link.includes(:author, :feed, :tags)
                 .where('tags.taggings_count > 1')
                 .references(:tags)
 
