@@ -61,7 +61,8 @@ html
               button.close type='button' data-dismiss='alert' aria-label='Close' ×
               = msg
           - if content_for? :title
-            h2 = yield :title
+            .col-sm-6.col-sm-offset-3
+              h2 = yield :title
 
     main.container
       = yield
