@@ -72,36 +72,20 @@
     checking it's output against available domain names. The name has no real
     meaning, but I'm open to any interpretations anyone finds in it.
 
-    ## <a name="warnings"></a>Warnings
 
-    In the interest of being open and transparent with all users, I want to
-    share a few warnings regarding the state of and future plans for Old
-    Pluto:
+    ## <a name="start"></a>How Do I Use It?
 
-    ### <a name="wip"></a>Old Pluto is a Work in Progress
+    To start, [click here](#{links_path}) to view the latest news. Next, click
+    on a source or tag to filter the results. You can limit results to the past
+    week, day or hour using the time dropdown at the top, and you can sort by
+    newest, popularity (most clicks) or rising (clicks per hour) using the sort
+    dropdown also at the top. Most importantly, if you already know what you're
+    looking for, you can use the search box in the header to perform a full text
+    search across all articles.
 
-    This project is still very much a work in progress. As I experiment with
-    it, some features may change or disappear completely. While I'm always
-    open to feedback, understand that I reserve the right to do anything I
-    want with my own code. If you disagree with any decisions I make in the
-    development of this project, you're free to fork my repository on github
-    and host your own version of Old Pluto. Please, do not expect any feature
-    to remain the same forever.
-
-    ### <a name="money"></a>Old Pluto May Cost Money
-
-    For now, Old Pluto is free for all to use, but this website runs on
-    servers and those servers cost money, so eventually, I may need to
-    monetize this project to keep it going. While I do promise that some form
-    of this site will always be free, some features may require payment in the
-    future. Please, do not expect any feature to be free forever.
-
-    ### <a name="content"></a>Old Pluto Is Not Curated
-
-    So far, all of Old Pluto's features, including tagging and link
-    aggregation, are automated. There are no human checks on these actions,
-    and while I encourage users to contact me about any problems with the
-    website, there is no reporting or flagging feature. Old Pluto may include
-    or link to content that is objectionable or obscene. Any opinions
-    expressed in this content are not necessarily my opinion or the opinion of
-    anyone else who contributes to this project.
+    The real power of Old Pluto becomes apparent when you search for something
+    controversial and compare results from different sources. For example,
+    here's everything from [CNN regarding President
+    Trump](#{links_path(sources: ['cnn'], q: 'Trump')}) and [here's everything
+    from Breitbart on the
+    same](#{links_path(sources: ['breitbart'], q: 'Trump')}).
