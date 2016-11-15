@@ -1,4 +1,4 @@
 en:
   time:
     formats:
-      default: "%F"
+      default: "%a %b %e %H:%M:%S %Z %Y"

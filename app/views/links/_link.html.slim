@@ -5,7 +5,10 @@ li
     = ' | '
     = render partial: 'share', locals: { link: link }
     = ' | '
-    = time_tag link.published_at, "#{time_ago_in_words(link.published_at)} ago"
+    = time_tag link.published_at,
+               "#{time_ago_in_words(link.published_at)} ago",
+               title: l(link.published_at),
+               data: { toggle: 'tooltip', placement: 'bottom' }
     - if link.tags.any?
       = ' |'
       - link.tags.pluck(:name).each do |tag|
