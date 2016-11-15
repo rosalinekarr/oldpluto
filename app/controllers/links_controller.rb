@@ -8,6 +8,7 @@ class LinksController < ApplicationController
     query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
     query = query.tagged_with(tags) if tags.any?
     query = query.where(feed: sources) if sources.any?
+    query = query.where(author: authors) if authors.any?
 
     query = query.order(sort)
     @links = query.page page
@@ -52,6 +53,14 @@ class LinksController < ApplicationController
 
   def source_ids
     @source_ids ||= params[:sources] || []
+  end
+
+  def authors
+    @authors ||= Author.where(name: author_ids)
+  end
+
+  def author_ids
+    @author_ids ||= params[:authors] || []
   end
 
   def page

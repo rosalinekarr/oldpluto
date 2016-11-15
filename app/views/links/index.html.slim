@@ -9,6 +9,13 @@
                   class: 'btn btn-default' do
           = "#{source.title} ×"
 
+  - if @authors.any?
+    .btn-group
+      - @authors.each do |author|
+        = link_to params.merge(authors: (@author_ids - [author.name])).permit!,
+                  class: 'btn btn-default' do
+          = "#{author.name} ×"
+
   - if @tags.any?
     .btn-group
       - @tags.each do |tag|
