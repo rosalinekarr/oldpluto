@@ -4,12 +4,12 @@ li
     = link_to link.feed_title,
               params.merge(sources: (@source_ids + [link.feed.slug])).permit!
     = ' | '
-    = render partial: 'share', locals: { link: link }
-    = ' | '
     = time_tag link.published_at,
                "#{time_ago_in_words(link.published_at)} ago",
                title: l(link.published_at),
                data: { toggle: 'tooltip', placement: 'bottom' }
+    = ' | '
+    = render partial: 'share', locals: { link: link }
     - if link.tags.any?
       = ' |'
       - link.tags.pluck(:name).each do |tag|
