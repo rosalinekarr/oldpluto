@@ -52,14 +52,16 @@ html
                 li = link_to 'Sign in', new_user_session_path
                 li = link_to 'Sign up', new_user_registration_path
 
-      .container
-        - flash.each do |name, msg|
-          - next if msg.blank?
-          - name = name.gsub(/^alert$/, 'danger').gsub(/^notice$/, 'info')
-          .alert.alert-dismissible class=("alert-#{name}") role='alert'
-            button.close type='button' data-dismiss='alert' aria-label='Close' ×
-            = msg
-        h2 = yield :title
+      - if flash.any? || content_for?(:title)
+        .container
+          - flash.each do |name, msg|
+            - next if msg.blank?
+            - name = name.gsub(/^alert$/, 'danger').gsub(/^notice$/, 'info')
+            .alert.alert-dismissible class=("alert-#{name}") role='alert'
+              button.close type='button' data-dismiss='alert' aria-label='Close' ×
+              = msg
+          - if content_for? :title
+            h2 = yield :title
 
     main.container
       = yield
