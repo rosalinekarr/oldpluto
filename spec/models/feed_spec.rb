@@ -11,6 +11,7 @@ RSpec.describe Feed, type: :model do
   let(:entry_url)       { Faker::Internet.url }
   let(:entry_content)   { Faker::Lorem.paragraph }
   let(:entry_published) { Faker::Date.backward(1000) }
+  let(:entry_author)    { Faker::Name.name }
 
   before do
     allow(feedjira_feed).to receive(:title)   { feed_title }
@@ -21,6 +22,7 @@ RSpec.describe Feed, type: :model do
     allow(feed_entry).to receive(:url)       { entry_url }
     allow(feed_entry).to receive(:content)   { entry_content }
     allow(feed_entry).to receive(:published) { entry_published }
+    allow(feed_entry).to receive(:author)    { entry_author }
 
     allow(Feedjira::Feed).to receive(:fetch_and_parse) { |url| feedjira_feed }
   end
@@ -51,6 +53,11 @@ RSpec.describe Feed, type: :model do
     it 'creates a link with the correct title' do
       feed.fetch
       expect(Link.first.url).to eq entry_url
+    end
+
+    it 'creates an author with the correct name' do
+      feed.fetch
+      expect(Author.last.name).to eq entry_author
     end
   end
 

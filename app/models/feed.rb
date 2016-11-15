@@ -17,6 +17,8 @@ class Feed < ApplicationRecord
       link.feed = self
       link.title = entry.title
       link.body = entry.content || entry.summary || entry.title
+      author_name = ActionController::Base.helpers.strip_tags entry.author
+      link.author = Author.find_or_create_by(name: author_name)
       link.published_at ||= begin
         [[entry.published, DateTime.now].compact.min, last_fetched_at].compact.max
       end
