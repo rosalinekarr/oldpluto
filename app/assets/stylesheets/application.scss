@@ -26,6 +26,17 @@ $headings-font-weight:   normal;
 $brand-primary: #ADABAB;
 $text-color: #07020D;
 
+$screen-xs: 320px;
+$screen-sm: 480px;
+$screen-md: 640px;
+$screen-lg: 720px;
+
+$container-tablet:        480px;
+$container-desktop:       640px;
+$container-large-desktop: 720px;
+
+$grid-float-breakpoint: 640px;
+
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
 
