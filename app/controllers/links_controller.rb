@@ -71,10 +71,10 @@ class LinksController < ApplicationController
     @sort ||= begin
       if params[:sort] == 'popular'
         'shares_count + clicks_count desc'
-      elsif params[:sort] == 'rising'
-        '(shares_count + clicks_count) * 3600.0 / extract (\'epoch\' from (current_timestamp - published_at)) desc'
-      else
+      elsif params[:sort] == 'newest'
         'published_at desc'
+      else
+        '(shares_count + clicks_count) * 3600.0 / extract (\'epoch\' from (current_timestamp - published_at)) desc'
       end
     end
   end
