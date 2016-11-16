@@ -1,4 +1,6 @@
 class LinksController < ApplicationController
+  before_action :authenticate_user!, only: [:favorite]
+
   def index
     query = Link.includes(:author, :feed, :tags)
                 .where('tags.taggings_count > 1')
@@ -28,6 +30,16 @@ class LinksController < ApplicationController
     @share = Share.new user: current_user, link: link, network: params[:network]
     if @share.save
       redirect_to @share.url
+    else
+      raise ActionController::RoutingError.new('Not Found')
+    end
+  end
+
+  def favorite
+    link = Link.find(params[:link_id])
+    @favorite = Favorite.new user: current_user, link: link
+    if @favorite.save
+      redirect_to :back
     else
       raise ActionController::RoutingError.new('Not Found')
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115232026) do
+ActiveRecord::Schema.define(version: 20161116233028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,15 @@ ActiveRecord::Schema.define(version: 20161115232026) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "link_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["link_id"], name: "index_favorites_on_link_id", using: :btree
+    t.index ["user_id"], name: "index_favorites_on_user_id", using: :btree
   end
 
   create_table "feeds", force: :cascade do |t|
@@ -80,6 +89,7 @@ ActiveRecord::Schema.define(version: 20161115232026) do
     t.integer  "shares_count",      default: 0, null: false
     t.integer  "impressions_count", default: 0, null: false
     t.integer  "author_id"
+    t.integer  "favorites_count"
     t.index ["clicks_count"], name: "index_links_on_clicks_count", using: :btree
     t.index ["feed_id"], name: "index_links_on_feed_id", using: :btree
     t.index ["impressions_count"], name: "index_links_on_impressions_count", using: :btree
@@ -152,6 +162,8 @@ ActiveRecord::Schema.define(version: 20161115232026) do
 
   add_foreign_key "clicks", "links"
   add_foreign_key "clicks", "users"
+  add_foreign_key "favorites", "links"
+  add_foreign_key "favorites", "users"
   add_foreign_key "impressions", "links"
   add_foreign_key "impressions", "users"
   add_foreign_key "links", "feeds"
