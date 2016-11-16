@@ -10,7 +10,7 @@
     span.caret
   ul.dropdown-menu.dropdown-menu
     - unless params[:sort].nil?
-      li = link_to 'Newest', url_for(params.merge(sort: 'newest').permit!)
+      li = link_to 'Newest', url_for(params.merge(sort: nil).permit!)
     - unless params[:sort] == 'popular'
       li = link_to 'Popular', url_for(params.merge(sort: 'popular').permit!)
     - unless params[:sort] == 'rising'
