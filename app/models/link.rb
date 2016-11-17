@@ -5,20 +5,20 @@ class Link < ApplicationRecord
 
   delegate :title, to: :feed, prefix: true
 
-  has_many :clicks,      dependent: :destroy
-  has_many :impressions, dependent: :destroy
-  has_many :shares,      dependent: :destroy
-  has_many :favorites,   dependent: :destroy
-  belongs_to :author,    counter_cache: true
-  belongs_to :feed,      counter_cache: true
+  has_many   :clicks,      dependent: :destroy
+  has_many   :impressions, dependent: :destroy
+  has_many   :shares,      dependent: :destroy
+  has_many   :favorites,   dependent: :destroy
+  belongs_to :author,      counter_cache: true
+  belongs_to :feed,        counter_cache: true
 
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
   before_validation :sanitized_attributes
-  after_create :increment_word_counts
-  after_create :set_expiration
-  after_save :update_tags
+  after_create      :increment_word_counts
+  after_create      :set_expiration
+  after_save        :update_tags
 
   def corpus
     [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
@@ -35,7 +35,7 @@ class Link < ApplicationRecord
   end
 
   def increment_word_counts
-    corpus.each{ |tag| $redis.incr("tags:#{tag}:count") }
+    IncrementWordCountsJob.perform_later(self.id)
   end
 
   def update_tags
