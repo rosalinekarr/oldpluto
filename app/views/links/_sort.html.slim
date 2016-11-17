@@ -4,6 +4,8 @@
       | Newest
     - elsif params[:sort] == 'popular'
       | Popular
+    - elsif params[:sort] == 'trending'
+      | Trending
     - else
       | Rising
     = ' '
@@ -13,5 +15,7 @@
       li = link_to 'Rising', url_for(params.merge(sort: nil).permit!)
     - unless params[:sort] == 'popular'
       li = link_to 'Popular', url_for(params.merge(sort: 'popular').permit!)
+    - unless params[:sort] == 'trending'
+      li = link_to 'Trending', url_for(params.merge(sort: 'trending').permit!)
     - unless params[:sort] == 'newest'
       li = link_to 'Newest', url_for(params.merge(sort: 'newest').permit!)
