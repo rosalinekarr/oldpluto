@@ -16,6 +16,7 @@ class Link < ApplicationRecord
   validates :title, :url, uniqueness: true
 
   before_validation :sanitized_attributes
+  before_save       :set_score
   after_create      :increment_word_counts
   after_create      :set_expiration
   after_save        :update_tags
@@ -25,6 +26,13 @@ class Link < ApplicationRecord
   end
 
   private
+
+  def set_score
+    word_scores = corpus.map do |tag|
+      $redis.get("tags:#{tag}:click_count").try(:to_i) || 0
+    end
+    self.score = word_scores.sum
+  end
 
   def sanitized_attributes
     self.title = ActionController::Base.helpers.strip_tags(title)
