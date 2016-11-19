@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :advertisements, only: [:new, :create]
+  resources :advertisements, only: [:index, :new, :create]
 
   resources :links, only: [:index, :show] do
     get  '/share/:network', to: 'links#share',      as: 'share'

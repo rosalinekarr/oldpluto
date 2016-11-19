@@ -1,0 +1,13 @@
+- content_for :title, 'My Advertisements'
+
+.options.btn-toolbar
+  = link_to 'Create an Ad', new_advertisement_path, class: 'btn btn-primary'
+
+- if @advertisements.any?
+  ol.advertisements start=(@page * 25 - 24)
+    = render partial: 'advertisement', collection: @advertisements
+- else
+  .no-results No Advertisements.
+
+.text-center
+  = paginate @advertisements
