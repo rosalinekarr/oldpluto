@@ -18,6 +18,12 @@ class AdvertisementsController < ApplicationController
     end
   end
 
+  def destroy
+    @advertisement = current_user.advertisements.find(params[:id])
+    @advertisement.destroy
+    redirect_to advertisements_path, notice: 'The advertisement has been successfully deleted.'
+  end
+
   private
 
   def advertisement_params
