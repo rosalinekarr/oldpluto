@@ -17,6 +17,7 @@ class Link < ApplicationRecord
   validates :title, :url, uniqueness: true
 
   before_validation :sanitized_attributes
+  before_validation :fix_post_dated_links
   before_save       :set_score
   after_create      :increment_word_counts
   after_create      :set_expiration
@@ -36,6 +37,10 @@ class Link < ApplicationRecord
   end
 
   private
+
+  def fix_post_dated_links
+    self.published_at = [published_at, DateTime.now].min
+  end
 
   def set_score
     word_scores = corpus.map do |tag|

@@ -19,9 +19,7 @@ class Feed < ApplicationRecord
       link.guid = entry.entry_id || entry.url
       link.body = entry.content || entry.summary || entry.title
       link.author_name = entry.author
-      link.published_at ||= begin
-        [[entry.published, DateTime.now].compact.min, last_fetched_at].compact.max
-      end
+      link.published_at ||= [entry.published, last_fetched_at].compact.max
       link.save
     end
     update(last_fetched_at: DateTime.now)
