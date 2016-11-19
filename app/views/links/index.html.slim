@@ -29,7 +29,8 @@
           = "##{tag.titleize} ×"
 
 - if @links.any?
-  ol.links start=((params[:page] || '1').to_i * 25 - 24)
+  ol.links start=(@page * 25 - (@advertisement.present? ? 25 : 24))
+    = render @advertisement if @advertisement.present?
     = render partial: 'link', collection: @links
 - else
   .no-results No Results.

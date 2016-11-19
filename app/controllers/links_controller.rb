@@ -17,6 +17,8 @@ class LinksController < ApplicationController
     @links.each do |link|
       Impression.create user: current_user, link: link
     end
+
+    @advertisement = Advertisement.order('RANDOM()').first if page == 1
   end
 
   def favorites
@@ -87,7 +89,7 @@ class LinksController < ApplicationController
   end
 
   def page
-    @page ||= params[:page] || 1
+    @page ||= params[:page].try(:to_i) || 1
   end
 
   def sort
