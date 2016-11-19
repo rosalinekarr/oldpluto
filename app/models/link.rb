@@ -26,6 +26,10 @@ class Link < ApplicationRecord
     [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
   end
 
+  def favorited?(user)
+    Favorite.where(user: user, link: self).any?
+  end
+
   private
 
   def set_score

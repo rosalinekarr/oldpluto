@@ -1,5 +1,5 @@
 class LinksController < ApplicationController
-  before_action :authenticate_user!, only: [:favorite, :favorites]
+  before_action :authenticate_user!, only: [:favorite, :favorites, :unfavorite]
 
   def index
     query = Link.includes(:author, :feed, :tags)
@@ -57,6 +57,11 @@ class LinksController < ApplicationController
     else
       raise ActionController::RoutingError.new('Not Found')
     end
+  end
+
+  def unfavorite
+    Favorite.where(user: current_user, link_id: params[:link_id]).destroy_all
+    redirect_to :back
   end
 
   private

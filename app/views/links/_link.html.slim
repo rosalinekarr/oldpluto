@@ -16,7 +16,10 @@ li
     = render partial: 'share', locals: { link: link }
     - if user_signed_in?
       = ' | '
-      = link_to 'Favorite', link_favorite_path(link), method: :post
+      - if link.favorited? current_user
+        = link_to 'Unfavorite', link_unfavorite_path(link), method: :post
+      - else
+        = link_to 'Favorite', link_favorite_path(link), method: :post
     - if link.tags.any?
       = ' |'
       - link.tags.pluck(:name).each do |tag|
