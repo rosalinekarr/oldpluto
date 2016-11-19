@@ -2,7 +2,7 @@ class FetchLinksJob < ApplicationJob
   MAX_DELAY = 259200 # Minutes in 3 days
   MIN_DELAY = 300
 
-  queue_as :default
+  queue_as :fetch
 
   def perform feed_id
     feed = Feed.find(feed_id)

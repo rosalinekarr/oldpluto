@@ -1,5 +1,5 @@
 class IncrementWordClickCountsJob < ApplicationJob
-  queue_as :default
+  queue_as :trending
 
   def perform(link_id)
     link = Link.find(link_id)

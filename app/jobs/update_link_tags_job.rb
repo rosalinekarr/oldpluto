@@ -1,5 +1,5 @@
 class UpdateLinkTagsJob < ApplicationJob
-  queue_as :default
+  queue_as :tagging
 
   def perform(link_id)
     link = Link.find(link_id)
