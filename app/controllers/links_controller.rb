@@ -18,7 +18,7 @@ class LinksController < ApplicationController
       Impression.create user: current_user, link: link
     end
 
-    @advertisement = Advertisement.order('RANDOM()').first if page == 1
+    @advertisement = Advertisement.approved.order('RANDOM()').first if page == 1
   end
 
   def favorites

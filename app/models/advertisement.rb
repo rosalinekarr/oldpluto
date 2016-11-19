@@ -2,6 +2,8 @@ class Advertisement < ApplicationRecord
   validates :title, presence: true
   validates :url,   presence: true
 
+  scope :approved, -> { where('approved_at IS NOT NULL') }
+
   def approve
     update(approved_at: DateTime.now) unless approved?
   end
