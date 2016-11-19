@@ -7,19 +7,19 @@
   = render 'hours_ago'
   = render 'sort'
 
-  - if @sources.any?
+  - if @source_ids.any?
     .btn-group
-      - @sources.each do |source|
-        = link_to params.merge(sources: (@source_ids - [source.slug])).permit!,
+      - @source_ids.each do |source|
+        = link_to params.merge(sources: (@source_ids - [source])).permit!,
                   class: 'btn btn-default' do
-          = "#{source.title} ×"
+          = "#{source.titleize} ×"
 
-  - if @authors.any?
+  - if @author_ids.any?
     .btn-group
-      - @authors.each do |author|
-        = link_to params.merge(authors: (@author_ids - [author.name])).permit!,
+      - @author_ids.each do |author|
+        = link_to params.merge(authors: (@author_ids - [author])).permit!,
                   class: 'btn btn-default' do
-          = "#{author.name} ×"
+          = "#{author.titleize} ×"
 
   - if @tags.any?
     .btn-group

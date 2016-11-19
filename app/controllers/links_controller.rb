@@ -9,8 +9,8 @@ class LinksController < ApplicationController
     query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
     query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
     query = query.tagged_with(tags) if tags.any?
-    query = query.where(feed: sources) if sources.any?
-    query = query.where(author: authors) if authors.any?
+    query = query.where(feeds:   { slug: source_ids }) if source_ids.any?
+    query = query.where(authors: { slug: author_ids }) if author_ids.any?
 
     query = query.order(sort)
     @links = query.page page
@@ -25,8 +25,8 @@ class LinksController < ApplicationController
     query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
     query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
     query = query.tagged_with(tags) if tags.any?
-    query = query.where(feed: sources) if sources.any?
-    query = query.where(author: authors) if authors.any?
+    query = query.where(feed:   { slug: source_ids }) if source_ids.any?
+    query = query.where(author: { slug: author_ids }) if author_ids.any?
 
     query = query.order(sort)
     @links = query.page(page)
@@ -73,16 +73,8 @@ class LinksController < ApplicationController
     @tags ||= params[:tags] || []
   end
 
-  def sources
-    @sources ||= Feed.where(slug: source_ids)
-  end
-
   def source_ids
     @source_ids ||= params[:sources] || []
-  end
-
-  def authors
-    @authors ||= Author.where(name: author_ids)
   end
 
   def author_ids
