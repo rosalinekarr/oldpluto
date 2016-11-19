@@ -1,0 +1,8 @@
+- content_for(:title, 'Post an Ad')
+
+= simple_form_for @advertisement do |f|
+  .form-inputs
+    = f.input :title, required: false, autofocus: true
+    = f.input :url, required: false
+  .form-actions
+    = f.button :submit, "Submit for Approval"

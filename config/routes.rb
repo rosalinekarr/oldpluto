@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  resources :advertisements, only: [:new, :create]
+
   resources :links, only: [:index, :show] do
     get  '/share/:network', to: 'links#share',      as: 'share'
     post '/favorite',       to: 'links#favorite',   as: 'favorite'
