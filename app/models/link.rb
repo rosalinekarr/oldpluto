@@ -9,6 +9,7 @@ class Link < ApplicationRecord
   has_many   :impressions, dependent: :destroy
   has_many   :shares,      dependent: :destroy
   has_many   :favorites,   dependent: :destroy
+  has_many   :users,       through: :favorites
   belongs_to :author,      counter_cache: true
   belongs_to :feed,        counter_cache: true
 

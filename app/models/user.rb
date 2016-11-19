@@ -7,4 +7,6 @@ class User < ApplicationRecord
   has_many :clicks
   has_many :impressions
   has_many :shares
+  has_many :favorites, dependent: :destroy
+  has_many :links,     through: :favorites
 end

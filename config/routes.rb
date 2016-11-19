@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get  '/share/:network', to: 'links#share',    as: 'share'
     post '/favorite',       to: 'links#favorite', as: 'favorite'
   end
+  get '/favorites', to: 'links#favorites'
 
   get '/legal', to: 'pages#legal'
   root to: 'pages#home'

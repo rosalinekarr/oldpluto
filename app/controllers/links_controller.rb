@@ -1,5 +1,5 @@
 class LinksController < ApplicationController
-  before_action :authenticate_user!, only: [:favorite]
+  before_action :authenticate_user!, only: [:favorite, :favorites]
 
   def index
     query = Link.includes(:author, :feed, :tags)
@@ -17,6 +17,20 @@ class LinksController < ApplicationController
     @links.each do |link|
       Impression.create user: current_user, link: link
     end
+  end
+
+  def favorites
+    query = current_user.links.includes(:author, :feed, :tags)
+
+    query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
+    query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
+    query = query.tagged_with(tags) if tags.any?
+    query = query.where(feed: sources) if sources.any?
+    query = query.where(author: authors) if authors.any?
+
+    query = query.order(sort)
+    @links = query.page(page)
+    render 'index'
   end
 
   def show
