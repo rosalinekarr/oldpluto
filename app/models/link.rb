@@ -22,6 +22,11 @@ class Link < ApplicationRecord
   after_create      :set_expiration
   after_save        :update_tags
 
+  def author_name=(name)
+    name = ActionController::Base.helpers.strip_tags name
+    self.author = Author.find_or_create_by(name: name)
+  end
+
   def corpus
     [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
   end
