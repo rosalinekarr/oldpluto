@@ -4,7 +4,7 @@
 - content_for :title, 'Latest News'   if params[:sort] == 'newest'
 
 .options.btn-toolbar
-  = render 'hours_ago'
+  = render 'hours_ago' unless params[:sort] == 'newest'
   = render 'sort'
 
   - if @source_ids.any?
