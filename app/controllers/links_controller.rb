@@ -3,8 +3,6 @@ class LinksController < ApplicationController
 
   def index
     query = Link.includes(:author, :feed, :tags)
-                .where('tags.taggings_count > 1')
-                .references(:tags)
 
     query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
     query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
