@@ -1,4 +1,6 @@
 class LinksController < ApplicationController
+  before_action :set_advertisement, only: [:index]
+
   def index
     query = Link.includes(:author, :feed, :tags)
 
@@ -13,8 +15,6 @@ class LinksController < ApplicationController
     @links.each do |link|
       Impression.create user: current_user, link: link
     end
-
-    @advertisement = Advertisement.approved.order('RANDOM()').first if page == 1
   end
 
   def show
@@ -34,6 +34,10 @@ class LinksController < ApplicationController
   end
 
   private
+
+  def set_advertisement
+    @advertisement = Advertisement.approved.order('RANDOM()').first if page == 1
+  end
 
   def q
     @q ||= params[:q].present? ? "%#{params[:q]}%" : nil
