@@ -23,6 +23,14 @@ class Link < ApplicationRecord
   after_create      :set_expiration
   after_save        :update_tags
 
+  scope :search, -> (q) {
+    where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
+  }
+  scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
+  scope :tagged, -> (tags) { tagged_with(tags) if tags.any? }
+  scope :from_feeds, -> (ids) { where(feeds: { slug: ids }) if ids.any? }
+  scope :authored_by, -> (ids) { where(authors: { slug: ids }) if ids.any? }
+
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name
     self.author = Author.find_or_create_by(name: name)

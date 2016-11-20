@@ -2,19 +2,15 @@ class LinksController < ApplicationController
   before_action :set_advertisement, only: [:index]
 
   def index
-    query = Link.includes(:author, :feed, :tags)
-
-    query = query.where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
-    query = query.where('published_at > ?', hours_ago.hours.ago) if hours_ago.present?
-    query = query.tagged_with(tags) if tags.any?
-    query = query.where(feeds:   { slug: source_ids }) if source_ids.any?
-    query = query.where(authors: { slug: author_ids }) if author_ids.any?
-
-    query = query.order sort
-    @links = query.page page
-    @links.each do |link|
-      Impression.create user: current_user, link: link
-    end
+    @links = Link.includes(:author, :feed, :tags)
+                 .search(q)
+                 .since(hours_ago)
+                 .tagged(tags)
+                 .from_feeds(source_ids)
+                 .authored_by(author_ids)
+                 .order(sort)
+                 .page page
+    @links.each{ |link| Impression.create user: current_user, link: link }
   end
 
   def show
