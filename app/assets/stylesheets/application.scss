@@ -53,19 +53,31 @@ body {
 }
 
 .links, .advertisements {
-  padding-bottom: 20px;
+  padding: 0 0 20px 20px;
   border-bottom: 1px solid #EEEEEE;
   color: $brand-primary;
+
+  @media screen and (min-width: $screen-sm) {
+    padding: 0 0 20px 40px;
+  }
 }
 
 .link, .advertisement {
-  font-size: 1.2em;
+  font-size: 1.4em;
   color: $text-color;
+
+  @media screen and (min-width: $screen-sm) {
+    font-size: 1.2em;
+  }
 }
 
 .details {
   margin: 0 0 1em 0;
-  font-size: 0.8em;
+  font-size: 1em;
+
+  @media screen and (min-width: $screen-sm) {
+    font-size: 0.8em;
+  }
 }
 
 .options {
