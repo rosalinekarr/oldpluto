@@ -2,13 +2,14 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @favorites = current_user.links.includes(:author, :feed, :tags)
-                             .since(hours_ago)
-                             .tagged(tags)
-                             .from_feeds(source_ids)
-                             .authored_by(author_ids)
-                             .order(sort)
-                             .page page
+    @links = current_user.links.includes(:author, :feed, :tags)
+                               .since(hours_ago)
+                               .tagged(tags)
+                               .from_feeds(source_ids)
+                               .authored_by(author_ids)
+                               .order(sort)
+                               .page page
+    render 'links/index'
   end
 
   def create

@@ -1,0 +1,7 @@
+.text-center
+  - if @links.total_pages == 1
+    p.end-of-results
+      = 'There\'s no more results. '
+      = link_to 'Click here to view all news.', links_path
+  - else
+    = paginate @links

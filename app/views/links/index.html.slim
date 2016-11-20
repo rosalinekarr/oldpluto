@@ -2,15 +2,15 @@
 - content_for :title, 'Popular News'  if params[:sort] == 'popular'
 - content_for :title, 'Trending News' if params[:sort] == 'trending'
 - content_for :title, 'Latest News'   if params[:sort] == 'newest'
+- content_for :title, 'My Favorites'  if controller == 'favorites'
 
-= render 'options'
+= render 'links/options'
 
 - if @links.any?
   ol.links start=(@page * 25 - (@advertisement.present? ? 25 : 24))
     = render @advertisement if @advertisement.present?
-    = render partial: 'link', collection: @links
+    = render partial: 'links/link', collection: @links
 - else
   .no-results No Results.
 
-.text-center
-  = paginate @links
+= render 'links/pagination'
