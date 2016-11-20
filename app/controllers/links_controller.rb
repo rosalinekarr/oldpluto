@@ -86,10 +86,6 @@ class LinksController < ApplicationController
     @author_ids ||= params[:authors] || []
   end
 
-  def page
-    @page ||= params[:page].try(:to_i) || 1
-  end
-
   def sort
     @sort ||= begin
       if params[:sort] == 'popular'

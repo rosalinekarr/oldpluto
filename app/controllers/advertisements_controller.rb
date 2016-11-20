@@ -29,8 +29,4 @@ class AdvertisementsController < ApplicationController
   def advertisement_params
     params.require(:advertisement).permit(:title, :url)
   end
-
-  def page
-    @page ||= params[:page].try(:to_i) || 1
-  end
 end
