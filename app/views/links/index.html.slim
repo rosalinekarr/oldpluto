@@ -3,30 +3,7 @@
 - content_for :title, 'Trending News' if params[:sort] == 'trending'
 - content_for :title, 'Latest News'   if params[:sort] == 'newest'
 
-.options.btn-toolbar
-  = render 'hours_ago' unless params[:sort] == 'newest'
-  = render 'sort'
-
-  - if @source_ids.any?
-    .btn-group
-      - @source_ids.each do |source|
-        = link_to params.merge(sources: (@source_ids - [source])).permit!,
-                  class: 'btn btn-default' do
-          = "#{source.titleize} ×"
-
-  - if @author_ids.any?
-    .btn-group
-      - @author_ids.each do |author|
-        = link_to params.merge(authors: (@author_ids - [author])).permit!,
-                  class: 'btn btn-default' do
-          = "#{author.titleize} ×"
-
-  - if @tags.any?
-    .btn-group
-      - @tags.each do |tag|
-        = link_to params.merge(tags: (@tags - [tag])).permit!,
-                  class: 'btn btn-default' do
-          = "##{tag.titleize} ×"
+= render 'options'
 
 - if @links.any?
   ol.links start=(@page * 25 - (@advertisement.present? ? 25 : 24))

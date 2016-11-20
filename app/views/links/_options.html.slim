@@ -1,0 +1,24 @@
+.options.btn-toolbar
+  = render 'links/hours_ago' unless params[:sort] == 'newest'
+  = render 'links/sort'
+
+  - if @source_ids.any?
+    .btn-group
+      - @source_ids.each do |source|
+        = link_to params.merge(sources: (@source_ids - [source])).permit!,
+                  class: 'btn btn-default' do
+          = "#{source.titleize} ×"
+
+  - if @author_ids.any?
+    .btn-group
+      - @author_ids.each do |author|
+        = link_to params.merge(authors: (@author_ids - [author])).permit!,
+                  class: 'btn btn-default' do
+          = "#{author.titleize} ×"
+
+  - if @tags.any?
+    .btn-group
+      - @tags.each do |tag|
+        = link_to params.merge(tags: (@tags - [tag])).permit!,
+                  class: 'btn btn-default' do
+          = "##{tag.titleize} ×"

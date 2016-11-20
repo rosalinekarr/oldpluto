@@ -13,13 +13,13 @@ li
                title: l(link.published_at),
                data: { toggle: 'tooltip', placement: 'bottom' }
     = ' | '
-    = render partial: 'share', locals: { link: link }
+    = render partial: 'links/share', locals: { link: link }
     - if user_signed_in?
       = ' | '
-      - if link.favorited? current_user
-        = link_to 'Unfavorite', link_unfavorite_path(link), method: :post
+      - if favorite = current_user.favorites.where(link: link).first
+        = link_to 'Unfavorite', favorite_path(favorite), method: :delete
       - else
-        = link_to 'Favorite', link_favorite_path(link), method: :post
+        = link_to 'Favorite', favorites_path(favorite: { link_id: link.id }), method: :post
     - if link.tags.any?
       = ' |'
       - link.tags.pluck(:name).each do |tag|
