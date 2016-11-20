@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resources :advertisements, except: [:show, :edit, :update]
+  #resources :advertisements, except: [:show, :edit, :update]
   resources :favorites,      only:   [:index, :create, :destroy]
   resources :links,          only:   [:index, :show] do
     get  '/share/:network', to: 'links#share',      as: 'share'
