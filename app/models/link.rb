@@ -23,11 +23,13 @@ class Link < ApplicationRecord
   after_create      :set_expiration
   after_save        :update_tags
 
-  scope :search, -> (q) {
-    where('links.title LIKE ? OR links.body LIKE ?', q, q) if q.present?
+  scope :search, -> (terms) {
+    terms.inject(self) do |query, term|
+      expression = "%#{term}%"
+      query.where('links.title LIKE ? OR links.body LIKE ?', expression, expression)
+    end
   }
   scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
-  scope :tagged, -> (tags) { tagged_with(tags) if tags.any? }
   scope :from_feeds, -> (ids) { where(feeds: { slug: ids }) if ids.any? }
   scope :authored_by, -> (ids) { where(authors: { slug: ids }) if ids.any? }
 

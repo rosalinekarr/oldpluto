@@ -5,7 +5,6 @@ class LinksController < ApplicationController
     @links = Link.includes(:author, :feed, :tags)
                  .search(q)
                  .since(hours_ago)
-                 .tagged(tags)
                  .from_feeds(source_ids)
                  .authored_by(author_ids)
                  .order(sort)
@@ -36,6 +35,6 @@ class LinksController < ApplicationController
   end
 
   def q
-    @q ||= params[:q].present? ? "%#{params[:q]}%" : nil
+    @q ||= (params[:q] || '').split
   end
 end

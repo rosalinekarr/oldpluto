@@ -24,4 +24,4 @@ li
       = ' |'
       - link.tags.pluck(:name).each do |tag|
         = ' '
-        = link_to "##{tag.titleize}", params.merge(tags: (@tags + [tag])).permit!
+        = link_to "##{tag.titleize}", params.merge(q: (@q + [tag]).join(' ')).permit!

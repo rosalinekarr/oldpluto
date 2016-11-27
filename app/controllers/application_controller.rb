@@ -7,10 +7,6 @@ class ApplicationController < ActionController::Base
     @hours_ago ||= params[:hours_ago].to_i if params[:hours_ago].present?
   end
 
-  def tags
-    @tags ||= params[:tags] || []
-  end
-
   def source_ids
     @source_ids ||= params[:sources] || []
   end

@@ -15,10 +15,3 @@
         = link_to params.merge(authors: (@author_ids - [author])).permit!,
                   class: 'btn btn-default' do
           = "#{author.titleize} ×"
-
-  - if @tags.any?
-    .btn-group
-      - @tags.each do |tag|
-        = link_to params.merge(tags: (@tags - [tag])).permit!,
-                  class: 'btn btn-default' do
-          = "##{tag.titleize} ×"
