@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Link, type: :model do
-  it 'creates a UpdateLinkTagsJob after create' do
-    expect{ create :link }.to change{
-      Delayed::Job.where('handler LIKE ?', '%UpdateLinkTagsJob%').count
-    }.by(1)
-  end
-
   it 'creates a DestroyLinkJob after create' do
     expect{ create :link }.to change{
       Delayed::Job.where('handler LIKE ?', '%DestroyLinkJob%').count

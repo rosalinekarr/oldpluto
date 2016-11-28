@@ -1,8 +1,6 @@
 require 'htmlentities'
 
 class Link < ApplicationRecord
-  acts_as_taggable
-
   delegate :title, to: :feed, prefix: true
 
   has_many   :clicks,      dependent: :destroy
@@ -21,7 +19,6 @@ class Link < ApplicationRecord
   before_save       :set_score
   after_create      :increment_word_counts
   after_create      :set_expiration
-  after_save        :update_tags
 
   scope :search, -> (terms) {
     terms.inject(self) do |query, term|
@@ -44,6 +41,10 @@ class Link < ApplicationRecord
 
   def favorited?(user)
     Favorite.where(user: user, link: self).any?
+  end
+
+  def tags
+    corpus.sort_by { |tag| $redis.get("tags:#{tag}:click_count").to_i }.first(5)
   end
 
   private
@@ -69,10 +70,6 @@ class Link < ApplicationRecord
 
   def increment_word_counts
     corpus.each{ |tag| $redis.incr("tags:#{tag}:count") }
-  end
-
-  def update_tags
-    UpdateLinkTagsJob.perform_later(self.id) if title_changed? || body_changed?
   end
 
   def set_expiration
