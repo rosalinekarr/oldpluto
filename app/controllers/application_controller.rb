@@ -21,8 +21,6 @@ class ApplicationController < ActionController::Base
         'shares_count + clicks_count desc'
       elsif params[:sort] == 'newest'
         'published_at desc'
-      elsif params[:sort] == 'trending'
-        'score / (impressions_count + 1.0) desc'
       else
         '(shares_count + clicks_count) * 3600.0 / extract (\'epoch\' from (current_timestamp - published_at)) desc'
       end
