@@ -43,7 +43,8 @@ class Link < ApplicationRecord
   end
 
   def tags
-    corpus.sort_by { |tag| $redis.get("tags:#{tag}:click_count").to_i }.first(5)
+    $redis.zinterstore("links:#{id}:global_corpus", ['links:all:corpus', "links:#{id}:corpus"], weights: [1, 1])
+    $redis.zrangebyscore("links:#{id}:global_corpus", 0, '+inf', limit: [0, 5])
   end
 
   private
@@ -61,7 +62,8 @@ class Link < ApplicationRecord
   end
 
   def increment_word_counts
-    corpus.each{ |tag| $redis.incr("tags:#{tag}:count") }
+    corpus.each{ |tag| $redis.zincrby("links:#{id}:corpus", 1, tag) }
+    $redis.zunionstore('links:all:corpus', ['links:all:corpus', "links:#{id}:corpus"], weights: [1, 1])
   end
 
   def set_expiration
