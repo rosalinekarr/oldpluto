@@ -32,16 +32,4 @@ RSpec.describe Link, type: :model do
       expect(link.body).to eq('Cats and Dogs')
     end
   end
-
-  describe '#corpus' do
-    it 'returns an array of words including the title' do
-      link = create :link, title: 'testword'
-      expect(link.corpus).to include('testword')
-    end
-
-    it 'returns an array of words including the body' do
-      link = create :link, body: 'testword'
-      expect(link.corpus).to include('testword')
-    end
-  end
 end

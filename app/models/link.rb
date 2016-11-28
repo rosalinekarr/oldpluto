@@ -38,19 +38,13 @@ class Link < ApplicationRecord
     self.author = Author.find_or_create_by(name: name)
   end
 
-  def corpus
-    [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-  end
-
   def favorited?(user)
     Favorite.where(user: user, link: self).any?
   end
 
   def tags
     @tags ||= begin
-      corpus.sort_by{ |lexeme|
-        $redis.zrank('en-US', lexeme).try(:to_i) || 0
-      }.first(5)
+      $redis.zrangebyscore('en-US', 2, 100) & title.scan(/[A-Za-z]+/).map(&:downcase)
     end
   end
 
@@ -69,7 +63,9 @@ class Link < ApplicationRecord
   end
 
   def increment_word_counts
-    corpus.each{ |lexeme| $redis.zincrby('en-US', 1, lexeme) }
+    [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase).each do |lexeme|
+      $redis.zincrby('en-US', 1, lexeme)
+    end
   end
 
   def set_expiration
