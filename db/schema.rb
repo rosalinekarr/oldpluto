@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161119214608) do
+ActiveRecord::Schema.define(version: 20161128014024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "citext"
 
   create_table "advertisements", force: :cascade do |t|
     t.string   "title"
@@ -89,12 +90,12 @@ ActiveRecord::Schema.define(version: 20161119214608) do
   end
 
   create_table "links", force: :cascade do |t|
-    t.string   "title",                         null: false
+    t.citext   "title",                         null: false
     t.string   "url",                           null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "feed_id"
-    t.text     "body"
+    t.citext   "body"
     t.datetime "published_at"
     t.integer  "clicks_count",      default: 0, null: false
     t.integer  "shares_count",      default: 0, null: false
@@ -108,7 +109,6 @@ ActiveRecord::Schema.define(version: 20161119214608) do
     t.index ["impressions_count"], name: "index_links_on_impressions_count", using: :btree
     t.index ["published_at"], name: "index_links_on_published_at", using: :btree
     t.index ["shares_count"], name: "index_links_on_shares_count", using: :btree
-    t.index ["title"], name: "index_links_on_title", unique: true, using: :btree
     t.index ["url"], name: "index_links_on_url", unique: true, using: :btree
   end
 
