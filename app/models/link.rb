@@ -65,9 +65,9 @@ class Link < ApplicationRecord
   end
 
   def increment_word_counts
-    [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase).each do |lexeme|
-      $redis.zincrby('en-US', 1, lexeme)
-    end
+    corpus = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    return if corpus.empty?
+    $redis.zadd('en-US', corpus.uniq.map{ |word| [corpus.count(word), word] })
   end
 
   def set_expiration
