@@ -33,6 +33,10 @@ class Link < ApplicationRecord
     includes(:feed).where(feeds: { slug: ids }).references(:feed) if ids.any?
   }
 
+  def self.popular_tags
+    @popular_tags ||= $redis.zrangebyscore('en-US', 2, 100)
+  end
+
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name
     self.author = Author.find_or_create_by(name: name)
@@ -43,9 +47,7 @@ class Link < ApplicationRecord
   end
 
   def tags
-    @tags ||= begin
-      $redis.zrangebyscore('en-US', 2, 100) & title.scan(/[A-Za-z]+/).map(&:downcase)
-    end
+    @tags ||= Link.popular_tags & title.scan(/[A-Za-z]+/).map(&:downcase)
   end
 
   private
