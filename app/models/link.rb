@@ -33,10 +33,6 @@ class Link < ApplicationRecord
     includes(:feed).where(feeds: { slug: ids }).references(:feed) if ids.any?
   }
 
-  def self.popular_tags
-    @popular_tags ||= $redis.zrangebyscore('en-US', 2, 100)
-  end
-
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name
     self.author = Author.find_or_create_by(name: name)
@@ -47,7 +43,12 @@ class Link < ApplicationRecord
   end
 
   def tags
-    @tags ||= Link.popular_tags & title.scan(/[A-Za-z]+/).map(&:downcase)
+    @tags ||= begin
+      $redis.zinterstore("en-US:#{id}:temp", ['en-US', "en-US:#{id}"], aggregate: 'max')
+      tags = $redis.zrangebyscore("en-US:#{id}:temp", 2, '+inf', limit: [0, 5])
+      $redis.del("en-US:#{id}:temp")
+      tags
+    end
   end
 
   private
@@ -67,7 +68,9 @@ class Link < ApplicationRecord
   def increment_word_counts
     corpus = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
     return if corpus.empty?
-    $redis.zadd('en-US', corpus.uniq.map{ |word| [corpus.count(word), word] })
+    counts = corpus.uniq.map{ |word| [corpus.count(word), word] }
+    $redis.zadd("en-US:#{id}", counts)
+    $redis.zunionstore('en-US', ['en-US', "en-US:#{id}"])
   end
 
   def set_expiration
