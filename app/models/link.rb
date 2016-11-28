@@ -47,7 +47,9 @@ class Link < ApplicationRecord
   end
 
   def tags
-    corpus.sort_by{ |lexeme| $redis.zrank('en-US', lexeme) }.first(5)
+    corpus.sort_by{ |lexeme|
+      $redis.zrank('en-US', lexeme).try(:to_i) || 0
+    }.first(5)
   end
 
   private
