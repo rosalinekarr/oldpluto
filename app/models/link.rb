@@ -14,7 +14,7 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
-  before_validation :sanitized_attributes
+  before_validation :sanitize_attributes
   before_validation :fix_post_dated_links
   after_create      :increment_word_counts
   after_create      :set_expiration
@@ -56,7 +56,7 @@ class Link < ApplicationRecord
     self.published_at = [published_at, DateTime.now].compact.min
   end
 
-  def sanitized_attributes
+  def sanitize_attributes
     self.title = ActionController::Base.helpers.strip_tags(title)
     self.body  = ActionController::Base.helpers.strip_tags(body)
 
