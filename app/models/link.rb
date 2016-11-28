@@ -26,8 +26,12 @@ class Link < ApplicationRecord
     end
   }
   scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
-  scope :from_feeds, -> (ids) { where(feeds: { slug: ids }) if ids.any? }
-  scope :authored_by, -> (ids) { where(authors: { slug: ids }) if ids.any? }
+  scope :authored_by, -> (ids) {
+    includes(:author).where(authors: { slug: ids }).references(:author) if ids.any?
+  }
+  scope :from_feeds, -> (ids) {
+    includes(:feed).where(feeds: { slug: ids }).references(:feed) if ids.any?
+  }
 
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name
