@@ -7,6 +7,6 @@ class Click < ApplicationRecord
   private
 
   def increment_word_click_counts
-    IncrementWordClickCountsJob.perform_later(link_id)
+    link.corpus.each{ |tag| $redis.incr("tags:#{tag}:click_count") }
   end
 end

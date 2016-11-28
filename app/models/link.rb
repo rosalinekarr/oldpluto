@@ -68,7 +68,7 @@ class Link < ApplicationRecord
   end
 
   def increment_word_counts
-    IncrementWordCountsJob.perform_later(self.id)
+    corpus.each{ |tag| $redis.incr("tags:#{tag}:count") }
   end
 
   def update_tags
