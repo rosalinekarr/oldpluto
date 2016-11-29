@@ -44,10 +44,14 @@ class Link < ApplicationRecord
 
   def tags
     @tags ||= begin
-      $redis.zinterstore("en-US:#{id}:temp", ['en-US', "en-US:#{id}"], aggregate: 'max')
-      tags = $redis.zrangebyscore("en-US:#{id}:temp", 2, '+inf', limit: [0, 5])
-      $redis.del("en-US:#{id}:temp")
-      tags
+      unless $redis.exists("en-US:#{id}:temp")
+        words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+        $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
+        $redis.zinterstore("en-US:#{id}:temp", ['en-US', "en-US:#{id}"], aggregate: 'max')
+        $redis.expire("en-US:#{id}", 60)
+        $redis.expire("en-US:#{id}:temp", 60)
+      end
+      $redis.zrangebyscore("en-US:#{id}:temp", 2, '+inf', limit: [0, 5])
     end
   end
 
@@ -66,10 +70,9 @@ class Link < ApplicationRecord
   end
 
   def increment_word_counts
-    corpus = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    return if corpus.empty?
-    counts = corpus.uniq.map{ |word| [corpus.count(word), word] }
-    $redis.zadd("en-US:#{id}", counts)
+    words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
+    $redis.expire("en-US:#{id}", 60)
     $redis.zunionstore('en-US', ['en-US', "en-US:#{id}"])
   end
 
