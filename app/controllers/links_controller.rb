@@ -8,7 +8,9 @@ class LinksController < ApplicationController
                  .authored_by(author_ids)
                  .order(sort)
                  .page page
-    @links.each{ |link| Impression.create user: current_user, link: link }
+    Impression.transaction do
+      @links.each{ |link| Impression.create user: current_user, link: link }
+    end
   end
 
   def show
