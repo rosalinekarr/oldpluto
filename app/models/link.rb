@@ -33,6 +33,10 @@ class Link < ApplicationRecord
     includes(:feed).where(feeds: { slug: ids }).references(:feed) if ids.any?
   }
 
+  def self.tag_ttl
+    @tag_ttl ||= (30000 / $redis.dbsize.to_i)
+  end
+
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name
     self.author = Author.find_or_create_by(name: name)
@@ -48,8 +52,8 @@ class Link < ApplicationRecord
         words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
         $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
         $redis.zinterstore("en-US:#{id}:temp", ['en-US', "en-US:#{id}"], aggregate: 'max')
-        $redis.expire("en-US:#{id}", (30000 / $redis.dbsize.to_i))
-        $redis.expire("en-US:#{id}:temp", (30000 / $redis.dbsize.to_i))
+        $redis.expire("en-US:#{id}", Link.tag_ttl)
+        $redis.expire("en-US:#{id}:temp", Link.tag_ttl)
       end
       $redis.zrangebyscore("en-US:#{id}:temp", 2, '+inf', limit: [0, 5])
     end
@@ -73,7 +77,7 @@ class Link < ApplicationRecord
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
     return if words.empty?
     $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
-    $redis.expire("en-US:#{id}", (30000 / $redis.dbsize.to_i))
+    $redis.expire("en-US:#{id}", Link.tag_ttl)
     $redis.zunionstore('en-US', ['en-US', "en-US:#{id}"])
   end
 
