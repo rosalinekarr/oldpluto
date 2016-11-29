@@ -48,8 +48,8 @@ class Link < ApplicationRecord
         words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
         $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
         $redis.zinterstore("en-US:#{id}:temp", ['en-US', "en-US:#{id}"], aggregate: 'max')
-        $redis.expire("en-US:#{id}", 60)
-        $redis.expire("en-US:#{id}:temp", 60)
+        $redis.expire("en-US:#{id}", (30000 / $redis.dbsize.to_i))
+        $redis.expire("en-US:#{id}:temp", (30000 / $redis.dbsize.to_i))
       end
       $redis.zrangebyscore("en-US:#{id}:temp", 2, '+inf', limit: [0, 5])
     end
@@ -71,8 +71,9 @@ class Link < ApplicationRecord
 
   def increment_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    return if words.empty?
     $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
-    $redis.expire("en-US:#{id}", 60)
+    $redis.expire("en-US:#{id}", (30000 / $redis.dbsize.to_i))
     $redis.zunionstore('en-US', ['en-US', "en-US:#{id}"])
   end
 
