@@ -48,14 +48,14 @@ class Link < ApplicationRecord
 
   def tags
     @tags ||= begin
-      unless $redis.exists("en-US:#{id}:temp")
+      key = "en-US:#{id}"
+      unless $redis.exists(key)
         words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-        $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
-        $redis.zinterstore("en-US:#{id}:temp", ['en-US', "en-US:#{id}"], aggregate: 'max')
-        $redis.expire("en-US:#{id}", Link.tag_ttl)
-        $redis.expire("en-US:#{id}:temp", Link.tag_ttl)
+        $redis.zadd(key, words.uniq.map{ |word| [words.count(word), word] })
+        $redis.zinterstore(key, ['en-US', key], aggregate: 'max')
+        $redis.expire(key, Link.tag_ttl)
       end
-      $redis.zrangebyscore("en-US:#{id}:temp", 2, '+inf', limit: [0, 5])
+      $redis.zrangebyscore(key, 2, '+inf', limit: [0, 5])
     end
   end
 
