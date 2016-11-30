@@ -20,18 +20,14 @@ class Link < ApplicationRecord
   after_create      :set_expiration
 
   scope :search, -> (terms) {
-    terms.inject(self) do |query, term|
-      expression = "%#{term}%"
-      query.where('links.title LIKE ? OR links.body LIKE ?', expression, expression)
+    if terms.any?
+      query = (['links.title LIKE ? OR links.body LIKE ?'] * terms.count).join(' OR ')
+      where(*([query, terms.map{ |term| ["%#{term}%"] * 2 }].flatten))
     end
   }
   scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
-  scope :authored_by, -> (ids) {
-    includes(:author).where(authors: { slug: ids }).references(:author) if ids.any?
-  }
-  scope :from_feeds, -> (ids) {
-    includes(:feed).where(feeds: { slug: ids }).references(:feed) if ids.any?
-  }
+  scope :authored_by, -> (ids) { where(authors: { slug: ids })  if ids.any? }
+  scope :from_feeds,  -> (ids) { where(feeds: { slug: ids })    if ids.any? }
 
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name

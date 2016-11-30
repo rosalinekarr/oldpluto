@@ -1,12 +1,12 @@
 li
   = link_to link.title, link_path(link), class: 'link', rel: 'noopener nofollow', target: '_blank'
   .details
-    = link_to link.feed_title,
-              params.merge(sources: (@source_ids + [link.feed.slug])).permit!
+    = link_to link.feed.title,
+              params.merge(sources: (@source_ids + [link.feed.title.parameterize])).permit!
     - if link.author.present?
       = ' | '
       = link_to link.author.name,
-                params.merge(authors: (@author_ids + [link.author.slug])).permit!
+                params.merge(authors: (@author_ids + [link.author.name.parameterize])).permit!
     = ' | '
     = time_tag link.published_at,
                "#{time_ago_in_words(link.published_at)} ago",
