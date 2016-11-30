@@ -124,6 +124,7 @@ GEM
     gherkin (4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    hiredis (0.6.1)
     htmlentities (4.3.4)
     i18n (0.7.0)
     jbuilder (2.6.0)
@@ -286,6 +287,7 @@ DEPENDENCIES
   feedjira
   figaro
   friendly_id
+  hiredis
   htmlentities
   jbuilder (~> 2.5)
   jquery-rails
