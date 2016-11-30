@@ -1,14 +1,10 @@
 .btn-group.share-options
   = link_to 'Share', '#', class: 'dropdown-toggle', data: { toggle: 'dropdown' }
   ul.dropdown-menu
-    li = link_to 'Facebook', link_share_path(link, 'facebook'),       rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Twitter', link_share_path(link, 'twitter'),         rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Google+', link_share_path(link, 'google'),          rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Reddit', link_share_path(link, 'reddit'),           rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Tumblr', link_share_path(link, 'tumblr'),           rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Pinterest', link_share_path(link, 'pinterest'),     rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'LinkedIn', link_share_path(link, 'linkedin'),       rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Buffer', link_share_path(link, 'buffer'),           rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Digg', link_share_path(link, 'digg'),               rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'StumbleUpon', link_share_path(link, 'stumbleupon'), rel: 'nofollow noopener', target: '_blank'
-    li = link_to 'Delicious', link_share_path(link, 'delicious'),     rel: 'nofollow noopener', target: '_blank'
+    - ['Facebook', 'Twitter', 'Google+', 'Reddit', 'Tumblr', 'Pinterest',
+       'LinkedIn', 'Buffer', 'Digg', 'StumbleUpon',
+       'Delicious'].each do |network|
+      li = link_to network,
+                   link_share_path(link, network.parameterize),
+                   rel: 'nofollow noopener',
+                   target: '_blank'
