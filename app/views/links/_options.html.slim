@@ -5,13 +5,13 @@
   - if @source_ids.any?
     .btn-group
       - @source_ids.each do |source|
-        = link_to params.merge(sources: (@source_ids - [source])).permit!,
-                  class: 'btn btn-default' do
-          = "#{source.titleize} ×"
+        = link_to "#{source.titleize} ×",
+                  remove_source_path(source),
+                  class: 'btn btn-default'
 
   - if @author_ids.any?
     .btn-group
       - @author_ids.each do |author|
-        = link_to params.merge(authors: (@author_ids - [author])).permit!,
-                  class: 'btn btn-default' do
-          = "#{author.titleize} ×"
+        = link_to "#{author.titleize} ×",
+                  remove_author_path(author),
+                  class: 'btn btn-default'

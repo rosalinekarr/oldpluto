@@ -14,6 +14,16 @@ module ApplicationHelper
     url_for(path_params.merge(sources: sources))
   end
 
+  def remove_author_path(author)
+    authors = (params[:authors] || []) - [author]
+    url_for(path_params.merge(authors: authors))
+  end
+
+  def remove_source_path(source)
+    sources = (params[:sources] || []) - [source]
+    url_for(path_params.merge(sources: sources))
+  end
+
   private
 
   def path_params
