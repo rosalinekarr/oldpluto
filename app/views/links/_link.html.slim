@@ -1,8 +1,7 @@
 li
   = link_to link.title, link_path(link), class: 'link', rel: 'noopener nofollow', target: '_blank'
   .details
-    = link_to link.feed.title,
-              params.merge(sources: (@source_ids + [link.feed.title.parameterize])).permit!
+    = link_to link.feed.title, source_path(link.feed.title)
     - if link.author.present?
       = ' | '
       = link_to link.author.name, author_path(link.author.name)

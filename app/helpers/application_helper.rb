@@ -9,6 +9,11 @@ module ApplicationHelper
     url_for(path_params.merge(authors: authors))
   end
 
+  def source_path(feed_title)
+    sources = (params[:sources] || []) + [feed_title.parameterize]
+    url_for(path_params.merge(sources: sources))
+  end
+
   private
 
   def path_params
