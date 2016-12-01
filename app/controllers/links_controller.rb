@@ -39,6 +39,6 @@ class LinksController < ApplicationController
   end
 
   def q
-    @q ||= (params[:q] || '').split
+    params[:q].try(:split) || []
   end
 end

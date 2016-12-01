@@ -24,4 +24,4 @@ li
       = ' |'
       - link.tags.each do |tag|
         = ' '
-        = link_to "##{tag.titleize}", params.merge(q: (@q + [tag]).join(' ')).permit!
+        = link_to "##{tag.titleize}", tag_path(tag)
