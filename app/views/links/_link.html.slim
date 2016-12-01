@@ -5,8 +5,7 @@ li
               params.merge(sources: (@source_ids + [link.feed.title.parameterize])).permit!
     - if link.author.present?
       = ' | '
-      = link_to link.author.name,
-                params.merge(authors: (@author_ids + [link.author.name.parameterize])).permit!
+      = link_to link.author.name, author_path(link.author.name)
     = ' | '
     = time_tag link.published_at,
                "#{time_ago_in_words(link.published_at)} ago",
