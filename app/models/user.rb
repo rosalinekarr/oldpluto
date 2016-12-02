@@ -10,6 +10,5 @@ class User < ApplicationRecord
   has_many :links,     through: :favorites
 
   has_many :clicks
-  has_many :impressions
   has_many :shares
 end

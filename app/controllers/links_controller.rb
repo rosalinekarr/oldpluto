@@ -10,10 +10,6 @@ class LinksController < ApplicationController
                  .references(:author, :feed)
                  .order(sort)
                  .page page
-
-    Impression.transaction do
-      @links.each{ |link| Impression.create user: current_user, link: link }
-    end
   end
 
   def show

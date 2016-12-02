@@ -4,7 +4,6 @@ class Link < ApplicationRecord
   delegate :title, to: :feed, prefix: true
 
   has_many   :clicks,      dependent: :destroy
-  has_many   :impressions, dependent: :destroy
   has_many   :shares,      dependent: :destroy
   has_many   :favorites,   dependent: :destroy
   has_many   :users,       through: :favorites
