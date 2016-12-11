@@ -17,6 +17,7 @@ class Link < ApplicationRecord
   before_validation :fix_post_dated_links
   after_create      :set_expiration
   after_create      :increment_word_counts
+  before_destroy    :decrement_word_counts
 
   scope :search, -> (terms) {
     if terms.any?
@@ -39,7 +40,7 @@ class Link < ApplicationRecord
 
   def tags
     @tags ||= begin
-      key = "en-US:#{id}"
+      key = "corpus:#{id}"
       words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
       $redis.zadd(key, words.uniq.map{ |word| [words.count(word), word] })
       $redis.zinterstore(key, ['clicks', key], aggregate: 'max')
@@ -53,11 +54,21 @@ class Link < ApplicationRecord
 
   def increment_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    word_counts = words.uniq.map{ |word| [words.count(word), word] }
     return if words.empty?
+    word_counts = words.uniq.map{ |word| [words.count(word), word] }
     $redis.zadd("corpus:#{id}", word_counts)
     $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
     $redis.expire("corpus:#{id}", 0)
+  end
+
+  def decrement_word_counts
+    words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    return if words.empty?
+    word_counts = words.uniq.map{ |word| [-words.count(word), word] }
+    $redis.zadd("corpus:#{id}", word_counts)
+    $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
+    $redis.expire("corpus:#{id}", 0)
+    $redis.zremrangebyscore('corpus', 0, 0)
   end
 
   def fix_post_dated_links
