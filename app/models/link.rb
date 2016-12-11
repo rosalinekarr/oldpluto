@@ -15,7 +15,6 @@ class Link < ApplicationRecord
 
   before_validation :sanitize_attributes
   before_validation :fix_post_dated_links
-  after_create      :increment_word_counts
   after_create      :set_expiration
 
   scope :search, -> (terms) {
@@ -61,14 +60,6 @@ class Link < ApplicationRecord
 
     self.title = HTMLEntities.new.decode(title)
     self.body  = HTMLEntities.new.decode(body)
-  end
-
-  def increment_word_counts
-    words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    return if words.empty?
-    $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
-    $redis.zunionstore('en-US', ['en-US', "en-US:#{id}"])
-    $redis.expire("en-US:#{id}", 0)
   end
 
   def set_expiration
