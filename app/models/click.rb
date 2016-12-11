@@ -7,9 +7,13 @@ class Click < ApplicationRecord
   private
 
   def increment_click_counts
-    words = [link.title, link.body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    words = [link.title, link.body].join(' ')
+                                   .scan(/[A-Za-z]+/)
+                                   .map(&:downcase)
+                                   .uniq
+                                   .map{ |word| [1, word] }
     return if words.empty?
-    $redis.zadd("clicks:#{id}", words.uniq.map{ |word| [words.count(word), word] })
+    $redis.zadd("clicks:#{id}", words)
     $redis.zunionstore('clicks', ['clicks', "clicks:#{id}"])
     $redis.expire("clicks:#{id}", 0)
   end
