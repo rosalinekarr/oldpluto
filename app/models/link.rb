@@ -16,6 +16,7 @@ class Link < ApplicationRecord
   before_validation :sanitize_attributes
   before_validation :fix_post_dated_links
   after_create      :set_expiration
+  after_create      :increment_word_counts
 
   scope :search, -> (terms) {
     if terms.any?
@@ -49,6 +50,15 @@ class Link < ApplicationRecord
   end
 
   private
+
+  def increment_word_counts
+    words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    word_counts = words.uniq.map{ |word| [words.count(word), word] }
+    return if words.empty?
+    $redis.zadd("corpus:#{id}", word_counts)
+    $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
+    $redis.expire("corpus:#{id}", 0)
+  end
 
   def fix_post_dated_links
     self.published_at = [published_at, DateTime.now].compact.min
