@@ -42,9 +42,9 @@ class Link < ApplicationRecord
     @tags ||= begin
       key = "corpus:#{id}"
       words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-      $redis.zadd(key, words.uniq.map{ |word| [words.count(word), word] })
-      $redis.zinterstore(key, ['clicks', key], aggregate: 'max')
-      tags = $redis.zrangebyscore(key, 2, '+inf', limit: [0, 5])
+      $redis.zadd(key, words.uniq.map{ |word| [0, word] })
+      $redis.zinterstore(key, ['scores', key])
+      tags = $redis.zrevrangebyscore(key, '+inf', '-inf', limit: [0, 5])
       $redis.expire(key, 0)
       tags
     end
@@ -59,6 +59,7 @@ class Link < ApplicationRecord
     $redis.zadd("corpus:#{id}", word_counts)
     $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
     $redis.expire("corpus:#{id}", 0)
+    update_word_scores
   end
 
   def decrement_word_counts
@@ -69,6 +70,19 @@ class Link < ApplicationRecord
     $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
     $redis.expire("corpus:#{id}", 0)
     $redis.zremrangebyscore('corpus', 0, 0)
+    update_word_scores
+  end
+
+  def update_word_scores
+    click_counts = $redis.zrangebyscore('clicks', '-inf', '+inf', withscores: true)
+    word_counts = $redis.zrangebyscore('corpus', '-inf', '+inf', withscores: true)
+    corpus = Hash[*(word_counts.flatten)]
+    scores = click_counts.map do |click_count|
+      [click_count[1] * 1.0 / corpus[click_count[0]], click_count[0]]
+    end
+    return if scores.empty?
+    $redis.expire('scores', 0)
+    $redis.zadd('scores', scores)
   end
 
   def fix_post_dated_links
