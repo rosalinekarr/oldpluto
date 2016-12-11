@@ -59,7 +59,7 @@ class Link < ApplicationRecord
     $redis.zadd("corpus:#{id}", word_counts)
     $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
     $redis.expire("corpus:#{id}", 0)
-    update_word_scores
+    UpdateTagScoresJob.perform_later
   end
 
   def decrement_word_counts
@@ -70,19 +70,7 @@ class Link < ApplicationRecord
     $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
     $redis.expire("corpus:#{id}", 0)
     $redis.zremrangebyscore('corpus', 0, 0)
-    update_word_scores
-  end
-
-  def update_word_scores
-    click_counts = $redis.zrangebyscore('clicks', '-inf', '+inf', withscores: true)
-    word_counts = $redis.zrangebyscore('corpus', '-inf', '+inf', withscores: true)
-    corpus = Hash[*(word_counts.flatten)]
-    scores = click_counts.map do |click_count|
-      [click_count[1] * 1.0 / corpus[click_count[0]], click_count[0]]
-    end
-    return if scores.empty?
-    $redis.expire('scores', 0)
-    $redis.zadd('scores', scores)
+    UpdateTagScoresJob.perform_later
   end
 
   def fix_post_dated_links
