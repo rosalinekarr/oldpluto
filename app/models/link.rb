@@ -42,8 +42,8 @@ class Link < ApplicationRecord
       key = "en-US:#{id}"
       words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
       $redis.zadd(key, words.uniq.map{ |word| [words.count(word), word] })
-      $redis.zinterstore(key, ['en-US', key], aggregate: 'max')
-      tags = $redis.zrangebyscore(key, 2, '+inf', limit: [0, 5])
+      $redis.zinterstore(key, ['clicks', key], aggregate: 'max')
+      tags = $redis.zrevrangebyscore(key, '+inf', 2, limit: [0, 5])
       $redis.expire(key, 0)
       tags
     end
