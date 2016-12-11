@@ -67,8 +67,8 @@ class Link < ApplicationRecord
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
     return if words.empty?
     $redis.zadd("en-US:#{id}", words.uniq.map{ |word| [words.count(word), word] })
-    $redis.expire("en-US:#{id}", 0)
     $redis.zunionstore('en-US', ['en-US', "en-US:#{id}"])
+    $redis.expire("en-US:#{id}", 0)
   end
 
   def set_expiration
