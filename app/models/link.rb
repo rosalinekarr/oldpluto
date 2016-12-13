@@ -40,13 +40,10 @@ class Link < ApplicationRecord
 
   def tags
     @tags ||= begin
-      key = "corpus:#{id}"
       words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-      $redis.zadd(key, words.uniq.map{ |word| [0, word] })
-      $redis.zinterstore(key, ['scores', key])
-      tags = $redis.zrevrangebyscore(key, '+inf', '-inf', limit: [0, 5])
-      $redis.expire(key, 0)
-      tags
+      $redis.zrevrangebyscore('scores', '+inf', '-inf').select{ |tag|
+        words.include? tag
+      }.first(5)
     end
   end
 
