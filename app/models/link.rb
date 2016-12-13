@@ -50,13 +50,13 @@ class Link < ApplicationRecord
   private
 
   def increment_word_counts
-    words = [title, body].join(' ').scan(/[A-Za-z]+/)
-    Tag.increment_tag_counts(words) if words.any?
+    Tag.increment_tag_counts(title.scan(/[A-Za-z]+/))
+    Tag.increment_tag_counts(body.scan(/[A-Za-z]+/))
   end
 
   def decrement_word_counts
-    words = [title, body].join(' ').scan(/[A-Za-z]+/)
-    Tag.decrement_tag_counts(words) if words.any?
+    Tag.decrement_tag_counts(title.scan(/[A-Za-z]+/))
+    Tag.decrement_tag_counts(body.scan(/[A-Za-z]+/))
   end
 
   def fix_post_dated_links

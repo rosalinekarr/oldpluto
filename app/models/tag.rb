@@ -1,22 +1,18 @@
 class Tag
   def self.increment_tag_counts(words)
-    word_counts = words.uniq.map{ |word| [ words.count(word), word ] }
-    Tag.update_set_counts('corpus', word_counts)
+    Tag.update_set_counts('corpus', Tag.tags_from_words(words)) if words.any?
   end
 
   def self.decrement_tag_counts(words)
-    word_counts = words.uniq.map{ |word| [ -words.count(word), word ] }
-    Tag.update_set_counts('corpus', word_counts)
+    Tag.update_set_counts('corpus', Tag.tags_from_words(words, -1)) if words.any?
   end
 
   def self.increment_click_counts(words)
-    word_counts = words.uniq.map{ |word| [ words.count(word), word ] }
-    Tag.update_set_counts('clicks', word_counts)
+    Tag.update_set_counts('clicks', Tag.tags_from_words(words)) if words.any?
   end
 
   def self.decrement_click_counts(words)
-    word_counts = words.uniq.map{ |word| [ -words.count(word), word ] }
-    Tag.update_set_counts('clicks', word_counts)
+    Tag.update_set_counts('clicks', Tag.tags_from_words(words, -1)) if words.any?
   end
 
   def self.update_set_counts(set, counts)
@@ -34,5 +30,9 @@ class Tag
       [click_count[1] * 1.0 / corpus[click_count[0]], click_count[0]]
     end
     $redis.zadd('scores', scores)
+  end
+
+  def self.tags_from_words(words, weight=1)
+    words.uniq.map{ |word| [ weight * words.count(word), word ] }
   end
 end
