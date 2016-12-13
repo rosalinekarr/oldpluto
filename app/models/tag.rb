@@ -1,8 +1,6 @@
-class DecrementSetCountsJob < ApplicationJob
-  queue_as :tags
-
-  def perform(set, words)
-    word_counts = words.uniq.map{ |word| [-words.count(word), word] }
+class Tag
+  def self.update_tag_counts(set, words, weight=1)
+    word_counts = words.uniq.map{ |word| [ weight * words.count(word), word ] }
     $redis.zadd("#{set}:temp", word_counts)
     $redis.zunionstore(set, [set, "#{set}:temp"])
     $redis.expire("#{set}:temp", 0)
