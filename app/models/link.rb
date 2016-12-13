@@ -51,12 +51,12 @@ class Link < ApplicationRecord
 
   def increment_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    IncrementWordCountsJob.perform_later(*words) if words.any?
+    IncrementSetCountsJob.perform_later('corpus', words) if words.any?
   end
 
   def decrement_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    DecrementWordCountsJob.perform_later(*words) if words.any?
+    DecrementSetCountsJob.perform_later('corpus', words) if words.any?
   end
 
   def fix_post_dated_links
