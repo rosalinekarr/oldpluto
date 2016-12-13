@@ -56,13 +56,7 @@ class Link < ApplicationRecord
 
   def decrement_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    return if words.empty?
-    word_counts = words.uniq.map{ |word| [-words.count(word), word] }
-    $redis.zadd("corpus:#{id}", word_counts)
-    $redis.zunionstore('corpus', ['corpus', "corpus:#{id}"])
-    $redis.expire("corpus:#{id}", 0)
-    $redis.zremrangebyscore('corpus', 0, 0)
-    UpdateTagScoresJob.perform_later
+    DecrementWordCountsJob.perform_later(*words) if words.any?
   end
 
   def fix_post_dated_links
