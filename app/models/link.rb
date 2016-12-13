@@ -51,12 +51,12 @@ class Link < ApplicationRecord
 
   def increment_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    Tag.update_tag_counts('corpus', words) if words.any?
+    Tag.increment_tag_counts(words) if words.any?
   end
 
   def decrement_word_counts
     words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-    Tag.update_tag_counts('corpus', words, -1) if words.any?
+    Tag.decrement_tag_counts(words) if words.any?
   end
 
   def fix_post_dated_links
