@@ -50,12 +50,12 @@ class Link < ApplicationRecord
   private
 
   def increment_word_counts
-    words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    words = [title, body].join(' ').scan(/[A-Za-z]+/)
     Tag.increment_tag_counts(words) if words.any?
   end
 
   def decrement_word_counts
-    words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    words = [title, body].join(' ').scan(/[A-Za-z]+/)
     Tag.decrement_tag_counts(words) if words.any?
   end
 

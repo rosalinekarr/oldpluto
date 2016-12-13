@@ -8,12 +8,12 @@ class Click < ApplicationRecord
   private
 
   def increment_click_counts
-    words = [link.title, link.body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    words = [link.title, link.body].join(' ').scan(/[A-Za-z]+/)
     Tag.increment_click_counts(words) if words.any?
   end
 
   def decrement_click_counts
-    words = [link.title, link.body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
+    words = [link.title, link.body].join(' ').scan(/[A-Za-z]+/)
     Tag.decrement_click_counts(words) if words.any?
   end
 end
