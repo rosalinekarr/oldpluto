@@ -29,7 +29,7 @@ class Tag
     scores = click_counts.map do |click_count|
       [click_count[1] * 1.0 / corpus[click_count[0]], click_count[0]]
     end
-    $redis.zadd('scores', scores)
+    $redis.zadd('scores', scores) if scores.any?
   end
 
   def self.tags_from_words(words, weight=1)
