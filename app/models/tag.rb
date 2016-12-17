@@ -23,8 +23,8 @@ class Tag
   end
 
   def self.update_tag_scores!
-    click_counts = $redis.zrangebyscore('clicks', '-inf', '+inf', withscores: true)
-    word_counts = $redis.zrangebyscore('corpus', '-inf', '+inf', withscores: true)
+    click_counts = $redis.zrange('clicks', 0, -1, withscores: true)
+    word_counts  = $redis.zrange('corpus', 0, -1, withscores: true)
     corpus = Hash[word_counts.each_slice(2).to_a]
     scores = click_counts.map do |count|
       [count[1] * 1.0 / (corpus[count[0]] || 1.0), count[0]]
