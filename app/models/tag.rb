@@ -1,6 +1,11 @@
 class Tag
   def self.scores
-    @scores ||= $redis.zrange('scores', 0, -1, withscores: true)
+    @scores ||= begin
+      corpus = Hash[Tag.corpus]
+      scores = Tag.clicks.sort_by do |word, score|
+        score * 1.0 / (corpus[word] || 1.0)
+      end
+    end
   end
 
   def self.corpus
@@ -42,10 +47,5 @@ class Tag
     $redis.zadd("#{set}:temp", counts)
     $redis.zunionstore(set, [set, "#{set}:temp"])
     $redis.expire("#{set}:temp", 0)
-    corpus = Hash[Tag.corpus]
-    scores = Tag.clicks.map do |word, score|
-      [score * 1.0 / (corpus[word] || 1.0), word]
-    end
-    $redis.zadd('scores', scores) if scores.any?
   end
 end
