@@ -15,18 +15,4 @@ class Tag
   def self.clicks
     @clicks ||= $redis.zrange('clicks', 0, -1, withscores: true)
   end
-
-  def self.increment_tag_counts(words)
-    return if words.empty?
-    $redis.zadd('corpus:temp', counts)
-    $redis.zunionstore(set, [set, 'corpus:temp'])
-    $redis.expire('corpus:temp', 0)
-  end
-
-  def self.increment_click_counts(words)
-    return if words.empty?
-    $redis.zadd('clicks:temp', counts)
-    $redis.zunionstore(set, [set, 'clicks:temp'])
-    $redis.expire('clicks:temp', 0)
-  end
 end

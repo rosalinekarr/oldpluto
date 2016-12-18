@@ -57,7 +57,10 @@ class Link < ApplicationRecord
   private
 
   def increment_word_counts
-    Tag.increment_tag_counts(corpus)
+    return if corpus.empty?
+    $redis.zadd('corpus:temp', corpus)
+    $redis.zunionstore('corpus', ['corpus', 'corpus:temp'])
+    $redis.expire('corpus:temp', 0)
   end
 
   def fix_post_dated_links
