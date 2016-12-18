@@ -17,16 +17,16 @@ class Tag
   end
 
   def self.increment_tag_counts(words)
-    Tag.update_set_counts('corpus', word_counts) if words.any?
+    return if words.empty?
+    $redis.zadd('corpus:temp', counts)
+    $redis.zunionstore(set, [set, 'corpus:temp'])
+    $redis.expire('corpus:temp', 0)
   end
 
   def self.increment_click_counts(words)
-    Tag.update_set_counts('clicks', word_counts) if words.any?
-  end
-
-  def self.update_set_counts(set, counts)
-    $redis.zadd("#{set}:temp", counts)
-    $redis.zunionstore(set, [set, "#{set}:temp"])
-    $redis.expire("#{set}:temp", 0)
+    return if words.empty?
+    $redis.zadd('clicks:temp', counts)
+    $redis.zunionstore(set, [set, 'clicks:temp'])
+    $redis.expire('clicks:temp', 0)
   end
 end
