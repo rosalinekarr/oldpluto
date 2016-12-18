@@ -42,7 +42,10 @@ class Link < ApplicationRecord
   end
 
   def corpus
-    title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/)
+    @corpus ||= begin
+      words = (title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/))
+      words.uniq.map{ |word| [ words.count(word), word ] }
+    end
   end
 
   private

@@ -17,19 +17,17 @@ class Tag
   end
 
   def self.from_words(words)
-    Tag.scores.select{ |tag| words.include? tag[0] }
+    Tag.scores.select{ |tag| words.map{ |word| word[1] }.include? tag[0] }
               .sort_by{ |tag| -tag[1] }
               .map{ |tag| tag[0] }
               .first(5)
   end
 
   def self.increment_tag_counts(words)
-    word_counts = words.uniq.map{ |word| [ words.count(word), word ] }
     Tag.update_set_counts('corpus', word_counts) if words.any?
   end
 
   def self.increment_click_counts(words)
-    word_counts = words.uniq.map{ |word| [ words.count(word), word ] }
     Tag.update_set_counts('clicks', word_counts) if words.any?
   end
 
