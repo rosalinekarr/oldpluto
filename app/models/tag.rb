@@ -1,4 +1,23 @@
 class Tag
+  def self.scores
+    @scores ||= $redis.zrange('scores', 0, -1, withscores: true)
+  end
+
+  def self.corpus
+    @corpus ||= $redis.zrange('corpus', 0, -1, withscores: true)
+  end
+
+  def self.clicks
+    @clicks ||= $redis.zrange('clicks', 0, -1, withscores: true)
+  end
+
+  def self.from_words(words)
+    Tag.scores.select{ |tag| words.include? tag[0] }
+              .sort_by{ |tag| -tag[1] }
+              .map{ |tag| tag[0] }
+              .first(5)
+  end
+
   def self.increment_tag_counts(words)
     word_counts = words.uniq.map{ |word| [ words.count(word), word ] }
     Tag.update_set_counts('corpus', word_counts) if words.any?
@@ -23,11 +42,9 @@ class Tag
     $redis.zadd("#{set}:temp", counts)
     $redis.zunionstore(set, [set, "#{set}:temp"])
     $redis.expire("#{set}:temp", 0)
-    click_counts = $redis.zrange('clicks', 0, -1, withscores: true)
-    word_counts  = $redis.zrange('corpus', 0, -1, withscores: true)
-    corpus = Hash[word_counts]
-    scores = click_counts.map do |count|
-      [count[1] * 1.0 / (corpus[count[0]] || 1.0), count[0]]
+    corpus = Hash[Tag.corpus]
+    scores = Tag.clicks.map do |word, score|
+      [score * 1.0 / (corpus[word] || 1.0), word]
     end
     $redis.zadd('scores', scores) if scores.any?
   end

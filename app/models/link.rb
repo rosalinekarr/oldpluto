@@ -39,24 +39,21 @@ class Link < ApplicationRecord
   end
 
   def tags
-    @tags ||= begin
-      words = [title, body].join(' ').scan(/[A-Za-z]+/).map(&:downcase)
-      $redis.zrevrangebyscore('scores', '+inf', '-inf').select{ |tag|
-        words.include? tag
-      }.first(5)
-    end
+    @tags ||= Tag.from_words(corpus)
   end
 
   private
 
+  def corpus
+    title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/)
+  end
+
   def increment_word_counts
-    Tag.increment_tag_counts(title.scan(/[A-Za-z]+/))
-    Tag.increment_tag_counts(body.scan(/[A-Za-z]+/))
+    Tag.increment_tag_counts(corpus)
   end
 
   def decrement_word_counts
-    Tag.decrement_tag_counts(title.scan(/[A-Za-z]+/))
-    Tag.decrement_tag_counts(body.scan(/[A-Za-z]+/))
+    Tag.decrement_tag_counts(corpus)
   end
 
   def fix_post_dated_links
