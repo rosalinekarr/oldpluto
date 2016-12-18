@@ -42,11 +42,11 @@ class Link < ApplicationRecord
     @tags ||= Tag.from_words(corpus)
   end
 
-  private
-
   def corpus
     title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/)
   end
+
+  private
 
   def increment_word_counts
     Tag.increment_tag_counts(corpus)
