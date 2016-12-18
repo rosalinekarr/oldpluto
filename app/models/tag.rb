@@ -28,18 +28,8 @@ class Tag
     Tag.update_set_counts('corpus', word_counts) if words.any?
   end
 
-  def self.decrement_tag_counts(words)
-    word_counts = words.uniq.map{ |word| [ -1 * words.count(word), word ] }
-    Tag.update_set_counts('corpus', word_counts) if words.any?
-  end
-
   def self.increment_click_counts(words)
     word_counts = words.uniq.map{ |word| [ words.count(word), word ] }
-    Tag.update_set_counts('clicks', word_counts) if words.any?
-  end
-
-  def self.decrement_click_counts(words)
-    word_counts = words.uniq.map{ |word| [ -1 * words.count(word), word ] }
     Tag.update_set_counts('clicks', word_counts) if words.any?
   end
 

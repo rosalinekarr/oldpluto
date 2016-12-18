@@ -17,7 +17,6 @@ class Link < ApplicationRecord
   before_validation :fix_post_dated_links
   after_create      :set_expiration
   after_create      :increment_word_counts
-  before_destroy    :decrement_word_counts
 
   scope :search, -> (terms) {
     if terms.any?
@@ -50,10 +49,6 @@ class Link < ApplicationRecord
 
   def increment_word_counts
     Tag.increment_tag_counts(corpus)
-  end
-
-  def decrement_word_counts
-    Tag.decrement_tag_counts(corpus)
   end
 
   def fix_post_dated_links
