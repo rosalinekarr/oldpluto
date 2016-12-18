@@ -7,9 +7,6 @@ class Click < ApplicationRecord
   private
 
   def increment_click_counts
-    return if link.corpus.empty?
-    $redis.zadd('clicks:temp', link.corpus)
-    $redis.zunionstore('clicks', ['clicks', 'clicks:temp'])
-    $redis.expire('clicks:temp', 0)
+    link.corpus.each{ |score, tag| $redis.zincrby('clicks', score, tag) }
   end
 end

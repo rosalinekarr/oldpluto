@@ -56,10 +56,7 @@ class Link < ApplicationRecord
   private
 
   def increment_word_counts
-    return if corpus.empty?
-    $redis.zadd('corpus:temp', corpus)
-    $redis.zunionstore('corpus', ['corpus', 'corpus:temp'])
-    $redis.expire('corpus:temp', 0)
+    corpus.each{ |score, tag| $redis.zincrby('corpus', score, tag) }
   end
 
   def fix_post_dated_links
