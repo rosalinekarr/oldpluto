@@ -49,14 +49,14 @@ class Link < ApplicationRecord
   def corpus
     @corpus ||= begin
       words = (title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/))
-      words.uniq.map{ |word| [ words.count(word), word ] }
+      words.each_with_object( Hash.new(0) ){ |key, hash| hash[key] += 1 }
     end
   end
 
   private
 
   def increment_word_counts
-    corpus.each{ |score, tag| $redis.zincrby('corpus', score, tag) }
+    corpus.each{ |tag, score| $redis.zincrby('corpus', score, tag) }
   end
 
   def fix_post_dated_links

@@ -7,6 +7,6 @@ class Click < ApplicationRecord
   private
 
   def increment_click_counts
-    link.corpus.each{ |score, tag| $redis.zincrby('clicks', score, tag) }
+    link.corpus.each{ |tag, score| $redis.zincrby('clicks', score, tag) }
   end
 end
