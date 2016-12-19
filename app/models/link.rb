@@ -38,12 +38,10 @@ class Link < ApplicationRecord
   end
 
   def tags
-    @tags ||= begin
-      words = (title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/))
-      Tag.scores.sort_by{ |word, score|
-        -score * words.count(word)
-      }.map(&:first).first(5)
-    end
+    @tags ||= corpus.sort_by{ |tag, count| Tag.score_for(tag) * count }
+                    .reverse
+                    .map(&:first)
+                    .first(5)
   end
 
   def corpus
