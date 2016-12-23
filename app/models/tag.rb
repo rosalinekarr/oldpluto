@@ -1,4 +1,4 @@
-class Tag
+class Tag < ApplicationRecord
   def self.scores
     @scores ||= begin
       clicks = $redis.zrange('clicks', 0, -1, withscores: true)
