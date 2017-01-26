@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'airbrake'
+gem 'algoliasearch-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
