@@ -3,13 +3,12 @@ class LinksController < ApplicationController
 
   def index
     @links = Link.includes(:author, :feed)
-                 .search(q)
                  .since(hours_ago)
                  .from_feeds(source_ids)
                  .authored_by(author_ids)
                  .references(:author, :feed)
                  .order(sort)
-                 .page page
+                 .search(q)
   end
 
   def show
