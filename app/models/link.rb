@@ -1,6 +1,8 @@
 require 'htmlentities'
 
 class Link < ApplicationRecord
+  include AlgoliaSearch
+
   delegate :title, to: :feed, prefix: true
 
   has_many   :clicks,      dependent: :destroy
@@ -17,15 +19,13 @@ class Link < ApplicationRecord
   before_validation :fix_post_dated_links
   after_create      :set_expiration
 
-  scope :search, -> (terms) {
-    if terms.any?
-      query = (['links.title LIKE ? OR links.body LIKE ?'] * terms.count).join(' OR ')
-      where(*([query, terms.map{ |term| ["%#{term}%"] * 2 }].flatten))
-    end
-  }
   scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
   scope :authored_by, -> (ids) { where(authors: { slug: ids })  if ids.any? }
   scope :from_feeds,  -> (ids) { where(feeds: { slug: ids })    if ids.any? }
+
+  algoliasearch do
+    attribute :title, :body
+  end
 
   def author_name=(name)
     name = ActionController::Base.helpers.strip_tags name
