@@ -12,7 +12,7 @@ module Oldpluto
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Configure ActiveJob to use delayed_job as the backend
-    config.active_job.queue_adapter = :delayed_job
+    # Configure ActiveJob to use sidekiq as the backend
+    config.active_job.queue_adapter = :sidekiq
   end
 end
