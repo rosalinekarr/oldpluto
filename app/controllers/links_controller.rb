@@ -2,13 +2,7 @@ class LinksController < ApplicationController
   before_action :set_advertisement, only: [:index]
 
   def index
-    @links = Link.includes(:author, :feed)
-                 .since(hours_ago)
-                 .from_feeds(source_ids)
-                 .authored_by(author_ids)
-                 .references(:author, :feed)
-                 .order(sort)
-                 .search(q)
+    @links = Link.search(params[:q], tags: tag_filters)
   end
 
   def show
@@ -31,9 +25,5 @@ class LinksController < ApplicationController
 
   def set_advertisement
     @advertisement = Advertisement.approved.order('RANDOM()').first if page == 1
-  end
-
-  def q
-    params[:q].try(:split) || []
   end
 end

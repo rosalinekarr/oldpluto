@@ -20,11 +20,14 @@ class Link < ApplicationRecord
   after_create      :set_expiration
 
   scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
-  scope :authored_by, -> (ids) { where(authors: { slug: ids })  if ids.any? }
-  scope :from_feeds,  -> (ids) { where(feeds: { slug: ids })    if ids.any? }
 
   algoliasearch per_environment: true do
     attribute :title, :body
+    tags do
+      author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
+      source_tag = "source_#{feed.slug.parameterize}"
+      [author_tag, source_tag].compact
+    end
   end
 
   def author_name=(name)

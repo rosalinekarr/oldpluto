@@ -15,6 +15,12 @@ class ApplicationController < ActionController::Base
     @author_ids ||= params[:authors] || []
   end
 
+  def tag_filters
+    author_tags = author_ids.map{ |id| "author_#{id.parameterize}" }
+    source_tags = source_ids.map{ |id| "source_#{id.parameterize}" }
+    author_tags + source_tags
+  end
+
   def sort
     @sort ||= begin
       if params[:sort] == 'popular'

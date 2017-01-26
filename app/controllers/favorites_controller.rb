@@ -2,13 +2,7 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @links = current_user.links.includes(:author, :feed)
-                               .since(hours_ago)
-                               .from_feeds(source_ids)
-                               .authored_by(author_ids)
-                               .references(:author, :feed)
-                               .order(sort)
-                               .page page
+    @links = current_user.links.search(params[:q], { tagFilters: tag_filters })
     render 'links/index'
   end
 
