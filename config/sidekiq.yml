@@ -1,0 +1,6 @@
+---
+:concurrency: 20
+:queues:
+  - cleanup
+  - default
+  - fetch
