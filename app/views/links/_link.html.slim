@@ -20,6 +20,6 @@ li
         = link_to 'Favorite', favorites_path(favorite: { link_id: link.id }), method: :post
     - if link.tags.any?
       span = ' |'
-      - link.tags.each do |tag|
+      - link.tags.pluck(:name).each do |tag|
         = ' '
         = link_to "##{tag.titleize}", tag_path(tag)

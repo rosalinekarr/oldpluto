@@ -38,23 +38,21 @@ class Link < ApplicationRecord
   end
 
   def tags
-    @tags ||= corpus.sort_by{ |tag, count| Tag.score_for(tag) * count }
-                    .reverse
-                    .map(&:first)
-                    .first(5)
+    @tags ||= Tag.where(name: corpus).order(score: :asc).first(5)
   end
 
   def corpus
-    @corpus ||= begin
-      words = (title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/))
-      words.each_with_object( Hash.new(0) ){ |key, hash| hash[key] += 1 }
-    end
+    @corpus ||= title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/)
   end
 
   private
 
   def increment_word_counts
-    corpus.each{ |tag, score| $redis.zincrby('corpus', score, tag) }
+    ActiveRecord::Base.transaction do
+      corpus.each do |tag|
+        Tag.find_or_create_by(name: tag).increment!(:score)
+      end
+    end
   end
 
   def fix_post_dated_links
