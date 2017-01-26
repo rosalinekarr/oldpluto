@@ -45,8 +45,11 @@ class Link < ApplicationRecord
   private
 
   def increment_word_counts
-    corpus = (title.scan(/\w+/) + body.scan(/\w+/))
-    tags.each{ |tag| tag.increment!(:count, corpus.count(tag.name)) }
+    corpus = title.scan(/\w+/) + body.scan(/\w+/)
+    corpus.uniq.each do |word|
+      tag = Tag.find_or_create_by(name: word)
+      tag.increment!(:count, corpus.count(tag.name))
+    end
   end
 
   def fix_post_dated_links
