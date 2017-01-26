@@ -23,7 +23,7 @@ class Link < ApplicationRecord
   scope :authored_by, -> (ids) { where(authors: { slug: ids })  if ids.any? }
   scope :from_feeds,  -> (ids) { where(feeds: { slug: ids })    if ids.any? }
 
-  algoliasearch do
+  algoliasearch per_environment: true do
     attribute :title, :body
   end
 
