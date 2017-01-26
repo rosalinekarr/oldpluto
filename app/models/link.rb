@@ -42,15 +42,18 @@ class Link < ApplicationRecord
   end
 
   def corpus
-    @corpus ||= title.scan(/[A-Za-z]+/) + body.scan(/[A-Za-z]+/)
+    @corpus ||= begin
+      words = title.scan(/\w+/) + body.scan(/\w+/)
+      words.each_with_object(Hash.new(0)){ |key, hash| hash[key] += 1 }
+    end
   end
 
   private
 
   def increment_word_counts
     ActiveRecord::Base.transaction do
-      corpus.each do |tag|
-        Tag.find_or_create_by(name: tag).increment!(:score)
+      corpus.each do |tag, score|
+        Tag.find_or_create_by(name: tag).increment!(:score, score)
       end
     end
   end
