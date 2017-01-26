@@ -39,7 +39,7 @@ class Link < ApplicationRecord
 
   def tags
     corpus = (title.scan(/\w+/) + body.scan(/\w+/)).uniq
-    @tags ||= Tag.where(name: corpus).order(score: :asc).first(5)
+    @tags ||= Tag.where(name: corpus).order(score: :desc).first(5)
   end
 
   private
