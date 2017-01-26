@@ -4,9 +4,9 @@ class FavoritesController < ApplicationController
   def index
     @links = current_user.links.includes(:author, :feed, :tags)
                                .since(hours_ago)
-                               .tagged(tags)
                                .from_feeds(source_ids)
                                .authored_by(author_ids)
+                               .references(:author, :feed)
                                .order(sort)
                                .page page
     render 'links/index'
