@@ -2,7 +2,7 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @links = current_user.links.includes(:author, :feed, :tags)
+    @links = current_user.links.includes(:author, :feed)
                                .since(hours_ago)
                                .from_feeds(source_ids)
                                .authored_by(author_ids)

@@ -16,7 +16,6 @@ class Link < ApplicationRecord
   before_validation :sanitize_attributes
   before_validation :fix_post_dated_links
   after_create      :set_expiration
-  after_create      :increment_word_counts
 
   scope :search, -> (terms) {
     if terms.any?
@@ -37,20 +36,7 @@ class Link < ApplicationRecord
     Favorite.where(user: user, link: self).any?
   end
 
-  def tags
-    corpus = (title.scan(/\w+/) + body.scan(/\w+/)).uniq
-    @tags ||= Tag.where(name: corpus).order(score: :desc).first(5)
-  end
-
   private
-
-  def increment_word_counts
-    corpus = title.scan(/\w+/) + body.scan(/\w+/)
-    corpus.uniq.each do |word|
-      tag = Tag.find_or_create_by(name: word)
-      tag.increment!(:count, corpus.count(tag.name))
-    end
-  end
 
   def fix_post_dated_links
     self.published_at = [published_at, DateTime.now].compact.min
