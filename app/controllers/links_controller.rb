@@ -2,7 +2,8 @@ class LinksController < ApplicationController
   before_action :set_advertisement, only: [:index]
 
   def index
-    @links = Link.search(params[:q], tags: tag_filters)
+    @links = Link.search(params[:q], tagFilters: tag_filters,
+                                     numericFilters: numeric_filters)
   end
 
   def show

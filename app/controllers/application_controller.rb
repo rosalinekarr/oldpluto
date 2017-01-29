@@ -21,6 +21,10 @@ class ApplicationController < ActionController::Base
     author_tags + source_tags
   end
 
+  def numeric_filters
+    hours_ago ? ["created_at>#{Time.now.to_i - hours_ago * 3600}"] : []
+  end
+
   def sort
     @sort ||= begin
       if params[:sort] == 'popular'

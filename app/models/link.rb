@@ -19,10 +19,13 @@ class Link < ApplicationRecord
   before_validation :fix_post_dated_links
   after_create      :set_expiration
 
-  scope :since, -> (t) { where('published_at > ?', t.hours.ago) if t.present? }
-
   algoliasearch per_environment: true do
     attribute :title, :body
+
+    attribute :created_at do
+      created_at.to_i
+    end
+
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
