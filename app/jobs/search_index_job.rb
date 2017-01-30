@@ -3,7 +3,7 @@ class SearchIndexJob < ApplicationJob
 
   def perform(link_id, remove)
     if remove
-      Algolia::Index.new("Link_#{Rails.env}").delete_object(id)
+      Algolia::Index.new("Link_#{Rails.env}").delete_object(link_id)
     else
       Link.find(link_id).index!
     end
