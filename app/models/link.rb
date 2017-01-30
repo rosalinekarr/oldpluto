@@ -26,14 +26,14 @@ class Link < ApplicationRecord
       source_tag = "source_#{feed.slug.parameterize}"
       [author_tag, source_tag].compact
     end
-    customRanking ['asc(score)', 'desc(age)']
+    customRanking ['asc(score)', 'asc(age)']
 
     add_replica 'popular', per_environment: true do
-      customRanking ['desc(points)', 'desc(age)']
+      customRanking ['desc(points)', 'asc(age)']
     end
 
     add_replica 'newest', per_environment: true do
-      customRanking ['desc(age)', 'desc(points)']
+      customRanking ['asc(age)', 'desc(points)']
     end
   end
 
