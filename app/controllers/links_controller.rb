@@ -2,11 +2,7 @@ class LinksController < ApplicationController
   before_action :set_advertisement, only: [:index]
 
   def index
-    @links = Link.search(params[:q], tagFilters: tag_filters,
-                                     numericFilters: numeric_filters,
-                                     replica: sort,
-                                     hitsPerPage: Kaminari.config.default_per_page,
-                                     page: page)
+    @links = Link.search(params[:q], filters)
   end
 
   def show

@@ -2,7 +2,7 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @links = current_user.links.search(params[:q], { tagFilters: tag_filters })
+    @links = current_user.links.search(params[:q], filters)
     render 'links/index'
   end
 

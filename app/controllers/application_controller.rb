@@ -15,14 +15,16 @@ class ApplicationController < ActionController::Base
     @author_ids ||= params[:authors] || []
   end
 
-  def tag_filters
+  def filters
     author_tags = author_ids.map{ |id| "author_#{id.parameterize}" }
     source_tags = source_ids.map{ |id| "source_#{id.parameterize}" }
-    author_tags + source_tags
-  end
-
-  def numeric_filters
-    hours_ago ? ["age>#{hours_ago * 3600}"] : []
+    {
+      tagFilters: author_tags + source_tags,
+      numericFilters: (hours_ago ? ["age>#{hours_ago * 60}"] : []),
+      replica: sort,
+      hitsPerPage: Kaminari.config.default_per_page,
+      page: page
+    }
   end
 
   def sort
