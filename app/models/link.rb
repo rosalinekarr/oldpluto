@@ -16,7 +16,6 @@ class Link < ApplicationRecord
   validates :title, :url, uniqueness: true
 
   before_validation :sanitize_attributes
-  before_validation :fix_post_dated_links
   after_create      :set_expiration
 
   algoliasearch enqueue: :start_index_job, per_environment: true do
@@ -58,10 +57,6 @@ class Link < ApplicationRecord
   end
 
   private
-
-  def fix_post_dated_links
-    self.published_at = [published_at, DateTime.now].compact.min
-  end
 
   def sanitize_attributes
     self.title = ActionController::Base.helpers.strip_tags(title)
