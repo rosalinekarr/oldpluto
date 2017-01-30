@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170130205107) do
+ActiveRecord::Schema.define(version: 20170130210247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,8 +91,8 @@ ActiveRecord::Schema.define(version: 20170130205107) do
     t.integer  "clicks_count",    default: 0, null: false
     t.integer  "shares_count",    default: 0, null: false
     t.integer  "author_id"
-    t.integer  "favorites_count"
     t.string   "guid"
+    t.integer  "favorites_count", default: 0, null: false
     t.index ["clicks_count"], name: "index_links_on_clicks_count", using: :btree
     t.index ["feed_id"], name: "index_links_on_feed_id", using: :btree
     t.index ["published_at"], name: "index_links_on_published_at", using: :btree
