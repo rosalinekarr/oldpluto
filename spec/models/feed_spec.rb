@@ -10,7 +10,7 @@ RSpec.describe Feed, type: :model do
   let(:entry_title)     { Faker::Lorem.word }
   let(:entry_url)       { Faker::Internet.url }
   let(:entry_content)   { Faker::Lorem.paragraph }
-  let(:entry_published) { Faker::Date.backward(1000) }
+  let(:entry_published) { Faker::Date.backward(7) }
   let(:entry_author)    { Faker::Name.name }
   let(:entry_id)  { rand(999999) }
 
