@@ -19,7 +19,7 @@ class Link < ApplicationRecord
   before_validation :fix_post_dated_links
   after_create      :set_expiration
 
-  algoliasearch per_environment: true do
+  algoliasearch enqueue: :start_index_job, per_environment: true do
     attribute :title, :body, :clicks_count
     attribute :score do
       ((published_at - Time.now) / 86400).round / (clicks_count + 1)
@@ -41,6 +41,10 @@ class Link < ApplicationRecord
     add_replica 'newest', per_environment: true do
       customRanking ['desc(published_at_i)', 'desc(clicks_count)']
     end
+  end
+
+  def self.start_index_job(record, remove)
+    SearchIndexJob.perform_later(record.id, remove)
   end
 
   def author_name=(name)
