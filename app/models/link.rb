@@ -1,6 +1,8 @@
 require 'htmlentities'
 
 class Link < ApplicationRecord
+  TTL = 7.days
+
   include AlgoliaSearch
 
   delegate :title, to: :feed, prefix: true
@@ -67,6 +69,6 @@ class Link < ApplicationRecord
   end
 
   def set_expiration
-    DestroyLinkJob.set(wait: 7.days).perform_later(self.id)
+    DestroyLinkJob.set(wait: TTL).perform_later(self.id)
   end
 end

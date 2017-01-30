@@ -13,21 +13,30 @@ class Feed < ApplicationRecord
 
   def fetch
     feed.entries.each do |entry|
+      # Find or start a new link for the url
       link = links.find_or_initialize_by(url: entry.url)
-      link.title = entry.title
-      link.guid = entry.entry_id || entry.url
-      link.body = entry.content || entry.summary || entry.title
 
       # Set published_at date
       published_date = [entry.published, DateTime.now].compact.min
       link.published_at ||= [published_date, last_fetched_at].compact.max
 
+      # Skip link if older than 1 week
+      next if link.published_at < Link::TTL.ago
+
+      # Set basic details
+      link.title = entry.title
+      link.guid = entry.entry_id || entry.url
+      link.body = entry.content || entry.summary || entry.title
+
       # Set author
       author_name = ActionController::Base.helpers.strip_tags entry.author
       link.author = Author.find_or_create_by(name: author_name)
 
+      # Save changes
       link.save
     end
+
+    # Update the last fetched time once done
     update(last_fetched_at: DateTime.now)
   end
 
