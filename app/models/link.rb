@@ -43,7 +43,7 @@ class Link < ApplicationRecord
     end
   end
 
-  def self.start_index_job(record, remove)
+  def self.start_index_job(record, remove=false)
     SearchIndexJob.perform_later(record.id, remove)
   end
 
