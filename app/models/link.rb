@@ -20,26 +20,20 @@ class Link < ApplicationRecord
   after_create      :set_expiration
 
   algoliasearch enqueue: :start_index_job, per_environment: true do
-    attribute :title, :body, :clicks_count
-    attribute :score do
-      ((published_at - Time.now) / 86400).round / (clicks_count + 1)
-    end
-    attribute :published_at_i do
-      published_at.to_i
-    end
+    attribute :age, :body, :points, :score, :title
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
       [author_tag, source_tag].compact
     end
-    customRanking ['desc(score)']
+    customRanking ['asc(score)', 'desc(age)']
 
     add_replica 'popular', per_environment: true do
-      customRanking ['desc(clicks_count)', 'desc(published_at_i)']
+      customRanking ['desc(points)', 'desc(age)']
     end
 
     add_replica 'newest', per_environment: true do
-      customRanking ['desc(published_at_i)', 'desc(clicks_count)']
+      customRanking ['desc(age)', 'desc(points)']
     end
   end
 
@@ -54,6 +48,18 @@ class Link < ApplicationRecord
 
   def favorited?(user)
     Favorite.where(user: user, link: self).any?
+  end
+
+  def points
+    clicks_count + shares_count + favorites_count
+  end
+
+  def age
+    Time.now - published_at
+  end
+
+  def score
+    (age.to_i * feed.links_count) / (points + 1)
   end
 
   private
