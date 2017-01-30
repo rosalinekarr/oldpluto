@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def numeric_filters
-    hours_ago ? ["published_at_i>#{Time.now.to_i - hours_ago * 3600}"] : []
+    hours_ago ? ["age>#{hours_ago * 3600}"] : []
   end
 
   def sort
