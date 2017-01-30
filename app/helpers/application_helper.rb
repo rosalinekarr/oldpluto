@@ -1,27 +1,27 @@
 module ApplicationHelper
-  def author_path(author_name)
-    authors = (params[:authors] || []) + [author_name.parameterize]
-    url_for(path_params.merge(authors: authors))
+  def author_path(author_id)
+    author_ids = (params[:authors] || []) + [author_id.parameterize]
+    url_for(path_params.merge(authors: author_ids.uniq))
   end
 
-  def source_path(feed_title)
-    sources = (params[:sources] || []) + [feed_title.parameterize]
-    url_for(path_params.merge(sources: sources))
+  def source_path(source_id)
+    source_ids = (params[:sources] || []) + [source_id.parameterize]
+    url_for(path_params.merge(sources: source_ids.uniq))
   end
 
-  def remove_author_path(author)
-    authors = (params[:authors] || []) - [author]
-    url_for(path_params.merge(authors: authors))
+  def remove_author_path(author_id)
+    author_ids = (params[:authors] || []) - [author_id]
+    url_for(path_params.merge(authors: author_ids))
   end
 
-  def remove_source_path(source)
-    sources = (params[:sources] || []) - [source]
-    url_for(path_params.merge(sources: sources))
+  def remove_source_path(source_id)
+    source_ids = (params[:sources] || []) - [source_id]
+    url_for(path_params.merge(sources: source_ids))
   end
 
   private
 
   def path_params
-    params.permit(:authors, :hours_ago, :q, :sort, :sources)
+    params.permit(:hours_ago, :q, :sort, authors: [], sources: [])
   end
 end
