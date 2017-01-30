@@ -4,7 +4,9 @@ class LinksController < ApplicationController
   def index
     @links = Link.search(params[:q], tagFilters: tag_filters,
                                      numericFilters: numeric_filters,
-                                     replica: sort)
+                                     replica: sort,
+                                     hitsPerPage: Kaminari.config.default_per_page,
+                                     page: page)
   end
 
   def show
