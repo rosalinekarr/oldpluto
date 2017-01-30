@@ -20,16 +20,26 @@ class Link < ApplicationRecord
   after_create      :set_expiration
 
   algoliasearch per_environment: true do
-    attribute :title, :body
-
+    attribute :title, :body, :clicks_count
+    attribute :score do
+      ((published_at - Time.now) / 86400).round / (clicks_count + 1)
+    end
     attribute :published_at_i do
       published_at.to_i
     end
-
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
       [author_tag, source_tag].compact
+    end
+    customRanking ['desc(score)']
+
+    add_replica 'popular', per_environment: true do
+      customRanking ['desc(clicks_count)', 'desc(published_at_i)']
+    end
+
+    add_replica 'newest', per_environment: true do
+      customRanking ['desc(published_at_i)', 'desc(clicks_count)']
     end
   end
 

@@ -3,7 +3,8 @@ class LinksController < ApplicationController
 
   def index
     @links = Link.search(params[:q], tagFilters: tag_filters,
-                                     numericFilters: numeric_filters)
+                                     numericFilters: numeric_filters,
+                                     replica: sort)
   end
 
   def show

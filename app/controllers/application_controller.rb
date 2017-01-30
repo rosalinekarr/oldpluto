@@ -26,15 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sort
-    @sort ||= begin
-      if params[:sort] == 'popular'
-        'shares_count + clicks_count desc'
-      elsif params[:sort] == 'newest'
-        'published_at desc'
-      else
-        '(shares_count + clicks_count) * 3600.0 / extract (\'epoch\' from (current_timestamp - published_at)) desc'
-      end
-    end
+    @sort ||= ['popular', 'newest'].find{ |sort| sort == params[:sort] }
   end
 
   def page
