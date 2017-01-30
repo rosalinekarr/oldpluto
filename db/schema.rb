@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170126164137) do
+ActiveRecord::Schema.define(version: 20170130205107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,23 +81,20 @@ ActiveRecord::Schema.define(version: 20170126164137) do
   end
 
   create_table "links", force: :cascade do |t|
-    t.citext   "title",                         null: false
-    t.string   "url",                           null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.citext   "title",                       null: false
+    t.string   "url",                         null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "feed_id"
     t.citext   "body"
     t.datetime "published_at"
-    t.integer  "clicks_count",      default: 0, null: false
-    t.integer  "shares_count",      default: 0, null: false
-    t.integer  "impressions_count", default: 0, null: false
+    t.integer  "clicks_count",    default: 0, null: false
+    t.integer  "shares_count",    default: 0, null: false
     t.integer  "author_id"
     t.integer  "favorites_count"
-    t.integer  "score",             default: 0, null: false
     t.string   "guid"
     t.index ["clicks_count"], name: "index_links_on_clicks_count", using: :btree
     t.index ["feed_id"], name: "index_links_on_feed_id", using: :btree
-    t.index ["impressions_count"], name: "index_links_on_impressions_count", using: :btree
     t.index ["published_at"], name: "index_links_on_published_at", using: :btree
     t.index ["shares_count"], name: "index_links_on_shares_count", using: :btree
     t.index ["url"], name: "index_links_on_url", unique: true, using: :btree
