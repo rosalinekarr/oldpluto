@@ -41,11 +41,6 @@ class Link < ApplicationRecord
     SearchIndexJob.perform_later(record.id, remove)
   end
 
-  def author_name=(name)
-    name = ActionController::Base.helpers.strip_tags name
-    self.author = Author.find_or_create_by(name: name)
-  end
-
   def favorited?(user)
     Favorite.where(user: user, link: self).any?
   end
