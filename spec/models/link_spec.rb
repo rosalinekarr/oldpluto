@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Link, type: :model do
-  it 'creates a DestroyLinkJob after create' do
-    expect{ create :link }.to change{
-      Delayed::Job.where('handler LIKE ?', '%DestroyLinkJob%').count
-    }.by(1)
-  end
-
   describe 'sanitizes attributes' do
     it 'sanitizes html entities from the title' do
       link = build :link, title: 'Cats &amp; Dogs'
