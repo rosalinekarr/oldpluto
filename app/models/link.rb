@@ -22,8 +22,8 @@ class Link < ApplicationRecord
   algoliasearch per_environment: true do
     attribute :title, :body
 
-    attribute :created_at do
-      created_at.to_i
+    attribute :published_at_i do
+      published_at.to_i
     end
 
     tags do
