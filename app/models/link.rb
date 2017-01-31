@@ -15,7 +15,7 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
-  after_create      :set_expiration
+  after_create :set_expiration
 
   algoliasearch enqueue: :start_index_job, per_environment: true do
     attribute :body, :points, :published_at_i, :score, :title

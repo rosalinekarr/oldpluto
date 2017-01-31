@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     source_tags = source_ids.map{ |id| "source_#{id.parameterize}" }
     {
       tagFilters: author_tags + source_tags,
-      numericFilters: (hours_ago ? ["age>#{hours_ago * 60}"] : []),
+      numericFilters: (hours_ago ? ["published_at_i>#{(Time.now - hours_ago.hours).to_i}"] : []),
       replica: sort,
       hitsPerPage: Kaminari.config.default_per_page,
       page: page
