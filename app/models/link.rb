@@ -44,11 +44,14 @@ class Link < ApplicationRecord
   end
 
   def points
-    clicks_count + shares_count + favorites_count
+    @points ||= clicks_count + shares_count + favorites_count
   end
 
   def score
-    (published_at.to_f * feed.score * (author.try(:score) || 1.0) * points.to_f).to_i
+    @score ||= begin
+      author_score = author.try(:score) || 1.0
+      (published_at.to_f * feed.score * author_score * points.to_f).to_i
+    end
   end
 
   def published_at_i
