@@ -20,20 +20,20 @@ class Link < ApplicationRecord
   after_create      :set_expiration
 
   algoliasearch enqueue: :start_index_job, per_environment: true do
-    attribute :age, :body, :points, :score, :title
+    attribute :body, :points, :published_at_i, :score, :title
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
       [author_tag, source_tag].compact
     end
-    customRanking ['asc(score)', 'asc(age)']
+    customRanking ['desc(score)']
 
     add_replica 'popular', per_environment: true do
-      customRanking ['desc(points)', 'asc(age)']
+      customRanking ['desc(points)']
     end
 
     add_replica 'newest', per_environment: true do
-      customRanking ['asc(age)', 'desc(points)']
+      customRanking ['desc(published_at_i)']
     end
   end
 
@@ -49,12 +49,12 @@ class Link < ApplicationRecord
     clicks_count + shares_count + favorites_count
   end
 
-  def age
-    Time.now - published_at
+  def score
+    (published_at.to_f * feed.score * points.to_f).to_i
   end
 
-  def score
-    (age.to_i * feed.links_count) / (points + 1)
+  def published_at_i
+    published_at.to_i
   end
 
   private

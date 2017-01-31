@@ -51,6 +51,16 @@ class Feed < ApplicationRecord
     7.days / (links_count + 1)
   end
 
+  def points
+    @points ||= ['clicks', 'shares', 'favorites'].reduce(0) do |sum, column|
+      sum + links.sum("#{column}_count".to_sym)
+    end
+  end
+
+  def score
+    @score ||= points.to_f / (links_count.to_f + 1.0)
+  end
+
   private
 
   def start_fetching
