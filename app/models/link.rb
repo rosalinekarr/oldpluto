@@ -1,5 +1,3 @@
-require 'htmlentities'
-
 class Link < ApplicationRecord
   TTL = 7.days
 

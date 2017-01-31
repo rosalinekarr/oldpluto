@@ -1,3 +1,5 @@
+require 'htmlentities'
+
 class Feed < ApplicationRecord
   extend FriendlyId
 
