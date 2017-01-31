@@ -23,10 +23,17 @@ class Feed < ApplicationRecord
       # Skip link if older than 1 week
       next if link.published_at < Link::TTL.ago
 
-      # Set basic details
-      link.title = entry.title
+      # Set guid
       link.guid = entry.entry_id || entry.url
-      link.body = entry.content || entry.summary || entry.title
+
+      # Set title
+      title = ActionController::Base.helpers.strip_tags(entry.title)
+      link.title = HTMLEntities.new.decode(title)
+
+      # Set body
+      body = entry.content || entry.summary || title
+      body = ActionController::Base.helpers.strip_tags(body)
+      link.body  = HTMLEntities.new.decode(body)
 
       # Set author
       author_name = ActionController::Base.helpers.strip_tags entry.author

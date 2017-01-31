@@ -17,7 +17,6 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
-  before_validation :sanitize_attributes
   after_create      :set_expiration
 
   algoliasearch enqueue: :start_index_job, per_environment: true do
@@ -59,14 +58,6 @@ class Link < ApplicationRecord
   end
 
   private
-
-  def sanitize_attributes
-    self.title = ActionController::Base.helpers.strip_tags(title)
-    self.body  = ActionController::Base.helpers.strip_tags(body)
-
-    self.title = HTMLEntities.new.decode(title)
-    self.body  = HTMLEntities.new.decode(body)
-  end
 
   def set_expiration
     DestroyLinkJob.set(wait: TTL).perform_later(self.id)
