@@ -16,6 +16,6 @@ class Author < ApplicationRecord
   end
 
   def score
-    @score ||= points.to_f / (links_count.to_f + 1.0)
+    @score ||= (points.to_f + 1.0) / (links_count.to_f + 1.0)
   end
 end
