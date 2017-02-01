@@ -17,7 +17,7 @@ class Link < ApplicationRecord
 
   after_create :set_expiration
 
-  algoliasearch enqueue: :start_index_job, per_environment: true do
+  algoliasearch auto_index: false, auto_remove: false, per_environment: true do
     attribute :body, :points, :published_at_i, :score, :title
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
@@ -33,10 +33,6 @@ class Link < ApplicationRecord
     add_replica 'newest', per_environment: true do
       customRanking ['desc(published_at_i)']
     end
-  end
-
-  def self.start_index_job(record, remove=false)
-    SearchIndexJob.perform_later(record.id, remove)
   end
 
   def favorited?(user)
