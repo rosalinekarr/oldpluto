@@ -1,4 +1,4 @@
-class IndexFeedJob < ApplicationJob
+class FetchLinksJob < ApplicationJob
   MAX_DELAY = 3.days
   MIN_DELAY = 5.minutes
 
