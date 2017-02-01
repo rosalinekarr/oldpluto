@@ -1,4 +1,4 @@
-class FetchLinksJob < ApplicationJob
+class IndexFeedJob < ApplicationJob
   MAX_DELAY = 3.days
   MIN_DELAY = 5.minutes
 
@@ -21,5 +21,6 @@ class FetchLinksJob < ApplicationJob
     feed.fetch
     delay = [[feed.publish_rate, MIN_DELAY].max, MAX_DELAY].min
     FetchLinksJob.set(wait: delay).perform_later feed_id
+    feed.links.reindex
   end
 end
