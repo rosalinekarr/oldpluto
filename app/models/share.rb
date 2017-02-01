@@ -4,8 +4,6 @@ class Share < ApplicationRecord
 
   validates :network, presence: true
 
-  after_save :update_search_index
-
   def url
     if network == 'facebook'
       "https://www.facebook.com/sharer.php?u=#{ERB::Util.url_encode link.url}"
@@ -30,11 +28,5 @@ class Share < ApplicationRecord
     elsif network == 'delicious'
       "https://delicious.com/save?v=5&url=#{ERB::Util.url_encode link.url}"
     end
-  end
-
-  private
-
-  def update_search_index
-    Link.start_index_job(link)
   end
 end
