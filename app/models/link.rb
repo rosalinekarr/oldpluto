@@ -47,7 +47,7 @@ class Link < ApplicationRecord
   def score
     @score ||= begin
       author_score = author.try(:score) || 1.0
-      (published_at.to_f * feed.score * author_score * points.to_f).to_i
+      (published_at.to_f * feed.score * author_score * (points + 1).to_f).to_i
     end
   end
 
