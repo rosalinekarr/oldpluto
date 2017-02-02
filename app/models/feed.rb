@@ -23,7 +23,7 @@ class Feed < ApplicationRecord
       link.published_at ||= [published_date, last_fetched_at].compact.max
 
       # Skip link if older than 1 week
-      next if link.published_at < 1.week.ago
+      next if link.published_at < Link::TTL.ago
 
       # Set guid
       link.guid = entry.entry_id || entry.url
@@ -50,7 +50,7 @@ class Feed < ApplicationRecord
   end
 
   def publish_rate
-    7.days / (links_count + 1)
+    Link::TTL / (links_count + 1)
   end
 
   def points
