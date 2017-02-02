@@ -13,6 +13,7 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
+  after_create :index!
   after_create :set_expiration
 
   algoliasearch auto_index: false, auto_remove: false, per_environment: true do
