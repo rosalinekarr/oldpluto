@@ -26,7 +26,7 @@ class Feed < ApplicationRecord
       next if link.published_at < Link::TTL.ago
 
       # Set guid
-      link.guid = entry.entry_id || entry.url
+      link.guid = [slug, (entry.entry_id || entry.url)].join('_')
 
       # Set title
       title = ActionController::Base.helpers.strip_tags(entry.title)
