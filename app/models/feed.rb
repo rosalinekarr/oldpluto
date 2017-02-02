@@ -23,7 +23,7 @@ class Feed < ApplicationRecord
       link.published_at ||= [published_date, last_fetched_at].compact.max
 
       # Skip link if older than 1 week
-      next if link.published_at < Link::TTL.ago
+      next if link.published_at < 1.week.ago
 
       # Set guid
       link.guid = entry.entry_id || entry.url
