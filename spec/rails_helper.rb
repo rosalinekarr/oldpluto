@@ -63,7 +63,3 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-
-# Disalbe sidekiq in testing
-require 'sidekiq/testing'
-Sidekiq::Testing.disable!

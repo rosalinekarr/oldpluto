@@ -42,4 +42,7 @@ Rails.application.configure do
 
   # Set default url host for devise emails
   config.action_mailer.default_url_options = { host: 'localhost', port: 5100 }
+
+  # Configure ActiveJob to use sidekiq as the backend
+  config.active_job.queue_adapter = :async
 end
