@@ -1,6 +1,7 @@
 class LinksController < ApplicationController
   def index
     @links = Link.search(params[:q], filters)
+    @links.each{ |l| Impression.create link: l, user: current_user }
   end
 
   def show
