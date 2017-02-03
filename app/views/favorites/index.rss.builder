@@ -2,7 +2,7 @@ xml.instruct! :xml, version: '1.0'
 xml.rss version: '2.0' do
   xml.channel do
     xml.title 'Old Pluto | Favorites'
-    xml.link favorites_path
+    xml.link favorites_url
     xml.language 'en'
 
     for link in @favorites
