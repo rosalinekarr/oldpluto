@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     get  '/share/:network', to: 'links#share',      as: 'share'
   end
 
-  mount Sidekiq::Web => '/sidekiq' if Rails.env.development?
+  # Admin only routes
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   get '/legal', to: 'pages#legal'
   root to: 'pages#home'
