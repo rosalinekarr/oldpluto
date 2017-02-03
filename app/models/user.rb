@@ -9,4 +9,8 @@ class User < ApplicationRecord
 
   has_many :clicks
   has_many :shares
+
+  def admin?
+    admin
+  end
 end
