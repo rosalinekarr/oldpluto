@@ -1,6 +1,7 @@
 - content_for :title, 'Rising News'   if params[:sort].nil?
 - content_for :title, 'Popular News'  if params[:sort] == 'popular'
 - content_for :title, 'Latest News'   if params[:sort] == 'newest'
+- content_for :rss, links_url(format: :xml)
 
 = render 'links/options'
 

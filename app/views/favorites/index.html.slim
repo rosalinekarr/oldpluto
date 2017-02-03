@@ -1,4 +1,5 @@
 - content_for :title, 'My Favorites'
+- content_for :rss, favorites_url(format: :xml)
 
 - if @favorites.any?
   ol.links start=(@page * 25 - 24)
