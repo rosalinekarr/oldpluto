@@ -1,6 +1,6 @@
-- title = 'Rising News'   if params[:sort].nil?
-- title = 'Popular News'  if params[:sort] == 'popular'
-- title = 'Latest News'   if params[:sort] == 'newest'
+title = 'Rising News'
+title = 'Popular News' if params[:sort] == 'popular'
+title = 'Latest News'  if params[:sort] == 'newest'
 
 xml.instruct! :xml, version: '1.0'
 xml.rss version: '2.0' do
