@@ -1,0 +1,9 @@
+- content_for :title, 'My Favorites'
+
+- if @favorites.any?
+  ol.links start=(@page * 25 - 24)
+    = render @favorites
+- else
+  .no-results No Results.
+
+= render 'links/pagination'

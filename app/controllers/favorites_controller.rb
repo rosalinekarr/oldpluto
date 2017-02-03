@@ -2,8 +2,7 @@ class FavoritesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @links = current_user.links.search(params[:q], filters)
-    render 'links/index'
+    @favorites = current_user.links.page page
   end
 
   def create
