@@ -3,6 +3,7 @@ class DestroyLinkJob < ApplicationJob
 
   def perform(link_id)
     Algolia::Index.new("Link_#{Rails.env}").delete_object(link_id)
-    Link.find(link_id).destroy
+    link = Link.find(link_id)
+    link.destroy if link.favorites.empty?
   end
 end
