@@ -7,6 +7,6 @@ class Impression < ApplicationRecord
   private
 
   def reindex_link
-    link.index!
+    link.index_later
   end
 end

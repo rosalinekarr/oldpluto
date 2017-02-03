@@ -56,6 +56,12 @@ class Link < ApplicationRecord
     published_at.to_i
   end
 
+  def index_later
+    return if indexing
+    IndexLinkJob.perform_later id
+    update_columns(indexing: true)
+  end
+
   private
 
   def set_expiration
