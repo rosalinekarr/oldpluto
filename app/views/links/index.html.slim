@@ -7,8 +7,7 @@
 = render 'links/options'
 
 - if @links.any?
-  ol.links start=(@page * 25 - (@advertisement.present? ? 25 : 24))
-    = render @advertisement if @advertisement.present?
+  ol.links start=(@page * 25 - 24)
     = render @links
 - else
   .no-results No Results.

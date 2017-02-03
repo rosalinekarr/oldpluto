@@ -1,6 +1,4 @@
 class LinksController < ApplicationController
-  before_action :set_advertisement, only: [:index]
-
   def index
     @links = Link.search(params[:q], filters)
   end
@@ -19,11 +17,5 @@ class LinksController < ApplicationController
     else
       raise ActionController::RoutingError.new('Not Found')
     end
-  end
-
-  private
-
-  def set_advertisement
-    @advertisement = Advertisement.approved.order('RANDOM()').first if page == 1
   end
 end

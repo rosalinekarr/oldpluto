@@ -1,7 +1,0 @@
-li
-  = link_to advertisement.title, advertisement.url, class: 'advertisement', rel: 'noopener nofollow', target: '_blank'
-  .details
-    | Advertisement
-    - if user_signed_in? && current_user == advertisement.user
-      = ' | '
-      = link_to 'Delete', advertisement_path(advertisement), method: :delete
