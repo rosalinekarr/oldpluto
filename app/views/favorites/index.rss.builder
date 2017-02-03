@@ -12,7 +12,7 @@ xml.rss version: '2.0' do
         xml.pubDate link.published_at.to_s(:rfc822)
         xml.link link.url
         xml.guid link.guid
-        xml.description link.body
+        xml.description truncate(link.body)
       end
     end
   end
