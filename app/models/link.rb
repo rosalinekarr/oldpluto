@@ -1,5 +1,5 @@
 class Link < ApplicationRecord
-  TTL = 1.week
+  TTL = ENV['LINK_TTL'] || 1.week
 
   include AlgoliaSearch
 
