@@ -42,7 +42,7 @@ class Link < ApplicationRecord
   end
 
   def points
-    @points ||= clicks_count + shares_count + favorites_count
+    clicks_count + shares_count + favorites_count
   end
 
   def click_through_rate
@@ -51,10 +51,8 @@ class Link < ApplicationRecord
   end
 
   def score
-    @score ||= begin
-      author_score = author.try(:score) || 1.0
-      (feed.score * author_score * (points + 1.0) / (impressions_count + 1.0)).to_i
-    end
+    author_score = author.try(:score) || 1.0
+    (feed.score * author_score * (points + 1.0) / (impressions_count + 1.0)).to_i
   end
 
   def published_at_i
