@@ -45,6 +45,11 @@ class Link < ApplicationRecord
     @points ||= clicks_count + shares_count + favorites_count
   end
 
+  def click_through_rate
+    return 0.0 if impressions_count.zero?
+    clicks_count.to_f / impressions_count.to_f
+  end
+
   def score
     @score ||= begin
       author_score = author.try(:score) || 1.0

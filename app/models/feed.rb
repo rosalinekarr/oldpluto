@@ -54,9 +54,14 @@ class Feed < ApplicationRecord
   end
 
   def points
-    @points ||= ['clicks', 'shares', 'favorites'].reduce(0) do |sum, column|
+    @points ||= %w( clicks shares favorites ).reduce(0) do |sum, column|
       sum + links.sum("#{column}_count".to_sym)
     end
+  end
+
+  def average_click_through_rate
+    return 0.0 if links.sum(:impressions_count).zero?
+    links.sum(:clicks_count) / links.sum(:impressions_count)
   end
 
   def score
