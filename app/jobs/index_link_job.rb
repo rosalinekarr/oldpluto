@@ -5,6 +5,6 @@ class IndexLinkJob < ApplicationJob
     link = Link.where(id: link_id).first
     return unless link.present?
     link.index!
-    link.update_columns(indexing: false)
+    link.update_columns(indexing: false, last_indexed_at: Time.now)
   end
 end

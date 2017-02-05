@@ -16,7 +16,7 @@ class Link < ApplicationRecord
   validates :title, :url, :feed_id, presence: true
   validates :title, :url, uniqueness: true
 
-  after_create :index!
+  after_create :index_later
   after_create :set_expiration
 
   algoliasearch auto_index: false, auto_remove: false, per_environment: true do
@@ -72,7 +72,7 @@ class Link < ApplicationRecord
   end
 
   def index_later
-    return if indexing
+    return if indexing || (last_indexed_at || Time.now) > 1.day.ago
     IndexLinkJob.perform_later id
     update_columns(indexing: true)
   end
