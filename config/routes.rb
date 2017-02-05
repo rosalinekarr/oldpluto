@@ -14,5 +14,5 @@ Rails.application.routes.draw do
   end
 
   get '/legal', to: 'pages#legal'
-  root to: 'pages#home'
+  root to: 'links#index'
 end
