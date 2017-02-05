@@ -20,13 +20,17 @@ class Link < ApplicationRecord
   after_create :set_expiration
 
   algoliasearch auto_index: false, auto_remove: false, per_environment: true do
-    attribute :body, :points, :published_at_i, :score, :title
+    attribute :title, :body, :points, :score_i :published_at_i, :click_through_rate_i
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
       [author_tag, source_tag].compact
     end
-    customRanking ['desc(score)']
+    customRanking ['desc(score_i)']
+
+    add_replica 'rising', per_environment: true do
+      customRanking ['desc(click_through_rate_i)']
+    end
 
     add_replica 'popular', per_environment: true do
       customRanking ['desc(points)']
@@ -50,9 +54,17 @@ class Link < ApplicationRecord
     clicks_count.to_f / impressions_count.to_f
   end
 
+  def click_through_rate_i
+    (click_through_rate * 1000.0).to_i
+  end
+
   def score
     author_score = author.try(:score) || 1.0
-    (feed.score * author_score * (points + 1.0) / (impressions_count + 1.0)).to_i
+    feed.score * author_score * (points + 1.0) / (impressions_count + 1.0)
+  end
+
+  def score_i
+    (score * 1000.0).to_i
   end
 
   def published_at_i
