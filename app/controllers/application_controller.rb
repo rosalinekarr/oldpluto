@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sort
-    @sort ||= ['popular', 'newest'].find{ |sort| sort == params[:sort] }
+    @sort ||= ['rising', 'popular', 'newest'].find{ |sort| sort == params[:sort] }
   end
 
   def page

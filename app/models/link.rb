@@ -20,7 +20,7 @@ class Link < ApplicationRecord
   after_create :set_expiration
 
   algoliasearch auto_index: false, auto_remove: false, per_environment: true do
-    attribute :title, :body, :points, :score_i :published_at_i, :click_through_rate_i
+    attribute :title, :body, :points, :score_i, :published_at_i, :click_through_rate_i
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
