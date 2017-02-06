@@ -62,12 +62,12 @@ class Link < ApplicationRecord
   end
 
   def score
-    score =  clicks_count      ** CLICK_SCORE_WEIGHT
-    score *= shares_count      ** SHARE_SCORE_WEIGHT
-    score *= favorites_count   ** FAVORITE_SCORE_WEIGHT
-    score *= impressions_count ** IMPRESSION_SCORE_WEIGHT
-    score *= author.score      ** AUTHOR_SCORE_WEIGHT unless author.nil?
-    score *= feed.score        ** FEED_SCORE_WEIGHT
+    score =  clicks_count              ** CLICK_SCORE_WEIGHT
+    score *= shares_count              ** SHARE_SCORE_WEIGHT
+    score *= favorites_count           ** FAVORITE_SCORE_WEIGHT
+    score *= (impressions_count + 1.0) ** IMPRESSION_SCORE_WEIGHT
+    score *= author.score              ** AUTHOR_SCORE_WEIGHT unless author.nil?
+    score *= feed.score                ** FEED_SCORE_WEIGHT
     score
   end
 
