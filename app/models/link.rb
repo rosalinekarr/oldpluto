@@ -70,7 +70,7 @@ class Link < ApplicationRecord
     score *= shares_count      ** SHARE_SCORE_WEIGHT
     score *= favorites_count   ** FAVORITE_SCORE_WEIGHT
     score *= impressions_count ** IMPRESSION_SCORE_WEIGHT
-    score *= author.score      ** AUTHOR_SCORE_WEIGHT
+    score *= author.score      ** AUTHOR_SCORE_WEIGHT unless author.nil?
     score *= feed.score        ** FEED_SCORE_WEIGHT
     score
   end
@@ -84,7 +84,7 @@ class Link < ApplicationRecord
   end
 
   def index_later
-    return if indexing || (last_indexed_at || Time.now) > REINDEX_RATE
+    return if indexing || (last_indexed_at || Time.now) > REINDEX_RATE.ago
     IndexLinkJob.perform_later id
     update_columns(indexing: true)
   end
