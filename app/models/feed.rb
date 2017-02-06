@@ -1,6 +1,9 @@
 require 'htmlentities'
 
 class Feed < ApplicationRecord
+  MAX_TITLE_LENGTH = ENV['MAX_TITLE_LENGTH'] || 255
+  MAX_BODY_LENGTH  = ENV['MAX_BODY_LENGTH']  || 1024
+
   extend FriendlyId
 
   has_many :links, dependent: :destroy
@@ -30,12 +33,12 @@ class Feed < ApplicationRecord
 
       # Set title
       title = ActionController::Base.helpers.strip_tags(entry.title)
-      link.title = HTMLEntities.new.decode(title)
+      link.title = HTMLEntities.new.decode(title).truncate(MAX_TITLE_LENGTH)
 
       # Set body
       body = entry.content || entry.summary || title
       body = ActionController::Base.helpers.strip_tags(body)
-      link.body  = HTMLEntities.new.decode(body)
+      link.body  = HTMLEntities.new.decode(body).truncate(MAX_BODY_LENGTH)
 
       # Set author
       author_name = ActionController::Base.helpers.strip_tags entry.author
