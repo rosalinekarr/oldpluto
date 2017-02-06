@@ -5,6 +5,7 @@ class Link < ApplicationRecord
   IMPRESSION_SCORE_WEIGHT = ENV['IMPRESSION_SCORE_WEIGHT'] || -1.0
   AUTHOR_SCORE_WEIGHT     = ENV['AUTHOR_SCORE_WEIGHT']     || 0.2
   FEED_SCORE_WEIGHT       = ENV['FEED_SCORE_WEIGHT']       || 0.1
+  REINDEX_RATE            = ENV['REINDEX_RATE']            || 1.hour
   TTL                     = ENV['LINK_TTL']                || 1.week
 
   include AlgoliaSearch
@@ -83,7 +84,7 @@ class Link < ApplicationRecord
   end
 
   def index_later
-    return if indexing || (last_indexed_at || Time.now) > 1.day.ago
+    return if indexing || (last_indexed_at || Time.now) > REINDEX_RATE
     IndexLinkJob.perform_later id
     update_columns(indexing: true)
   end
