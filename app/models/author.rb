@@ -9,18 +9,8 @@ class Author < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
-  def points
-    %w( clicks shares favorites ).reduce(0) do |sum, column|
-      sum + links.sum("#{column}_count".to_sym)
-    end
-  end
-
-  def average_click_through_rate
+  def score
     return 0.0 if links.sum(:impressions_count).zero?
     links.sum(:clicks_count) / links.sum(:impressions_count)
-  end
-
-  def score
-    (points.to_f + 1.0) / (links.sum(:impressions_count).to_f + 1.0)
   end
 end

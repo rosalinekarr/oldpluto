@@ -27,7 +27,7 @@ class Link < ApplicationRecord
   after_create :set_expiration
 
   algoliasearch auto_index: false, auto_remove: false, per_environment: true do
-    attribute :title, :body, :points, :score_i, :published_at_i, :click_through_rate_i
+    attribute :title, :body, :clicks_count, :score_i, :published_at_i, :click_through_rate_i
     tags do
       author_tag = "author_#{author.name.parameterize}" if author.try(:name).present?
       source_tag = "source_#{feed.slug.parameterize}"
@@ -40,7 +40,7 @@ class Link < ApplicationRecord
     end
 
     add_replica 'popular', per_environment: true do
-      customRanking ['desc(points)']
+      customRanking ['desc(clicks_count)']
     end
 
     add_replica 'newest', per_environment: true do
@@ -50,10 +50,6 @@ class Link < ApplicationRecord
 
   def favorited?(user)
     Favorite.where(user: user, link: self).any?
-  end
-
-  def points
-    clicks_count + shares_count + favorites_count
   end
 
   def click_through_rate
