@@ -1,7 +1,7 @@
 class LinksController < ApplicationController
   def index
     @links = Link.search(params[:q], filters)
-    @links.each{ |l| Impression.create link: l, user: current_user }
+    CreateImpressionJob.perform_later(current_user.try(:id), @links.map(&:id))
   end
 
   def show
