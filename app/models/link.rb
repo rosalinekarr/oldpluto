@@ -1,5 +1,11 @@
 class Link < ApplicationRecord
-  TTL = ENV['LINK_TTL'] || 1.week
+  CLICK_SCORE_WEIGHT      = ENV['CLICK_SCORE_WEIGHT']      || 1.0
+  SHARE_SCORE_WEIGHT      = ENV['SHARE_SCORE_WEIGHT']      || 2.0
+  FAVORITE_SCORE_WEIGHT   = ENV['FAVORITE_SCORE_WEIGHT']   || 5.0
+  IMPRESSION_SCORE_WEIGHT = ENV['IMPRESSION_SCORE_WEIGHT'] || -1.0
+  AUTHOR_SCORE_WEIGHT     = ENV['AUTHOR_SCORE_WEIGHT']     || 0.2
+  FEED_SCORE_WEIGHT       = ENV['FEED_SCORE_WEIGHT']       || 0.1
+  TTL                     = ENV['LINK_TTL']                || 1.week
 
   include AlgoliaSearch
 
@@ -59,8 +65,13 @@ class Link < ApplicationRecord
   end
 
   def score
-    author_score = author.try(:score) || 1.0
-    feed.score * author_score * (points + 1.0) / (impressions_count + 1.0)
+    score =  clicks_count      ** CLICK_SCORE_WEIGHT
+    score *= shares_count      ** SHARE_SCORE_WEIGHT
+    score *= favorites_count   ** FAVORITE_SCORE_WEIGHT
+    score *= impressions_count ** IMPRESSION_SCORE_WEIGHT
+    score *= author.score      ** AUTHOR_SCORE_WEIGHT
+    score *= feed.score        ** FEED_SCORE_WEIGHT
+    score
   end
 
   def score_i
