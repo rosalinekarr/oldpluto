@@ -1,12 +1,12 @@
 class Link < ApplicationRecord
-  CLICK_SCORE_WEIGHT      = ENV['CLICK_SCORE_WEIGHT']      || 1.0
-  SHARE_SCORE_WEIGHT      = ENV['SHARE_SCORE_WEIGHT']      || 2.0
-  FAVORITE_SCORE_WEIGHT   = ENV['FAVORITE_SCORE_WEIGHT']   || 5.0
-  IMPRESSION_SCORE_WEIGHT = ENV['IMPRESSION_SCORE_WEIGHT'] || -1.0
-  AUTHOR_SCORE_WEIGHT     = ENV['AUTHOR_SCORE_WEIGHT']     || 0.2
-  FEED_SCORE_WEIGHT       = ENV['FEED_SCORE_WEIGHT']       || 0.1
-  REINDEX_RATE            = ENV['REINDEX_RATE']            || 1.hour
-  TTL                     = ENV['LINK_TTL']                || 1.week
+  CLICK_SCORE_WEIGHT      = ENV['CLICK_SCORE_WEIGHT'].to_f      || 1.0
+  SHARE_SCORE_WEIGHT      = ENV['SHARE_SCORE_WEIGHT'].to_f      || 2.0
+  FAVORITE_SCORE_WEIGHT   = ENV['FAVORITE_SCORE_WEIGHT'].to_f   || 5.0
+  IMPRESSION_SCORE_WEIGHT = ENV['IMPRESSION_SCORE_WEIGHT'].to_f || -1.0
+  AUTHOR_SCORE_WEIGHT     = ENV['AUTHOR_SCORE_WEIGHT'].to_f     || 0.2
+  FEED_SCORE_WEIGHT       = ENV['FEED_SCORE_WEIGHT'].to_f       || 0.1
+  REINDEX_RATE            = ENV['REINDEX_RATE'].to_i            || 1.hour
+  TTL                     = ENV['LINK_TTL'].to_i                || 1.week
 
   include AlgoliaSearch
 

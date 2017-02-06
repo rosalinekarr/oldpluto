@@ -1,8 +1,8 @@
 require 'htmlentities'
 
 class Feed < ApplicationRecord
-  MAX_TITLE_LENGTH = ENV['MAX_TITLE_LENGTH'] || 255
-  MAX_BODY_LENGTH  = ENV['MAX_BODY_LENGTH']  || 1024
+  MAX_TITLE_LENGTH = ENV['MAX_TITLE_LENGTH'].to_i || 255
+  MAX_BODY_LENGTH  = ENV['MAX_BODY_LENGTH'].to_i  || 1024
 
   extend FriendlyId
 

@@ -1,6 +1,6 @@
 class FetchLinksJob < ApplicationJob
-  MAX_DELAY = ENV['MAX_FETCH_WAIT'] || 3.days
-  MIN_DELAY = ENV['MIN_FETCH_WAIT'] || 5.minutes
+  MAX_DELAY = ENV['MAX_FETCH_WAIT'].to_i || 3.days
+  MIN_DELAY = ENV['MIN_FETCH_WAIT'].to_i || 5.minutes
 
   rescue_from(Feedjira::NoParserAvailable) do
     retry_job wait: MAX_DELAY
