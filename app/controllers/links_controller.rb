@@ -1,6 +1,6 @@
 class LinksController < ApplicationController
   def index
-    @links = Link.search(params[:q], filters)
+    @links = Link.includes(:author, :feed).search(params[:q], filters)
     CreateImpressionJob.perform_later(current_user.try(:id), @links.map(&:id))
   end
 
